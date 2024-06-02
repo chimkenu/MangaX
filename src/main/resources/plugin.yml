@@ -1,0 +1,8 @@
+name: MangaX
+version: '${version}'
+main: me.chimkenu.mangax.MangaX
+api-version: '1.20'
+commands:
+  getitems:
+    description: gets the items
+    usage: /<command>
