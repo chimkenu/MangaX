@@ -44,7 +44,7 @@ public class ParticleEffects {
 
                     // Block intersection
                     Block block = world.getBlockAt(loc);
-                    if (block.getType() != Material.AIR && ray.intersects(block.getBoundingBox(), range, 0.1)) {
+                    if (!block.isPassable() && ray.intersects(block.getBoundingBox(), range, 0.1)) {
                         wallsPassed++;
 
                         if (wallsPassed > maxWallsPassed)
