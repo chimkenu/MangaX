@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,14 @@ import static me.chimkenu.mangax.ArmorStandUtil.*;
 
 public class StandBarrage extends Move {
     public StandBarrage() {
-        super((plugin, player) -> {
+        super(null, null, 0, 5 * 20, Material.NETHER_STAR, Component.text("Stand Barrage").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD));
+
+        this.activate = (plugin, player) -> {
+            // Cancel if heavy hit is active
+            if (player.getCooldown(Moves.JOTARO_HEAVY_HIT.move.getMaterial()) > Moves.JOTARO_HEAVY_HIT.move.getCooldown()) {
+                player.setCooldown(getMaterial(), 1);
+                return;
+            }
 
             // Create stand
             ArmorStand stand = player.getLocation().getWorld().spawn(player.getLocation(), ArmorStand.class);
@@ -95,7 +101,7 @@ public class StandBarrage extends Move {
                     t--;
                 }
             }.runTaskTimer(plugin, 1, 2);
-        }, null, 0, 5 * 20, Material.NETHER_STAR, Component.text("Stand Barrage").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD));
+        };
     }
 
     @Override

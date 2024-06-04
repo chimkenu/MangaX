@@ -103,9 +103,7 @@ public class HeavyHit extends Move {
                 }
             }.runTaskTimer(plugin, 0, 1);
 
-        }, null, 0, 11 * 20, Material.PURPLE_DYE, Component.text("Heavy Hit").color(NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
-
-
+        }, null, 15, 10 * 20, Material.PURPLE_DYE, Component.text("Heavy Hit").color(NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override
