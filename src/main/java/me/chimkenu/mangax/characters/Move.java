@@ -14,16 +14,14 @@ public abstract class Move {
     private final int cooldown;
     private final Material material;
     private final Component name;
-    private final ArrayList<Component> lore;
 
-    public Move(Activate activate, FollowUp followUp, int followUpTime, int cooldown, Material material, Component name, ArrayList<Component> lore) {
+    public Move(Activate activate, FollowUp followUp, int followUpTime, int cooldown, Material material, Component name) {
         this.activate = activate;
         this.followUp = followUp;
         this.followUpTime = followUpTime;
         this.cooldown = cooldown;
         this.material = material;
         this.name = name;
-        this.lore = lore;
     }
 
     public Activate getActivate() {
@@ -50,9 +48,7 @@ public abstract class Move {
         return name;
     }
 
-    public ArrayList<Component> getLore() {
-        return lore;
-    }
+    public abstract ArrayList<Component> getLore();
 
     public ItemStack getItem() {
         ItemStack item = new ItemStack(getMaterial());
