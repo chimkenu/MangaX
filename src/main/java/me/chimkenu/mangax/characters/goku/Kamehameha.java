@@ -42,7 +42,7 @@ public class Kamehameha extends Move {
                         return;
                     }
 
-                    for (int i = 0; i < 16; i++) {
+                    for (int i = 0; i <= 16; i++) {
                         float rotate = i * 34;
                         Location newLoc = loc.clone();
                         newLoc.setYaw(newLoc.getYaw() + (float) (3 * Math.cos(rotate)));
