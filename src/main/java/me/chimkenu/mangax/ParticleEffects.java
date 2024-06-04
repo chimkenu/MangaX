@@ -89,6 +89,6 @@ public class ParticleEffects {
 
     public interface Effect {
         void playParticle(World world, Location location);
-        default void intersect(LivingEntity livingEntity) {};
+        default void intersect(LivingEntity livingEntity) {}
     }
 }
