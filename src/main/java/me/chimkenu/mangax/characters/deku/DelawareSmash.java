@@ -42,6 +42,11 @@ public class DelawareSmash extends Move {
                 }
                 loc.setPitch(loc.getPitch() + 2);
             }
-        }, null, 0, 15 * 20, Material.RAW_GOLD, Component.text("Delaware Smash").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        }, null, 0, 15 * 20, Material.RAW_GOLD, Component.text("Delaware Smash").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
     }
 }

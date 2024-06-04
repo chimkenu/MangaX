@@ -33,6 +33,11 @@ public class Dash extends Move {
                     t--;
                 }
             }.runTaskTimer(plugin, 0, 1);
-        }, null, 0, 15 * 20, Material.SPECTRAL_ARROW, Component.text("Dash").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        }, null, 0, 15 * 20, Material.SPECTRAL_ARROW, Component.text("Dash").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
     }
 }

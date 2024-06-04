@@ -31,6 +31,11 @@ public class FullBlast extends Move {
                     i--;
                 }
             }.runTaskTimer(plugin, 0, 1);
-        }, null, 0, 10 * 20, Material.FIREWORK_STAR, Component.text("Full Blast").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        }, null, 0, 10 * 20, Material.FIREWORK_STAR, Component.text("Full Blast").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
     }
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Kamehameha extends Move {
     public Kamehameha() {
-        super(null, null, 40, 30 * 20, Material.HEART_OF_THE_SEA, Component.text("KAMEHAMEHA!").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        super(null, null, 40, 30 * 20, Material.HEART_OF_THE_SEA, Component.text("KAMEHAMEHA!").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, player) -> {
             // Charge
@@ -68,5 +68,8 @@ public class Kamehameha extends Move {
         };
     }
 
-
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
+    }
 }

@@ -30,6 +30,11 @@ public class DragonFist extends Move {
                     e.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 100, 4, false, false, false));
                 }
             }
-        }, null, 0, 10 * 20, Material.HORN_CORAL, Component.text("Dragon Fist!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        }, null, 0, 10 * 20, Material.HORN_CORAL, Component.text("Dragon Fist!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
     }
 }

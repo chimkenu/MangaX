@@ -68,7 +68,7 @@ public class ShootStyleLeap extends Move {
                 }
             }.runTaskLater(plugin, 15);
 
-        }, 12, 15 * 20, Material.LEATHER_HELMET, Component.text("Shoot Style Leap").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false), new ArrayList<>());
+        }, 12, 15 * 20, Material.LEATHER_HELMET, Component.text("Shoot Style Leap").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override
@@ -79,5 +79,10 @@ public class ShootStyleLeap extends Move {
         meta.displayName(getName());
         item.setItemMeta(meta);
         return item;
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return new ArrayList<>();
     }
 }
