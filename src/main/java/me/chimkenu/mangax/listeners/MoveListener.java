@@ -1,46 +1,57 @@
 package me.chimkenu.mangax.listeners;
 
+import io.papermc.paper.event.player.PlayerArmSwingEvent;
+import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class MoveListener extends GameListener {
     public MoveListener(JavaPlugin plugin) {
         super(plugin);
     }
 
-    private boolean activateMove(Player player) {
+    private void activateMove(Player player) {
         Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
         if (move == null) {
-            return false;
+            return;
         }
 
-        if (player.getCooldown(move.move.getMaterial()) > 0) {
-            return false;
+        Move m = move.move;
+        if (player.getCooldown(m.getMaterial()) > m.getCooldown()) {
+            m.getFollowUp().activate(plugin, player);
+            player.setCooldown(m.getMaterial(), m.getCooldown());
+            return;
         }
 
-        move.move.getActivate().activate(plugin, player);
-        player.setCooldown(move.move.getMaterial(), move.move.getCooldown());
-        return true;
+        if (player.getCooldown(m.getMaterial()) > 0) {
+            return;
+        }
+
+        m.getActivate().activate(plugin, player);
+        player.setCooldown(m.getMaterial(), m.getCooldown() + m.getFollowUpTime());
+
+        if (m.getFollowUpTime() > 0) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (player.isDead() || !player.isOnline()) {
+                        this.cancel();
+                        return;
+                    }
+
+                    if (player.getCooldown(m.getMaterial()) == m.getCooldown()) {
+                        m.getFollowUp().activate(plugin, player);
+                    }
+                }
+            }.runTaskLater(plugin, m.getFollowUpTime() + 1);
+        }
     }
 
     @EventHandler
-    public void onLeftClickNothing(PlayerInteractEvent e) {
-        if (!(e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
-            return;
-        }
-        e.setCancelled(activateMove(e.getPlayer()));
-    }
-
-    @EventHandler
-    public void onLeftClickEntity(EntityDamageByEntityEvent e) {
-        if (!(e.getDamager() instanceof Player player)) {
-            return;
-        }
-        e.setCancelled(activateMove(player));
+    public void onLeftClick(PlayerArmSwingEvent e) {
+        activateMove(e.getPlayer());
     }
 }
