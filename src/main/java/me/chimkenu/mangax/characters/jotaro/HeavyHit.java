@@ -64,17 +64,16 @@ public class HeavyHit extends Move {
                     // Actual attack
                     if (t <= 0) {
                         rightHand.getWorld().spawnParticle(Particle.FLASH, rightHand.getEyeLocation(), 1, 0, 0, 0, 0);
+                        runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^2 ~ ~");
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^0.5 ~ ~");
                                 for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(2)) {
                                     damage(e);
                                 }
                                 clear();
                             }
-                        }.runTaskLater(plugin, 1);
-                        clear();
+                        }.runTaskLater(plugin, 2);
                         this.cancel();
                         return;
                     }
@@ -82,7 +81,7 @@ public class HeavyHit extends Move {
                     // "Charge" up attack
                     rightHand.getWorld().spawnParticle(Particle.CRIT, rightHand.getEyeLocation(), 1, 0.1, 0.1, 0.1, 0.1);
                     runCommand("execute anchored eyes at " + player.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^0.5 ^2 ~ ~");
-                    runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^1 ~ ~");
+                    runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^0.1 ~ ~");
                     runCommand("execute at " + stand.getUniqueId() + " run tp " + leftHand.getUniqueId() + " ^0.5 ^0.4 ^0.1 ~ ~");
                     t--;
                 }
