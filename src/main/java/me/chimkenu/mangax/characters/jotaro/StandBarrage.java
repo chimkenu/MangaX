@@ -31,7 +31,7 @@ public class StandBarrage extends Move {
             }
 
             // Create stand
-            ArmorStand stand = player.getLocation().getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setLeftLegPose(new EulerAngle(0, 0, 351 * Math.PI / 180));
             stand.setRightLegPose(new EulerAngle(0, 0, 12 * Math.PI / 180));
@@ -46,8 +46,8 @@ public class StandBarrage extends Move {
             stand.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
             stand.getEquipment().setBoots(new ItemStack(Material.GOLDEN_BOOTS));
 
-            ArmorStand leftHand = player.getLocation().getWorld().spawn(player.getLocation(), ArmorStand.class);
-            ArmorStand rightHand = player.getLocation().getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand leftHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand rightHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
             leftHand.setSmall(true);
             rightHand.setSmall(true);
             setUpArmorStand(leftHand);
