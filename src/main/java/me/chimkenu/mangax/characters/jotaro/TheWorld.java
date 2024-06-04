@@ -70,8 +70,8 @@ public class TheWorld extends Move {
     private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, Player player, LivingEntity target, int duration) {
         new BukkitRunnable() {
             int t = duration;
-            Location loc = target.getLocation();
-            double health = target.getHealth();
+            final Location loc = target.getLocation();
+            final double health = target.getHealth();
             @Override
             public void run() {
                 if (target.isDead() || !player.isOnline()) {
