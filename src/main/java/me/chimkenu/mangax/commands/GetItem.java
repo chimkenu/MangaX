@@ -1,12 +1,11 @@
 package me.chimkenu.mangax.commands;
 
+import me.chimkenu.mangax.enums.Moves;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import me.chimkenu.mangax.characters.deku.*;
 
 public class GetItem implements CommandExecutor {
     @Override
@@ -15,7 +14,9 @@ public class GetItem implements CommandExecutor {
             return true;
         }
 
-        player.getInventory().addItem((new DetroitSmash()).getItem());
+        for (Moves m : Moves.values()) {
+            player.getInventory().addItem(m.move.getItem());
+        }
         return true;
     }
 }
