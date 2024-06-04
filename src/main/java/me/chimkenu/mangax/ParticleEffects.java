@@ -67,7 +67,7 @@ public class ParticleEffects {
 
                 // Entity intersection
                 for (Entity e : world.getNearbyEntities(loc, accuracy, accuracy, accuracy)) {
-                    if (e instanceof LivingEntity living && e.getType().equals(EntityType.ARMOR_STAND)) {
+                    if (e instanceof LivingEntity living && !e.getType().equals(EntityType.ARMOR_STAND)) {
                         BoundingBox entityBox = living.getBoundingBox();
                         if (ray.intersects(entityBox, range, 0.1)) {
                             effect.intersect(living);
