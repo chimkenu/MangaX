@@ -13,10 +13,9 @@ public class SkullUtil {
     public static ItemStack getSkull(String skin) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer("__Star_Platinum_"));
+        meta.setOwningPlayer(Bukkit.getOfflinePlayer("placeholder"));
         PlayerProfile playerProfile = meta.getPlayerProfile();
         if (playerProfile == null) {
-            Bukkit.broadcastMessage("niga");
             return skull;
         }
 
@@ -24,7 +23,6 @@ public class SkullUtil {
         try {
             textures.setSkin(new URI(skin).toURL());
         } catch (Exception ignored) {
-            ignored.printStackTrace();
             return skull;
         }
 
