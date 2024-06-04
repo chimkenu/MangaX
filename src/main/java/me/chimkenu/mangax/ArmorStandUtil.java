@@ -9,6 +9,7 @@ public class ArmorStandUtil {
         armorStand.setInvisible(true);
         armorStand.setGravity(false);
         armorStand.setSilent(true);
+        armorStand.setBasePlate(false);
     }
 
     public static void runCommand(String command) {
