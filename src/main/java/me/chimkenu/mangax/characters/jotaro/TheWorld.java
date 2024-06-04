@@ -41,6 +41,7 @@ public class TheWorld extends Move {
                     AreaEffectCloud areaEffectCloud = player.getWorld().spawn(loc, AreaEffectCloud.class);
                     areaEffectCloud.setColor(Color.BLACK);
                     areaEffectCloud.setDuration(getFollowUpTime() - CHARGE_TIME);
+                    areaEffectCloud.setRadius(10);
                     areaEffectCloud.addScoreboardTag(player.getUniqueId() + ".cloud");
 
                     new BukkitRunnable() {
