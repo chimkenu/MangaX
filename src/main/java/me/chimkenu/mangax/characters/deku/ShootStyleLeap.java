@@ -36,7 +36,9 @@ public class ShootStyleLeap extends Move {
                         this.cancel();
                         return;
                     }
-                    player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(3)));
+                    Location loc = player.getLocation();
+                    loc.setPitch(0);
+                    player.setVelocity(player.getVelocity().add(loc.getDirection().multiply(3)));
                 }
             }.runTaskLater(plugin, 1);
 
@@ -52,13 +54,15 @@ public class ShootStyleLeap extends Move {
 
                     // Silly ground pound effect
                     Location loc = player.getLocation();
+                    loc.setPitch(0);
+                    loc.add(0, 0.2, 0);
                     for (int i = 0; i < 20; i++) {
                         loc.setYaw(i * 18);
-                        ParticleEffects.create(plugin, loc, 5, 10, (world, location) -> world.spawnParticle(Particle.CRIT, location, 1, 0, 0, 0, 0.8), 0);
+                        ParticleEffects.create(plugin, loc, 6, 5, (world, location) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
                     }
 
                     // Ground pound damage
-                    for (Entity e : player.getNearbyEntities(5, 5, 5)) {
+                    for (LivingEntity e : player.getLocation().getNearbyLivingEntities(5)) {
                         if (e instanceof LivingEntity l) {
                             if (!l.getType().equals(EntityType.ARMOR_STAND) && l != player) {
                                 l.damage(3, player);
