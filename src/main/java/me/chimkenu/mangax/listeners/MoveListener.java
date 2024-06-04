@@ -31,7 +31,8 @@ public class MoveListener extends GameListener {
         }
 
         m.getActivate().activate(plugin, player);
-        player.setCooldown(m.getMaterial(), m.getCooldown() + m.getFollowUpTime());
+        if (player.getCooldown(m.getMaterial()) == 0)
+            player.setCooldown(m.getMaterial(), m.getCooldown() + m.getFollowUpTime());
 
         if (m.getFollowUpTime() > 0) {
             new BukkitRunnable() {
