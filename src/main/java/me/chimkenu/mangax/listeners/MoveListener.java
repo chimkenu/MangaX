@@ -40,7 +40,7 @@ public class MoveListener extends GameListener {
         if (player.getCooldown(m.getMaterial()) == 0)
             player.setCooldown(m.getMaterial(), m.getCooldown() + m.getFollowUpTime());
 
-        if (m.getFollowUpTime() > 0) {
+        if (m.getFollowUp() != null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
