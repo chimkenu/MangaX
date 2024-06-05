@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -33,12 +32,12 @@ public class DropRippleThrust extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
-            stand.setBodyPose(new EulerAngle(0, Math.toRadians(-27), 0));
-            stand.setLeftArmPose(new EulerAngle(Math.toRadians(-10), Math.toRadians(0), Math.toRadians(-40)));
-            stand.setRightArmPose(new EulerAngle(Math.toRadians(-15), Math.toRadians(90), Math.toRadians(30)));
-            stand.setLeftLegPose(new EulerAngle(Math.toRadians(-1), Math.toRadians(0), Math.toRadians(-61)));
-            stand.setRightLegPose(new EulerAngle(Math.toRadians(1), Math.toRadians(0), Math.toRadians(-30)));
-            stand.setHeadPose(new EulerAngle(0,Math.toRadians(60),0));
+            stand.setBodyPose(newEulerAngle(0, -27, 0));
+            stand.setLeftArmPose(newEulerAngle(-10, 0, -40));
+            stand.setRightArmPose(newEulerAngle(-15, 90, 30));
+            stand.setLeftLegPose(newEulerAngle(-1, 0, -61));
+            stand.setRightLegPose(newEulerAngle(1, 0, -30));
+            stand.setHeadPose(newEulerAngle(0, 60,0));
 
             stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.tanjiro")));
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);

@@ -13,7 +13,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 
 import java.util.ArrayList;
 
@@ -33,9 +32,9 @@ public class StandBarrage extends Move {
             // Create stand
             ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
-            stand.setLeftLegPose(new EulerAngle(0, 0, 351 * Math.PI / 180));
-            stand.setRightLegPose(new EulerAngle(0, 0, 12 * Math.PI / 180));
-            stand.setHeadPose(new EulerAngle(9 * Math.PI / 180, 0, 0));
+            stand.setLeftLegPose(newEulerAngle(0, 0, 351));
+            stand.setRightLegPose(newEulerAngle(0, 0, 12));
+            stand.setHeadPose(newEulerAngle(9, 0, 0));
 
             stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.star-platinum")));
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);

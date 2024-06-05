@@ -18,7 +18,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 
 import java.util.ArrayList;
 
@@ -36,12 +35,12 @@ public class StrikingTide extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
-            stand.setBodyPose(new EulerAngle(0, Math.toRadians(-27), 0));
-            stand.setLeftArmPose(new EulerAngle(Math.toRadians(-70), Math.toRadians(36), Math.toRadians(17)));
-            stand.setRightArmPose(new EulerAngle(Math.toRadians(-102), Math.toRadians(-30), Math.toRadians(51)));
-            stand.setLeftLegPose(new EulerAngle(Math.toRadians(29), Math.toRadians(-60), Math.toRadians(-31)));
-            stand.setRightLegPose(new EulerAngle(Math.toRadians(-30), Math.toRadians(-30), Math.toRadians(30)));
-            stand.setHeadPose(new EulerAngle(Math.toRadians(3),Math.toRadians(3.3),0));
+            stand.setBodyPose(newEulerAngle(0, -27, 0));
+            stand.setLeftArmPose(newEulerAngle(-70, 36, 17));
+            stand.setRightArmPose(newEulerAngle(-102, -30, 51));
+            stand.setLeftLegPose(newEulerAngle(29, -60, -31));
+            stand.setRightLegPose(newEulerAngle(-30, -30, 30));
+            stand.setHeadPose(newEulerAngle(3,3.3,0));
 
             stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.tanjiro")));
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);

@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 
 import java.util.ArrayList;
 
@@ -34,11 +33,11 @@ public class WaterWheel extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
-            stand.setBodyPose(new EulerAngle(0, Math.toRadians(2.1612144), 0));
-            stand.setLeftArmPose(new EulerAngle(Math.toRadians(20), 0, Math.toRadians(-10)));
-            stand.setRightArmPose(new EulerAngle(Math.toRadians(-45), 0, Math.toRadians(90)));
-            stand.setRightLegPose(new EulerAngle(Math.toRadians(30), 0, Math.toRadians(30)));
-            stand.setHeadPose(new EulerAngle(Math.toRadians(3.4143248),Math.toRadians(-6.903701),0));
+            stand.setBodyPose(newEulerAngle(0, 2.1612144, 0));
+            stand.setLeftArmPose(newEulerAngle(20, 0, -10));
+            stand.setRightArmPose(newEulerAngle(-45, 0, 90));
+            stand.setRightLegPose(newEulerAngle(30, 0, 30));
+            stand.setHeadPose(newEulerAngle(3.4143248,-6.903701,0));
 
             stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.tanjiro")));
             ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);

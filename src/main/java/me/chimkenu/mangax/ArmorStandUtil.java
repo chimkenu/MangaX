@@ -3,6 +3,7 @@ package me.chimkenu.mangax;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.util.EulerAngle;
 
 public class ArmorStandUtil {
     public static void setUpArmorStand(ArmorStand armorStand) {
@@ -21,5 +22,9 @@ public class ArmorStandUtil {
 
     public static void runCommand(String command) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
+
+    public static EulerAngle newEulerAngle(double x, double y, double z) {
+        return new EulerAngle(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z));
     }
 }
