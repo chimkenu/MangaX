@@ -21,7 +21,7 @@ public class Kamehameha extends Move {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline() || player.getCooldown(Material.HEART_OF_THE_SEA) < getCooldown()) {
+                    if (player.isDead() || !player.isOnline() || player.getCooldown(getMaterial()) < getCooldown()) {
                         cancel();
                         return;
                     }
@@ -31,7 +31,7 @@ public class Kamehameha extends Move {
         };
 
         this.followUp = (plugin, player) -> {
-            int chargeTime = getFollowUpTime() - (player.getCooldown(Material.HEART_OF_THE_SEA) - getCooldown());
+            int chargeTime = getFollowUpTime() - (player.getCooldown(getMaterial()) - getCooldown());
             new BukkitRunnable() {
                 int t = 20;
                 final Location loc = player.getEyeLocation();
