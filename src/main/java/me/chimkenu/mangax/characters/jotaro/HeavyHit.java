@@ -96,7 +96,7 @@ public class HeavyHit extends Move {
                         e.damage(6, player);
                         Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
                         direction = direction.normalize();
-                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)));
+                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
                         e.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, e.getEyeLocation(), 3, 0.2, 0.2, 0.2, 0.4);
                     }
                 }
