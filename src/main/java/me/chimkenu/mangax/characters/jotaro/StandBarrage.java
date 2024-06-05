@@ -66,7 +66,7 @@ public class StandBarrage extends Move {
                         stand.remove();
                         leftHand.remove();
                         rightHand.remove();
-                        this.cancel();
+                        cancel();
                         return;
                     }
 

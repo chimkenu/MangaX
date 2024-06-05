@@ -57,7 +57,7 @@ public class HeavyHit extends Move {
                 public void run() {
                     if (player.isDead() || !player.isOnline()) {
                         clear();
-                        this.cancel();
+                        cancel();
                         return;
                     }
 
@@ -74,7 +74,7 @@ public class HeavyHit extends Move {
                                 clear();
                             }
                         }.runTaskLater(plugin, 2);
-                        this.cancel();
+                        cancel();
                         return;
                     }
 

@@ -22,7 +22,7 @@ public class Dash extends Move {
                 @Override
                 public void run() {
                     if (t <= 0 || player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
                     for (LivingEntity e : player.getEyeLocation().getNearbyLivingEntities(2)) {

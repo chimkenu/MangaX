@@ -32,7 +32,7 @@ public class ShootStyleLeap extends Move {
                 @Override
                 public void run() {
                     if (player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
                     Location loc = player.getLocation();
@@ -47,7 +47,7 @@ public class ShootStyleLeap extends Move {
                 @Override
                 public void run() {
                     if (player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
 

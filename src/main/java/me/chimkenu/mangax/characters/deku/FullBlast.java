@@ -21,7 +21,7 @@ public class FullBlast extends Move {
                 @Override
                 public void run() {
                     if (i < 0 || !player.isOnline() || player.isDead()) {
-                        this.cancel();
+                        cancel();
                     }
 
                     if (i % 10 == 0) {

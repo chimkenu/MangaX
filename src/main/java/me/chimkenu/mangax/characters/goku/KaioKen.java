@@ -25,7 +25,7 @@ public class KaioKen extends Move {
                 @Override
                 public void run() {
                     if (t <= 0 || player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
                     player.getWorld().spawnParticle(Particle.DUST, player.getEyeLocation(), 10, 0.3, 0.7, 0.3, 0.2, new Particle.DustOptions(Color.RED, 0.8f));

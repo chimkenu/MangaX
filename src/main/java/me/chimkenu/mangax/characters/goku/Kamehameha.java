@@ -22,7 +22,7 @@ public class Kamehameha extends Move {
                 @Override
                 public void run() {
                     if (player.isDead() || !player.isOnline() || player.getCooldown(Material.HEART_OF_THE_SEA) < getCooldown()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
                     player.getWorld().spawnParticle(Particle.FLASH, player.getLocation(), 1, 0, 0, 0, 0);
@@ -38,7 +38,7 @@ public class Kamehameha extends Move {
                 @Override
                 public void run() {
                     if (t <= 0 || player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
 

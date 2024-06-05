@@ -30,7 +30,7 @@ public class TheWorld extends Move {
                 @Override
                 public void run() {
                     if (player.isDead() || !player.isOnline()) {
-                        this.cancel();
+                        cancel();
                         return;
                     }
 
