@@ -66,6 +66,7 @@ public class StrikingTide extends Move {
 
                     Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
                     if (t <= 0 || move != Moves.TANJIRO_STRIKING_TIDE) {
+                        player.removePotionEffect(PotionEffectType.INVISIBILITY);
                         cancel();
                         return;
                     }

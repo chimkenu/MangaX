@@ -71,6 +71,7 @@ public class WaterWheel extends Move {
 
                     Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
                     if (t <= 0 || move != Moves.TANJIRO_WATER_WHEEL) {
+                        player.removePotionEffect(PotionEffectType.INVISIBILITY);
                         cancel();
                         return;
                     }
