@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -30,11 +31,12 @@ public class DelawareSmash extends Move {
 
                         @Override
                         public void intersect(LivingEntity livingEntity) {
-                            if (livingEntity != player) {
+                            if (livingEntity != player && !livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity.getNoDamageTicks() <= 0) {
                                 Vector v = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector());
                                 v = v.normalize().multiply(2).add(new Vector(0, 0.2, 0));
                                 livingEntity.setVelocity(livingEntity.getVelocity().add(v));
                                 livingEntity.damage(8, player);
+                                livingEntity.setNoDamageTicks(15);
                             }
                         }
                     }, 0);
