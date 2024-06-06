@@ -1,4 +1,4 @@
-package me.chimkenu.mangax;
+package me.chimkenu.mangax.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

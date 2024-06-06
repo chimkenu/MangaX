@@ -1,4 +1,4 @@
-package me.chimkenu.mangax;
+package me.chimkenu.mangax.utils;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;

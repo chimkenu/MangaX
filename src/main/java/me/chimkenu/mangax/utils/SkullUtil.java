@@ -1,4 +1,4 @@
-package me.chimkenu.mangax;
+package me.chimkenu.mangax.utils;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import org.bukkit.Bukkit;

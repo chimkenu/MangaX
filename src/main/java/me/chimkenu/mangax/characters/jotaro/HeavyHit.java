@@ -1,6 +1,6 @@
 package me.chimkenu.mangax.characters.jotaro;
 
-import me.chimkenu.mangax.SkullUtil;
+import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
-import static me.chimkenu.mangax.ArmorStandUtil.*;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class HeavyHit extends Move {
     public HeavyHit() {

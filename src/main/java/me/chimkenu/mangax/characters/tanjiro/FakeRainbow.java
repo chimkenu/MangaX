@@ -1,7 +1,7 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
-import me.chimkenu.mangax.ParticleEffects;
-import me.chimkenu.mangax.SkullUtil;
+import me.chimkenu.mangax.utils.ParticleEffects;
+import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-import static me.chimkenu.mangax.ArmorStandUtil.*;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class FakeRainbow extends Move {
     public FakeRainbow() {

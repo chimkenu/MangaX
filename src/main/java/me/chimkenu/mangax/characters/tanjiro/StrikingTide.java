@@ -1,6 +1,6 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
-import me.chimkenu.mangax.SkullUtil;
+import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
 import net.kyori.adventure.text.Component;
@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-import static me.chimkenu.mangax.ArmorStandUtil.*;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class StrikingTide extends Move {
     public StrikingTide() {

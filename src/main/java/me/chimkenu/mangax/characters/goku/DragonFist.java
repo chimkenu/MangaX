@@ -1,6 +1,6 @@
 package me.chimkenu.mangax.characters.goku;
 
-import me.chimkenu.mangax.ParticleEffects;
+import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
