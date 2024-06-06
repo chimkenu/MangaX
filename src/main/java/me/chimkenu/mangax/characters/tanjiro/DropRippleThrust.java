@@ -71,7 +71,7 @@ public class DropRippleThrust extends Move {
                     loc.setDirection(player.getVelocity().normalize());
                     loc.add(loc.getDirection().multiply(1.5));
 
-                    for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
+                    for (LivingEntity e : loc.getNearbyLivingEntities(1.5)) {
                         if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
                             e.damage(4, player);
                             e.setNoDamageTicks(15);
