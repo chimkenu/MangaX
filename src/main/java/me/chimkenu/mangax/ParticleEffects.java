@@ -13,9 +13,8 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 
 public class ParticleEffects {
-    public static void create(JavaPlugin plugin, Location location, double range, int duration, Effect effect, int maxWallsPassed) {
-        World world = location.getWorld();
-        RayTrace ray = new RayTrace(location.toVector(), location.getDirection());
+    public static void create(JavaPlugin plugin, World world, Vector origin, Vector direction, double range, int duration, Effect effect, int maxWallsPassed) {
+        RayTrace ray = new RayTrace(origin, direction);
         double accuracy = 0.4;
 
         if (duration > 0) {
@@ -30,7 +29,8 @@ public class ParticleEffects {
                 @Override
                 public void run() {
                     Location loc = vectorArrayList.get(i).toLocation(world);
-                    effect.playParticle(world, loc);
+                    loc.setDirection(direction);
+                    effect.playParticle(world, loc, i);
 
                     // Entity intersection
                     for (Entity e : world.getNearbyEntities(loc, finalAccuracy, finalAccuracy, finalAccuracy)) {
@@ -61,9 +61,12 @@ public class ParticleEffects {
         } else {
             ArrayList<Vector> vectorArrayList = ray.traverse(range, accuracy);
             int wallsPassed = 0;
+            int i = 0;
             for (Vector v : vectorArrayList) {
                 Location loc = v.toLocation(world);
-                effect.playParticle(world, loc);
+                loc.setDirection(direction);
+                effect.playParticle(world, loc, i);
+                i++;
 
                 // Entity intersection
                 for (Entity e : world.getNearbyEntities(loc, accuracy, accuracy, accuracy)) {
@@ -88,7 +91,7 @@ public class ParticleEffects {
     }
 
     public interface Effect {
-        void playParticle(World world, Location location);
+        void playParticle(World world, Location location, int index);
         default void intersect(LivingEntity livingEntity) {}
     }
 }

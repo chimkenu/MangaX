@@ -47,9 +47,9 @@ public class Kamehameha extends Move {
                         Location newLoc = loc.clone();
                         newLoc.setYaw(newLoc.getYaw() + (float) (3 * Math.cos(rotate)));
                         newLoc.setPitch(newLoc.getPitch() + (float) (3 * Math.sin(rotate)));
-                        ParticleEffects.create(plugin, newLoc, 30, 0, new ParticleEffects.Effect() {
+                        ParticleEffects.create(plugin, player.getWorld(), newLoc.toVector(), newLoc.getDirection(), 30, 0, new ParticleEffects.Effect() {
                             @Override
-                            public void playParticle(World world, Location location) {
+                            public void playParticle(World world, Location location, int index) {
                                 world.spawnParticle(Particle.SOUL_FIRE_FLAME, location, 1, 0, 0, 0, 0.01);
                             }
 

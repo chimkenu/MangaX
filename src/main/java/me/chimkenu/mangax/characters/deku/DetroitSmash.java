@@ -14,7 +14,7 @@ public class DetroitSmash extends Move {
     public DetroitSmash() {
         super((plugin, player) -> {
             Location loc = player.getEyeLocation();
-            ParticleEffects.create(plugin, loc, 5, 10, (world, location) -> world.spawnParticle(Particle.SPIT, location, 1, 0, 0, 0, 0), 0);
+            ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.SPIT, location, 1, 0, 0, 0, 0), 0);
 
             loc.add(loc.getDirection().multiply(2));
             for (LivingEntity e : loc.getNearbyLivingEntities(1)) {

@@ -23,7 +23,7 @@ public class ShootStyleLeap extends Move {
             loc.setY(loc.getY() + 0.1);
             for (int i = 0; i < 20; i++) {
                 loc.setYaw(i * 18);
-                ParticleEffects.create(plugin, loc, 5, 10, (world, location) -> world.spawnParticle(Particle.SMOKE, location, 2, 0, 0.5, 0, 0), 0);
+                ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.SMOKE, location, 2, 0, 0.5, 0, 0), 0);
             }
 
             // Launch player
@@ -57,7 +57,7 @@ public class ShootStyleLeap extends Move {
                     loc.add(0, 0.2, 0);
                     for (int i = 0; i < 20; i++) {
                         loc.setYaw(i * 18);
-                        ParticleEffects.create(plugin, loc, 6, 5, (world, location) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
+                        ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 6, 5, (world, location, index) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
                     }
 
                     // Ground pound damage

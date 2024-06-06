@@ -75,7 +75,7 @@ public class FakeRainbow extends Move {
                         loc.add(0, 0.1, 0);
                         for (int i = 0; i < 20; i++) {
                             loc.setYaw(i * 18);
-                            ParticleEffects.create(plugin, loc, 5, 10, (world, location) -> world.spawnParticle(Particle.FLAME, location, 0, 0, 1, 0, 0.1), 0);
+                            ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.FLAME, location, 0, 0, 1, 0, 0.1), 0);
                         }
                     }
 

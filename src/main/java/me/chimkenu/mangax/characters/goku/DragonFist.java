@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class DragonFist extends Move {
     public DragonFist() {
         super((plugin, player) -> {
-            ParticleEffects.create(plugin, player.getEyeLocation(), 3, 5, (world, location) -> world.spawnParticle(Particle.DUST, location, 50, 0.5, 0.5, 0.5, new Particle.DustOptions(Color.YELLOW, 0.8f)), Integer.MAX_VALUE);
+            ParticleEffects.create(plugin, player.getWorld(), player.getEyeLocation().toVector(), player.getEyeLocation().getDirection(), 3, 5, (world, location, index) -> world.spawnParticle(Particle.DUST, location, 50, 0.5, 0.5, 0.5, new Particle.DustOptions(Color.YELLOW, 0.8f)), Integer.MAX_VALUE);
             Location loc = player.getEyeLocation();
             loc.add(loc.getDirection().multiply(2));
             for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
