@@ -75,7 +75,7 @@ public class TheWorld extends Move {
             @Override
             public void run() {
                 if (target.isDead() || !player.isOnline()) {
-                    this.cancel();
+                    cancel();
                     return;
                 }
 
@@ -87,15 +87,21 @@ public class TheWorld extends Move {
                         direction = direction.normalize();
                         target.setVelocity(target.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0)));
                     }
-                    this.cancel();
+                    cancel();
                     return;
                 }
 
                 target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 2, 0, false, false, false));
-                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2, 4, false, false, false));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 4, false, false, false));
                 target.teleport(loc);
 
                 t--;
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                target.removePotionEffect(PotionEffectType.BLINDNESS);
             }
         }.runTaskTimer(plugin, 0, 1);
     }
