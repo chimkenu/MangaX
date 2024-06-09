@@ -95,7 +95,7 @@ public class TheWorld extends Move {
                             return;
                         }
 
-                        target.setVelocity(event.getKnockback());
+                        target.setVelocity(target.getVelocity().add(event.getKnockback()));
                     }
                     cancel();
                     return;

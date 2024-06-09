@@ -99,7 +99,7 @@ public class StandBarrage extends Move {
                                 }
 
                                 e.damage(event.getDamage(), player);
-                                e.setVelocity(event.getKnockback());
+                                e.setVelocity(e.getVelocity().add(event.getKnockback()));
                                 e.setNoDamageTicks(0);
                             }
                         }

@@ -59,6 +59,7 @@ public class Rasenshuriken extends Move {
                                                 return;
                                             }
                                             e.damage(event.getDamage(), player);
+                                            e.setVelocity(e.getVelocity().add(event.getKnockback()));
                                         }
                                     }
                                     cancel();

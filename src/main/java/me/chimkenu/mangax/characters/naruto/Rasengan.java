@@ -106,7 +106,7 @@ public class Rasengan extends Move {
             }
 
             nearest.damage(event.getDamage(), player);
-            nearest.setVelocity(event.getKnockback());
+            nearest.setVelocity(nearest.getVelocity().add(event.getKnockback()));
 
             nearest.getWorld().spawnParticle(Particle.FLASH, nearest.getEyeLocation(), 1, 0, 0, 0, 0);
             nearest.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, nearest.getEyeLocation(), 100, 0.2, 0.2, 0.2, 0.2);
