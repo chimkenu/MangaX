@@ -1,18 +1,18 @@
 package me.chimkenu.mangax.characters.goku;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,15 @@ public class DragonFist extends Move {
             loc.add(loc.getDirection().multiply(2));
             for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
                 if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
-                    e.damage(6, player);
+                    MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DRAGON_FIST, player, e, 6, new Vector());
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        return;
+                    }
+
+                    e.damage(event.getDamage(), player);
+                    e.setVelocity(e.getVelocity().add(event.getKnockback()));
+
                     e.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0, false, false, false));
                     e.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 4, false, false, false));
                     e.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 100, 4, false, false, false));

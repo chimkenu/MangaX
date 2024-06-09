@@ -1,9 +1,12 @@
 package me.chimkenu.mangax.characters.goku;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -27,7 +30,13 @@ public class Dash extends Move {
                     }
                     for (LivingEntity e : player.getEyeLocation().getNearbyLivingEntities(2)) {
                         if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
-                            e.damage(4, player);
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DASH, player, e, 4, new Vector());
+                            Bukkit.getPluginManager().callEvent(event);
+                            if (event.isCancelled()) {
+                                return;
+                            }
+                            e.damage(event.getDamage(), player);
+                            e.setVelocity(e.getVelocity().add(event.getKnockback()));
                         }
                     }
                     t--;

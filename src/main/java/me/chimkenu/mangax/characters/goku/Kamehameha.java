@@ -1,5 +1,7 @@
 package me.chimkenu.mangax.characters.goku;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
@@ -9,6 +11,7 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -56,7 +59,16 @@ public class Kamehameha extends Move {
                             @Override
                             public void intersect(LivingEntity livingEntity) {
                                 if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != player) {
-                                    livingEntity.damage(chargeTime / 4f, player);
+                                    double damage = chargeTime / 4f;
+
+                                    MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_KAMEHAMEHA, player, livingEntity, damage, new Vector());
+                                    Bukkit.getPluginManager().callEvent(event);
+                                    if (event.isCancelled()) {
+                                        return;
+                                    }
+
+                                    livingEntity.damage(event.getDamage(), player);
+                                    livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
                                 }
                             }
                         }, Integer.MAX_VALUE);
