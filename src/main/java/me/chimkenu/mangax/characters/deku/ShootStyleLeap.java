@@ -1,5 +1,7 @@
 package me.chimkenu.mangax.characters.deku;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
@@ -64,7 +66,13 @@ public class ShootStyleLeap extends Move {
                     for (LivingEntity e : player.getLocation().getNearbyLivingEntities(5)) {
                         if (e instanceof LivingEntity l) {
                             if (!l.getType().equals(EntityType.ARMOR_STAND) && l != player) {
-                                l.damage(3, player);
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, player, l, 3, new Vector());
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    return;
+                                }
+                                l.setVelocity(e.getVelocity().add(event.getKnockback()));
+                                l.damage(event.getDamage(), player);
                             }
                         }
                     }

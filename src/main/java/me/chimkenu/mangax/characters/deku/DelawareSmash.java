@@ -1,14 +1,13 @@
 package me.chimkenu.mangax.characters.deku;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -34,8 +33,15 @@ public class DelawareSmash extends Move {
                             if (livingEntity != player && !livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity.getNoDamageTicks() <= 0) {
                                 Vector v = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector());
                                 v = v.normalize().multiply(2).add(new Vector(0, 0.2, 0));
-                                livingEntity.setVelocity(livingEntity.getVelocity().add(v));
-                                livingEntity.damage(8, player);
+
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, player, livingEntity, 8, v);
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    return;
+                                }
+                                livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
+                                livingEntity.damage(event.getDamage(), player);
+
                                 livingEntity.setNoDamageTicks(15);
                             }
                         }
