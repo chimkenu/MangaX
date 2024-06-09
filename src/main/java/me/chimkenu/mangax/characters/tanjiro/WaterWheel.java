@@ -1,11 +1,13 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -84,8 +87,18 @@ public class WaterWheel extends Move {
 
                     for (LivingEntity e : player.getLocation().getNearbyLivingEntities(2)) {
                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                            e.damage(2.5, player);
-                            e.setVelocity(e.getVelocity().multiply(1.1));
+                            Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
+                            direction = direction.normalize();
+                            Vector v = e.getVelocity().add(direction.multiply(0.1)).add(new Vector(0, 0.1, 0));
+
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_STRIKING_TIDE, player, e, 2.5, v);
+                            Bukkit.getPluginManager().callEvent(event);
+                            if (event.isCancelled()) {
+                                return;
+                            }
+
+                            e.damage(event.getDamage(), player);
+                            e.setVelocity(e.getVelocity().add(event.getKnockback()));
                         }
                     }
 
