@@ -1,6 +1,8 @@
 package me.chimkenu.mangax.characters.jotaro;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -85,8 +87,23 @@ public class TheWorld extends Move {
                     if (diff > 0) {
                         Vector direction = target.getLocation().toVector().subtract(player.getLocation().toVector());
                         direction = direction.normalize();
-                        target.setVelocity(target.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0)));
+                        Vector v = target.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0));
+
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, player, target, 0, v);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+
+                        target.setVelocity(event.getKnockback());
                     }
+                    cancel();
+                    return;
+                }
+
+                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, player, target, 0, new Vector());
+                Bukkit.getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
                     cancel();
                     return;
                 }

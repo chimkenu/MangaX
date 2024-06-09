@@ -1,10 +1,13 @@
 package me.chimkenu.mangax.characters.jotaro;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -91,13 +94,22 @@ public class HeavyHit extends Move {
                     rightHand.remove();
                 }
 
-                private void damage(LivingEntity e) {
-                    if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                        e.damage(6, player);
-                        Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
+                private void damage(LivingEntity livingEntity) {
+                    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != player) {
+                        Vector direction = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector());
                         direction = direction.normalize();
-                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
-                        e.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, e.getEyeLocation(), 3, 0.2, 0.2, 0.2, 0.4);
+                        Vector v = livingEntity.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0));
+
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_HEAVY_HIT, player, livingEntity, 0, v);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+
+                        livingEntity.damage(event.getDamage(), player);
+                        livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
+
+                        livingEntity.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, livingEntity.getEyeLocation(), 3, 0.2, 0.2, 0.2, 0.4);
                     }
                 }
             }.runTaskTimer(plugin, 0, 1);
