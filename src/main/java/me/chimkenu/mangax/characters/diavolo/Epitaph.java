@@ -10,6 +10,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -20,7 +21,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 public class Epitaph extends Move implements Listener {
     public Epitaph() {
         super((plugin, player) -> {
-            player.addScoreboardTag("diavolo-epitaph-" + System.currentTimeMillis());
+            player.addScoreboardTag("diavolo-epitaph");
             Location loc = player.getLocation();
             loc.setPitch(0);
             for (int i = 0; i < 20; i++) {
@@ -31,9 +32,7 @@ public class Epitaph extends Move implements Listener {
                     world.spawnParticle(Particle.DUST, getRelativeLocation(location, Math.log(index), 0, 0, 0, 0), 1, 0.05, 0.05, 0.05, 0.1, new Particle.DustOptions(Color.RED, 0.8f));
                 }, 0);
             }
-        }, (plugin, player) -> {
-
-        }, 25 * 20, 1, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 0, 25 * 20, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override
@@ -43,6 +42,14 @@ public class Epitaph extends Move implements Listener {
 
     @EventHandler
     public void onDamage(MoveTargetEvent e) {
+        LivingEntity target = e.getTarget();
+        if (!target.getScoreboardTags().contains("diavolo-epitaph")) {
+            return;
+        }
 
+        target.removeScoreboardTag("diavolo-epitaph");
+        target.teleport(getRelativeLocation(e.getSource().getLocation(), 0, 1, -1.5, 0, 0));
+
+        e.setCancelled(true);
     }
 }

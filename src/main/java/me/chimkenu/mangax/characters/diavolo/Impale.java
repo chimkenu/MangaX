@@ -1,5 +1,7 @@
 package me.chimkenu.mangax.characters.diavolo;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
@@ -12,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -94,8 +97,15 @@ public class Impale extends Move {
 
                 private void damage(LivingEntity e) {
                     if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, player, e, 12, new Vector());
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+                        e.damage(event.getDamage(), player);
+                        e.setVelocity(e.getVelocity().add(event.getKnockback()));
+
                         e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 0.5f);
-                        e.damage(12, player);
                         e.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, e.getEyeLocation(), 6, 0.2, 0.2, 0.2, 0.4);
                         e.getWorld().spawnParticle(Particle.BLOCK, e.getEyeLocation(), 100, 0.2, 0.4, 0.2, 0.5, Material.REDSTONE_BLOCK.createBlockData());
                     }

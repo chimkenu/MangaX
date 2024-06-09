@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.diavolo;
 
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
@@ -13,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -94,8 +96,13 @@ public class CrimsonBarrage extends Move {
                         loc.add(loc.getDirection());
                         for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
                             if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                e.damage(0.15, player);
-                                e.setVelocity(e.getVelocity().multiply(0.1));
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_CRIMSON_BARRAGE, player, e, 0.15, new Vector());
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    return;
+                                }
+                                e.damage(event.getDamage(), player);
+                                e.setVelocity(e.getVelocity().multiply(0.1).add(event.getKnockback()));
                                 e.setNoDamageTicks(0);
                             }
                         }
