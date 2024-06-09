@@ -55,7 +55,7 @@ public class Dodge extends Move implements Listener {
                     public void run() {
                         target.removeScoreboardTag("naruto-dodge");
                     }
-                }.runTaskLater(plugin, 2);
+                }.runTaskLater(plugin, 2 * 20);
             } else {
                 target.removeScoreboardTag("naruto-dodge");
             }

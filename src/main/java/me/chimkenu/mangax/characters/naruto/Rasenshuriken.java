@@ -1,14 +1,13 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -54,7 +53,12 @@ public class Rasenshuriken extends Move {
                                     stand.getWorld().spawnParticle(Particle.DUST, stand.getLocation(), 400, 3, 0.2, 3, 1, new Particle.DustOptions(Color.WHITE, 1.5f));
                                     for (LivingEntity e : stand.getLocation().getNearbyLivingEntities(5)) {
                                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                            e.damage(10, player);
+                                            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, player, e, 10, new Vector());
+                                            Bukkit.getPluginManager().callEvent(event);
+                                            if (event.isCancelled()) {
+                                                return;
+                                            }
+                                            e.damage(event.getDamage(), player);
                                         }
                                     }
                                     cancel();

@@ -1,5 +1,7 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
@@ -71,7 +73,6 @@ public class Rasengan extends Move {
         };
 
         this.followUp = (plugin, player) -> {
-            int chargeTime = getFollowUpTime() - (player.getCooldown(getMaterial()) - getCooldown());
             Location loc = player.getEyeLocation();
             loc = loc.add(loc.getDirection());
 
@@ -91,12 +92,24 @@ public class Rasengan extends Move {
                 return;
             }
 
-            nearest.getWorld().spawnParticle(Particle.FLASH, nearest.getEyeLocation(), 1, 0, 0, 0, 0);
-            nearest.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, nearest.getEyeLocation(), 100, 0.2, 0.2, 0.2, 0.2);
+            int chargeTime = player.getCooldown(getMaterial()) - getCooldown();
+            double damage = 12f * chargeTime / getFollowUpTime();
+
             Vector direction = nearest.getLocation().toVector().subtract(player.getLocation().toVector());
             direction = direction.normalize();
-            nearest.setVelocity(nearest.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
-            nearest.damage(12, player);
+            Vector v = nearest.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0));
+
+            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENGAN, player, nearest, damage, v);
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+
+            nearest.damage(event.getDamage(), player);
+            nearest.setVelocity(event.getKnockback());
+
+            nearest.getWorld().spawnParticle(Particle.FLASH, nearest.getEyeLocation(), 1, 0, 0, 0, 0);
+            nearest.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, nearest.getEyeLocation(), 100, 0.2, 0.2, 0.2, 0.2);
         };
     }
 
