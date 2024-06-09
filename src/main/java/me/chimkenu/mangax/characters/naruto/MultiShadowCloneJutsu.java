@@ -1,10 +1,13 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,6 +18,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -87,7 +91,13 @@ public class MultiShadowCloneJutsu extends Move {
                     clones.forEach(clone -> {
                         for (LivingEntity e : clone.getLocation().getNearbyLivingEntities(3)) {
                             if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                e.damage(8, player);
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_MULTI_SHADOW_CLONE_JUTSU, player, e, 8, new Vector());
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    return;
+                                }
+                                e.damage(event.getDamage(), player);
+                                e.setVelocity(e.getVelocity().add(event.getKnockback()));
                             }
                         }
                     });
