@@ -1,6 +1,8 @@
 package me.chimkenu.mangax.characters.todoroki;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.BlockEffects;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
@@ -48,9 +50,16 @@ public class IceWall extends Move {
 
                         Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
                         direction = direction.normalize();
-                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
-                        e.damage(8, player);
-                        e.setNoDamageTicks(20);
+                        Vector v = direction.multiply(2).add(new Vector(0, 0.2, 0));
+
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_ICE_WALL, player, e, 8, v);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
+
+                        event.getTarget().damage(event.getDamage(), event.getSource());
+                        event.getTarget().setNoDamageTicks(20);
                     }
                 }, Integer.MAX_VALUE);
             }

@@ -2,6 +2,7 @@ package me.chimkenu.mangax.characters.todoroki;
 
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -10,6 +11,7 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -48,9 +50,15 @@ public class Flamethrower extends Move {
                             @Override
                             public void intersect(LivingEntity e) {
                                 if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
+                                    MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_FLAMETHROWER, player, e, 0.5, new Vector());
+                                    Bukkit.getPluginManager().callEvent(event);
+                                    if (event.isCancelled()) {
+                                        return;
+                                    }
+
                                     if (e.getFireTicks() < 1)
-                                        e.damage(0.5, player);
-                                    e.setFireTicks(40);
+                                        event.getTarget().damage(0.5, player);
+                                    event.getTarget().setFireTicks(40);
                                 }
                             }
 
