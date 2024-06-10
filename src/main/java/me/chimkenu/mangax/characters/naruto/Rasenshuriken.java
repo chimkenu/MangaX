@@ -11,6 +11,7 @@ import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -23,8 +24,8 @@ public class Rasenshuriken extends Move {
     public Rasenshuriken() {
         super(null, null, 0, 15 * 20, Material.NETHER_STAR, Component.text("Rasenshuriken").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        activate = (plugin, player) -> {
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+        activate = (plugin, entity) -> {
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setGravity(true);
 
@@ -32,33 +33,34 @@ public class Rasenshuriken extends Move {
                 int t = 20;
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        stand.remove();
+                        cancel();
+                        return;
+                    }
+
+                    if (entity.isDead()) {
                         stand.remove();
                         cancel();
                         return;
                     }
 
                     if (t <= 0) {
-                        stand.setVelocity(player.getLocation().getDirection().multiply(4));
+                        stand.setVelocity(entity.getLocation().getDirection().multiply(4));
                         new BukkitRunnable() {
                             int t = 10;
                             @Override
                             public void run() {
-                                if (!player.isOnline()) {
-                                    cancel();
-                                    return;
-                                }
-
                                 if (t <= 0) {
                                     stand.getWorld().spawnParticle(Particle.DUST, stand.getLocation(), 400, 3, 0.2, 3, 1, new Particle.DustOptions(Color.WHITE, 1.5f));
                                     for (LivingEntity e : stand.getLocation().getNearbyLivingEntities(5)) {
-                                        if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, player, e, 10, new Vector());
+                                        if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                                            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, entity, e, 10, new Vector());
                                             Bukkit.getPluginManager().callEvent(event);
                                             if (event.isCancelled()) {
                                                 return;
                                             }
-                                            e.damage(event.getDamage(), player);
+                                            e.damage(event.getDamage(), entity);
                                             e.setVelocity(e.getVelocity().add(event.getKnockback()));
                                         }
                                     }
@@ -84,7 +86,7 @@ public class Rasenshuriken extends Move {
                         return;
                     }
 
-                    Location loc = player.getLocation();
+                    Location loc = entity.getLocation();
                     loc.add(0, 2, 0);
                     loc.setYaw(stand.getYaw() + 10);
                     stand.teleport(loc);

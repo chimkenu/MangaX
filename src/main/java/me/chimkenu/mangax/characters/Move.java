@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public abstract class Move {
     protected Activate activate;
-    protected FollowUp followUp;
+    protected Activate followUp;
     private final int followUpTime;
     private final int cooldown;
     private final Material material;
     private final Component name;
 
-    public Move(Activate activate, FollowUp followUp, int followUpTime, int cooldown, Material material, Component name) {
+    public Move(Activate activate, Activate followUp, int followUpTime, int cooldown, Material material, Component name) {
         this.activate = activate;
         this.followUp = followUp;
         this.followUpTime = followUpTime;
@@ -28,7 +28,7 @@ public abstract class Move {
         return activate;
     }
 
-    public FollowUp getFollowUp() {
+    public Activate getFollowUp() {
         return followUp;
     }
 

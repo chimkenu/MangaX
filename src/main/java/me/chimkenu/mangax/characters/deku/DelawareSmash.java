@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class DelawareSmash extends Move {
     public DelawareSmash() {
-        super((plugin, player) -> {
-            Location loc = player.getEyeLocation();
+        super((plugin, entity) -> {
+            Location loc = entity.getEyeLocation();
             loc.setY(loc.getY() - 0.3);
             for (int i = 0; i < 7; i++) {
-                loc.setYaw(player.getYaw() - 50);
+                loc.setYaw(entity.getYaw() - 50);
                 for (int j = 0; j < 42; j++) {
                     ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 25, 10, new ParticleEffects.Effect() {
                         @Override
@@ -30,17 +30,17 @@ public class DelawareSmash extends Move {
 
                         @Override
                         public void intersect(LivingEntity livingEntity) {
-                            if (livingEntity != player && !livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity.getNoDamageTicks() <= 0) {
-                                Vector v = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector());
+                            if (livingEntity != entity && !livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity.getNoDamageTicks() <= 0) {
+                                Vector v = livingEntity.getLocation().toVector().subtract(entity.getLocation().toVector());
                                 v = v.normalize().multiply(2).add(new Vector(0, 0.2, 0));
 
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, player, livingEntity, 8, v);
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, livingEntity, 8, v);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;
                                 }
                                 livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
-                                livingEntity.damage(event.getDamage(), player);
+                                livingEntity.damage(event.getDamage(), entity);
 
                                 livingEntity.setNoDamageTicks(15);
                             }

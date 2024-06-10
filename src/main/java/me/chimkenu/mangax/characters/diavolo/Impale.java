@@ -22,10 +22,10 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Impale extends Move {
     public Impale() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setLeftLegPose(newEulerAngle(0, 0, 351));
             stand.setRightLegPose(newEulerAngle(0, 0, 12));
@@ -44,8 +44,8 @@ public class Impale extends Move {
             boots.setItemMeta(meta);
             stand.getEquipment().setBoots(boots);
 
-            ArmorStand leftHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
-            ArmorStand rightHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand leftHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
+            ArmorStand rightHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             leftHand.setSmall(true);
             rightHand.setSmall(true);
             setUpArmorStand(leftHand);
@@ -58,7 +58,7 @@ public class Impale extends Move {
                 int t = 15;
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity.isDead()) {
                         clear();
                         cancel();
                         return;
@@ -83,7 +83,7 @@ public class Impale extends Move {
 
                     // "Charge" up attack
                     rightHand.getWorld().spawnParticle(Particle.CRIT, rightHand.getEyeLocation(), 1, 0.1, 0.1, 0.1, 0.1);
-                    runCommand("execute anchored eyes at " + player.getUniqueId() + " run tp " + stand.getUniqueId() + " ^0.7 ^0.2 ^0.5 ~ ~");
+                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^0.7 ^0.2 ^0.5 ~ ~");
                     runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^0.2 ~ ~");
                     runCommand("execute at " + stand.getUniqueId() + " run tp " + leftHand.getUniqueId() + " ^0.5 ^0.4 ^0.1 ~ ~");
                     t--;
@@ -96,13 +96,13 @@ public class Impale extends Move {
                 }
 
                 private void damage(LivingEntity e) {
-                    if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, player, e, 12, new Vector());
+                    if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, entity, e, 12, new Vector());
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
                         }
-                        e.damage(event.getDamage(), player);
+                        e.damage(event.getDamage(), entity);
                         e.setVelocity(e.getVelocity().add(event.getKnockback()));
 
                         e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 0.5f);

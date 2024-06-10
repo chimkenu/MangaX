@@ -11,6 +11,7 @@ import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,10 +25,10 @@ public class Rasengan extends Move {
     public Rasengan() {
         super(null, null, 40, 15 * 20, Material.HEART_OF_THE_SEA, Component.text("Rasengan").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        this.activate = (plugin, player) -> {
+        this.activate = (plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setInvisible(false);
             stand.setArms(true);
@@ -53,36 +54,39 @@ public class Rasengan extends Move {
 
             // Charge
             new BukkitRunnable() {
+                int t = getFollowUpTime();
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline() || player.getCooldown(getMaterial()) < getCooldown()) {
+                    if (entity.isDead() || t < 0 || (entity instanceof Player player && (!player.isOnline() || player.getCooldown(getMaterial()) < getCooldown()))) {
                         stand.remove();
                         cancel();
                         return;
                     }
 
-                    Location loc = player.getLocation();
+                    Location loc = entity.getLocation();
                     loc.setPitch(0);
                     stand.teleport(getRelativeLocation(loc, -0.9, 0, 0.2, -65, 0));
                     Location rel = getRelativeLocation(stand.getLocation(), 0, 0.9, 0.4, 0, 0);
                     stand.getWorld().spawnParticle(Particle.DUST, rel, 10, 0.1, 0.1, 0.1, 0, new Particle.DustOptions(Color.fromRGB(77, 204, 255), 1));
                     stand.getWorld().spawnParticle(Particle.BLOCK, rel, 10,0.1, 0, 0.1, 0.01, Material.LIGHT_BLUE_GLAZED_TERRACOTTA.createBlockData());
                     stand.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, rel, 10, 0.1, 0, 0.1, 0.01);
+
+                    t--;
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
 
-        this.followUp = (plugin, player) -> {
-            Location loc = player.getEyeLocation();
+        this.followUp = (plugin, entity) -> {
+            Location loc = entity.getEyeLocation();
             loc = loc.add(loc.getDirection());
 
             LivingEntity nearest = null;
             double minDist = -1;
             for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
-                if (e.getType().equals(EntityType.ARMOR_STAND) || e == player) {
+                if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
                     continue;
                 }
-                if (nearest == null || player.getLocation().distanceSquared(e.getLocation()) < minDist) {
+                if (nearest == null || entity.getLocation().distanceSquared(e.getLocation()) < minDist) {
                     nearest = e;
                 }
             }
@@ -92,20 +96,20 @@ public class Rasengan extends Move {
                 return;
             }
 
-            int chargeTime = player.getCooldown(getMaterial()) - getCooldown();
+            int chargeTime = entity instanceof Player player ? player.getCooldown(getMaterial()) - getCooldown() : getFollowUpTime();
             double damage = 12f * chargeTime / getFollowUpTime();
 
-            Vector direction = nearest.getLocation().toVector().subtract(player.getLocation().toVector());
+            Vector direction = nearest.getLocation().toVector().subtract(entity.getLocation().toVector());
             direction = direction.normalize();
             Vector v = nearest.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0));
 
-            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENGAN, player, nearest, damage, v);
+            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENGAN, entity, nearest, damage, v);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                 return;
             }
 
-            nearest.damage(event.getDamage(), player);
+            nearest.damage(event.getDamage(), entity);
             nearest.setVelocity(nearest.getVelocity().add(event.getKnockback()));
 
             nearest.getWorld().spawnParticle(Particle.FLASH, nearest.getEyeLocation(), 1, 0, 0, 0, 0);

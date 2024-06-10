@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,42 +20,47 @@ import java.util.ArrayList;
 
 public class ShootStyleLeap extends Move {
     public ShootStyleLeap() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
             // Silly jump effects
-            Location loc = player.getLocation();
+            Location loc = entity.getLocation();
             loc.setY(loc.getY() + 0.1);
             for (int i = 0; i < 20; i++) {
                 loc.setYaw(i * 18);
                 ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.SMOKE, location, 2, 0, 0.5, 0, 0), 0);
             }
 
-            // Launch player
-            player.setVelocity(player.getVelocity().add(new Vector(0, 2, 0)));
+            // Launch entity
+            entity.setVelocity(entity.getVelocity().add(new Vector(0, 2, 0)));
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity.isDead()) {
                         cancel();
                         return;
                     }
-                    Location loc = player.getLocation();
+                    Location loc = entity.getLocation();
                     loc.setPitch(0);
-                    player.setVelocity(player.getVelocity().add(loc.getDirection().multiply(3)));
+                    entity.setVelocity(entity.getVelocity().add(loc.getDirection().multiply(3)));
                 }
             }.runTaskLater(plugin, 1);
 
-        }, (plugin, player) -> {
-            player.setVelocity(player.getVelocity().add(new Vector(0, -2, 0)));
+        }, (plugin, entity) -> {
+            entity.setVelocity(entity.getVelocity().add(new Vector(0, -2, 0)));
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (entity.isDead()) {
                         cancel();
                         return;
                     }
 
                     // Silly ground pound effect
-                    Location loc = player.getLocation();
+                    Location loc = entity.getLocation();
                     loc.setPitch(0);
                     loc.add(0, 0.2, 0);
                     for (int i = 0; i < 20; i++) {
@@ -63,16 +69,16 @@ public class ShootStyleLeap extends Move {
                     }
 
                     // Ground pound damage
-                    for (LivingEntity e : player.getLocation().getNearbyLivingEntities(5)) {
+                    for (LivingEntity e : entity.getLocation().getNearbyLivingEntities(5)) {
                         if (e instanceof LivingEntity l) {
-                            if (!l.getType().equals(EntityType.ARMOR_STAND) && l != player) {
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, player, l, 3, new Vector());
+                            if (!l.getType().equals(EntityType.ARMOR_STAND) && l != entity) {
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, l, 3, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;
                                 }
                                 l.setVelocity(e.getVelocity().add(event.getKnockback()));
-                                l.damage(event.getDamage(), player);
+                                l.damage(event.getDamage(), entity);
                             }
                         }
                     }

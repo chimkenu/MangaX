@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -17,25 +18,31 @@ import java.util.ArrayList;
 
 public class Dash extends Move {
     public Dash() {
-        super((plugin, player) -> {
-            player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(3)).add(new Vector(0, 0.2, 0)));
+        super((plugin, entity) -> {
+            entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(3)).add(new Vector(0, 0.2, 0)));
             new BukkitRunnable() {
                 int t = 10;
 
                 @Override
                 public void run() {
-                    if (t <= 0 || player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
                         cancel();
                         return;
                     }
-                    for (LivingEntity e : player.getEyeLocation().getNearbyLivingEntities(2)) {
-                        if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
-                            MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DASH, player, e, 4, new Vector());
+
+                    if (t <= 0 || entity.isDead()) {
+                        cancel();
+                        return;
+                    }
+
+                    for (LivingEntity e : entity.getEyeLocation().getNearbyLivingEntities(2)) {
+                        if (e != entity && !e.getType().equals(EntityType.ARMOR_STAND)) {
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DASH, entity, e, 4, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
                                 return;
                             }
-                            e.damage(event.getDamage(), player);
+                            e.damage(event.getDamage(), entity);
                             e.setVelocity(e.getVelocity().add(event.getKnockback()));
                         }
                     }

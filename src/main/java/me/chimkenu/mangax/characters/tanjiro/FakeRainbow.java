@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
@@ -23,10 +24,10 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class FakeRainbow extends Move {
     public FakeRainbow() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setInvisible(false);
             stand.setArms(true);
@@ -48,26 +49,31 @@ public class FakeRainbow extends Move {
             stand.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
             stand.getEquipment().setItemInMainHand(new ItemStack(Material.NETHERITE_SWORD));
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 0, false, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 4, false, false, false));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 0, false, false, false));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60, 4, false, false, false));
 
             new BukkitRunnable() {
                 int t = 60;
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (entity.isDead()) {
                         cancel();
                         return;
                     }
 
                     if (t <= 0) {
-                        player.getWorld().spawnParticle(Particle.FLAME, player.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
-                        player.getWorld().spawnParticle(Particle.FLAME, stand.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
+                        entity.getWorld().spawnParticle(Particle.FLAME, entity.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
+                        entity.getWorld().spawnParticle(Particle.FLAME, stand.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
                         cancel();
                         return;
                     }
 
-                    player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 1, 0.1, 0, 0.1, 0.05);
+                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.1, 0, 0.1, 0.05);
 
                     if (t % 10 == 0) {
                         Location loc = stand.getLocation();

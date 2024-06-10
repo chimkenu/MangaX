@@ -7,25 +7,31 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
 public class FullBlast extends Move {
     public FullBlast() {
-        super((plugin, player) -> {
-            Location loc = player.getEyeLocation();
+        super((plugin, entity) -> {
+            Location loc = entity.getEyeLocation();
             new BukkitRunnable() {
                 int i = 5 * 20;
 
                 @Override
                 public void run() {
-                    if (i < 0 || !player.isOnline() || player.isDead()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (i < 0 || entity.isDead()) {
                         cancel();
                     }
 
                     if (i % 10 == 0) {
-                        player.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 2000, 3, 1, 3, 0, null, true);
+                        entity.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 2000, 3, 1, 3, 0, null, true);
                     }
 
                     i--;

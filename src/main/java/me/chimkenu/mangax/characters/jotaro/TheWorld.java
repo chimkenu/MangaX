@@ -23,41 +23,48 @@ public class TheWorld extends Move {
     public TheWorld() {
         super(null, null, 120, 260, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        this.activate = (plugin, player) -> {
-            player.setCooldown(getMaterial(), getCooldown());
-            player.getWorld().spawnParticle(Particle.DUST, player.getEyeLocation(), 1500, 1, 1, 1, 0, new Particle.DustOptions(Color.YELLOW, 0.8f));
+        this.activate = (plugin, entity) -> {
+            if (entity instanceof Player player)
+                player.setCooldown(getMaterial(), getCooldown());
+            entity.getWorld().spawnParticle(Particle.DUST, entity.getEyeLocation(), 1500, 1, 1, 1, 0, new Particle.DustOptions(Color.YELLOW, 0.8f));
 
             final int CHARGE_TIME = 20;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity.isDead()) {
                         cancel();
                         return;
                     }
 
-                    player.setCooldown(getMaterial(), getCooldown() + getFollowUpTime() - CHARGE_TIME);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0, true, false, false));
+                    if (entity instanceof Player player)
+                        player.setCooldown(getMaterial(), getCooldown() + getFollowUpTime() - CHARGE_TIME);
+                    entity.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0, true, false, false));
 
-                    Location loc = player.getLocation();
-                    AreaEffectCloud areaEffectCloud = player.getWorld().spawn(loc, AreaEffectCloud.class);
+                    Location loc = entity.getLocation();
+                    AreaEffectCloud areaEffectCloud = entity.getWorld().spawn(loc, AreaEffectCloud.class);
                     areaEffectCloud.setColor(Color.BLACK);
                     areaEffectCloud.setDuration(getFollowUpTime() - CHARGE_TIME);
                     areaEffectCloud.setRadius(10);
-                    areaEffectCloud.addScoreboardTag(player.getUniqueId() + ".cloud");
+                    areaEffectCloud.addScoreboardTag(entity.getUniqueId() + ".cloud");
 
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (areaEffectCloud.isDead() || player.isDead() || !player.isOnline()) {
-                                followUp.activate(plugin, player);
-                                this.cancel();
+                            if (entity instanceof Player player && !player.isOnline()) {
+                                cancel();
+                                return;
+                            }
+
+                            if (areaEffectCloud.isDead() || entity.isDead()) {
+                                followUp.activate(plugin, entity);
+                                cancel();
                                 return;
                             }
 
                             for (LivingEntity e : loc.getNearbyLivingEntities(10)) {
-                                if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player && !e.hasPotionEffect(PotionEffectType.BLINDNESS)) {
-                                    theWorld(plugin, areaEffectCloud, player, e, player.getCooldown(getMaterial()) - getCooldown());
+                                if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity && !e.hasPotionEffect(PotionEffectType.BLINDNESS)) {
+                                    theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration());
                                 }
                             }
                         }
@@ -66,30 +73,30 @@ public class TheWorld extends Move {
             }.runTaskLater(plugin, CHARGE_TIME);
         };
 
-        this.followUp = (plugin, player) -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[tag=" + player.getUniqueId() + ".cloud" + "]");
+        this.followUp = (plugin, entity) -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[tag=" + entity.getUniqueId() + ".cloud" + "]");
     }
 
-    private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, Player player, LivingEntity target, int duration) {
+    private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, LivingEntity entity, LivingEntity target, int duration) {
         new BukkitRunnable() {
             int t = duration;
             final Location loc = target.getLocation();
             final double health = target.getHealth();
             @Override
             public void run() {
-                if (target.isDead() || !player.isOnline()) {
+                if (target.isDead() || (entity instanceof Player player && !player.isOnline())) {
                     cancel();
                     return;
                 }
 
                 // Eject based on damage
-                if (t <= 0 || cloud.isDead() || player.isDead()) {
+                if (t <= 0 || cloud.isDead() || entity.isDead()) {
                     double diff = health - target.getHealth();
                     if (diff > 0) {
-                        Vector direction = target.getLocation().toVector().subtract(player.getLocation().toVector());
+                        Vector direction = target.getLocation().toVector().subtract(entity.getLocation().toVector());
                         direction = direction.normalize();
                         Vector v = target.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0));
 
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, player, target, 0, v);
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, entity, target, 0, v);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
@@ -101,7 +108,7 @@ public class TheWorld extends Move {
                     return;
                 }
 
-                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, player, target, 0, new Vector());
+                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, entity, target, 0, new Vector());
                 Bukkit.getPluginManager().callEvent(event);
                 if (event.isCancelled()) {
                     cancel();

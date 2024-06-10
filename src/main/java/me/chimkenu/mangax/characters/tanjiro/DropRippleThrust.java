@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
@@ -27,10 +28,10 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class DropRippleThrust extends Move {
     public DropRippleThrust() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setInvisible(false);
             stand.setArms(true);
@@ -52,36 +53,41 @@ public class DropRippleThrust extends Move {
             stand.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
             stand.getEquipment().setItemInMainHand(new ItemStack(Material.NETHERITE_SWORD));
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 15, 0, false, false, false));
-            player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(2)).add(new Vector(0, 0.5, 0)));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 15, 0, false, false, false));
+            entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(2)).add(new Vector(0, 0.5, 0)));
 
             new BukkitRunnable() {
                 int t = 15;
 
                 @Override
                 public void run() {
-                    if (t <= 0 || player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (t <= 0 || entity.isDead()) {
                         cancel();
                         return;
                     }
 
                     runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:splash ^-1.5 ^1.4 ^.2 0.1 0.1 0.1 1 40");
                     runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:bubble_pop ^-1.5 ^1.4 ^.2 0.1 0.1 0.1 0.1 100");
-                    runCommand("execute anchored eyes at " + player.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^ ~-90 ~");
+                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^ ~-90 ~");
 
-                    Location loc = player.getLocation();
-                    loc.add(0, player.getEyeHeight(), 0);
-                    loc.setDirection(player.getVelocity().normalize());
+                    Location loc = entity.getLocation();
+                    loc.add(0, entity.getEyeHeight(), 0);
+                    loc.setDirection(entity.getVelocity().normalize());
                     loc.add(loc.getDirection().multiply(1.5));
 
                     for (LivingEntity e : loc.getNearbyLivingEntities(1.5)) {
-                        if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
-                            MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_DROP_RIPPLE_THRUST, player, e, 6, new Vector());
+                        if (e != entity && !e.getType().equals(EntityType.ARMOR_STAND)) {
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_DROP_RIPPLE_THRUST, entity, e, 6, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
                                 return;
                             }
-                            e.damage(event.getDamage(), player);
+                            e.damage(event.getDamage(), entity);
                             e.setVelocity(e.getVelocity().add(event.getKnockback()));
                             e.setNoDamageTicks(15);
                         }

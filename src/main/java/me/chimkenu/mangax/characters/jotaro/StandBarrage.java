@@ -11,12 +11,13 @@ import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
@@ -24,15 +25,15 @@ public class StandBarrage extends Move {
     public StandBarrage() {
         super(null, null, 0, 5 * 20, Material.NETHER_STAR, Component.text("Stand Barrage").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false).decorate(TextDecoration.BOLD));
 
-        this.activate = (plugin, player) -> {
+        this.activate = (plugin, entity) -> {
             // Cancel if heavy hit is active
-            if (player.getCooldown(Moves.JOTARO_HEAVY_HIT.move.getMaterial()) > Moves.JOTARO_HEAVY_HIT.move.getCooldown()) {
+            if (entity instanceof Player player && player.getCooldown(Moves.JOTARO_HEAVY_HIT.move.getMaterial()) > Moves.JOTARO_HEAVY_HIT.move.getCooldown()) {
                 player.setCooldown(getMaterial(), 1);
                 return;
             }
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setLeftLegPose(newEulerAngle(0, 0, 351));
             stand.setRightLegPose(newEulerAngle(0, 0, 12));
@@ -47,8 +48,8 @@ public class StandBarrage extends Move {
             stand.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
             stand.getEquipment().setBoots(new ItemStack(Material.GOLDEN_BOOTS));
 
-            ArmorStand leftHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
-            ArmorStand rightHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand leftHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
+            ArmorStand rightHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             leftHand.setSmall(true);
             rightHand.setSmall(true);
             setUpArmorStand(leftHand);
@@ -62,43 +63,51 @@ public class StandBarrage extends Move {
 
                 @Override
                 public void run() {
-                    Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
-                    if (t <= 0 || player.isDead() || !player.isOnline() || move == null || !move.equals(Moves.JOTARO_STAND_BARRAGE)) {
-                        stand.remove();
-                        leftHand.remove();
-                        rightHand.remove();
+                    EntityEquipment equipment = entity.getEquipment();
+                    Moves move = null;
+                    if (equipment != null) {
+                        move = Moves.getMoveFromItem(equipment.getItemInMainHand());
+                    }
+
+                    if (entity instanceof Player player && !player.isOnline()) {
                         cancel();
                         return;
                     }
 
-                    player.getWorld().spawnParticle(Particle.CRIT, leftHand.getEyeLocation(), 5, 0.1, 0.1,0.1, 0);
-                    player.getWorld().spawnParticle(Particle.CRIT, rightHand.getEyeLocation(), 5, 0.1, 0.1,0.1, 0);
-                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, SoundCategory.PLAYERS, 1, 0.5f);
-                    stand.teleport(getRelativeLocation(player.getLocation(), 0, 0.5, 2, 0, 0));
+
+                    if (t <= 0 || entity.isDead() || move == null || !move.equals(Moves.JOTARO_STAND_BARRAGE)) {
+                        cancel();
+                        return;
+                    }
+
+                    entity.getWorld().spawnParticle(Particle.CRIT, leftHand.getEyeLocation(), 5, 0.1, 0.1,0.1, 0);
+                    entity.getWorld().spawnParticle(Particle.CRIT, rightHand.getEyeLocation(), 5, 0.1, 0.1,0.1, 0);
+                    entity.getWorld().playSound(entity.getLocation(), Sound.BLOCK_PISTON_EXTEND, SoundCategory.PLAYERS, 1, 0.5f);
+                    stand.teleport(getRelativeLocation(entity.getLocation(), 0, 0.5, 2, 0, 0));
                     leftHand.teleport(getRelativeLocation(stand.getLocation(), 0.5, 0.4, 0.5, 0, 0));
                     rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 1, 0, 0));
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (!player.isDead() && player.isOnline()) {
+                            if (!entity.isDead()) {
                                 leftHand.teleport(getRelativeLocation(stand.getLocation(), 0.5, 0.4, 1, 0, 0));
                                 rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 0.5, 0, 0));
                             }
                         }
                     }.runTaskLater(plugin, 1);
 
-                    Location loc = player.getEyeLocation();
+                    Location loc = entity.getEyeLocation();
                     for (int i = 0; i < 3; i++) {
                         loc.add(loc.getDirection());
                         for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
-                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_STAND_BARRAGE, player, e, 0.15, e.getVelocity().multiply(-0.9));
+                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_STAND_BARRAGE, entity, e, 0.15, e.getVelocity().multiply(-0.9));
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;
                                 }
 
-                                e.damage(event.getDamage(), player);
+                                e.damage(event.getDamage(), entity);
                                 e.setVelocity(e.getVelocity().add(event.getKnockback()));
                                 e.setNoDamageTicks(0);
                             }
@@ -106,6 +115,14 @@ public class StandBarrage extends Move {
                     }
 
                     t--;
+                }
+
+                @Override
+                public void cancel() {
+                    super.cancel();
+                    stand.remove();
+                    leftHand.remove();
+                    rightHand.remove();
                 }
             }.runTaskTimer(plugin, 1, 2);
         };

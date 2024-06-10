@@ -20,14 +20,14 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class Epitaph extends Move implements Listener {
     public Epitaph() {
-        super((plugin, player) -> {
-            player.addScoreboardTag("diavolo-epitaph");
-            Location loc = player.getLocation();
+        super((plugin, entity) -> {
+            entity.addScoreboardTag("diavolo-epitaph");
+            Location loc = entity.getLocation();
             loc.setPitch(0);
             for (int i = 0; i < 20; i++) {
                 loc.setYaw(i * 18);
                 ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 2, 20, (world, location, index) -> {
-                    Location diff = player.getLocation().subtract(loc);
+                    Location diff = entity.getLocation().subtract(loc);
                     location.add(diff.add(0, 0.2, 0));
                     world.spawnParticle(Particle.DUST, getRelativeLocation(location, Math.log(index), 0, 0, 0, 0), 1, 0.05, 0.05, 0.05, 0.1, new Particle.DustOptions(Color.RED, 0.8f));
                 }, 0);

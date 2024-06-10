@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -20,16 +21,16 @@ public class IcePath extends Move {
     public IcePath() {
         super(null, null, 0, 15 * 20, Material.PACKED_ICE, Component.text("Ice Path").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        this.activate = (plugin, player) -> new BukkitRunnable() {
+        this.activate = (plugin, entity) -> new BukkitRunnable() {
             int t = 100;
             @Override
             public void run() {
-                if (t <= 0 || player.isDead() || !player.isOnline()) {
+                if (t <= 0 || entity.isDead() || (entity instanceof Player player && !player.isOnline())) {
                     cancel();
                     return;
                 }
 
-                Location l = player.getLocation();
+                Location l = entity.getLocation();
                 l.setY(l.getY() - 1);
                 for (Location loc : getBlocksInRadius(l)) {
                     BlockEffects.create(plugin, loc, Material.PACKED_ICE.createBlockData(), 3 * 20, blockLoc -> {
@@ -39,11 +40,11 @@ public class IcePath extends Move {
                     });
                 }
                 for (LivingEntity e : l.getNearbyLivingEntities(2, 1, 2)) {
-                    Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
+                    Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
                     direction = direction.normalize();
                     e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
                 }
-                player.setVelocity(player.getVelocity().add(player.getLocation().getDirection().multiply(0.075)));
+                entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(0.075)));
 
                 t--;
             }

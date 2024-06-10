@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class FlashfireFist extends Move {
     public FlashfireFist() {
-        super((plugin, player) -> {
-            ParticleEffects.create(plugin, player.getWorld(), player.getEyeLocation().toVector(), player.getEyeLocation().getDirection(), 3, 5, (world, location, index) -> world.spawnParticle(Particle.DUST, location, 50, 0.5, 0.5, 0.5, new Particle.DustOptions(Color.ORANGE, 0.8f)), Integer.MAX_VALUE);
-            Location loc = player.getEyeLocation();
+        super((plugin, entity) -> {
+            ParticleEffects.create(plugin, entity.getWorld(), entity.getEyeLocation().toVector(), entity.getEyeLocation().getDirection(), 3, 5, (world, location, index) -> world.spawnParticle(Particle.DUST, location, 50, 0.5, 0.5, 0.5, new Particle.DustOptions(Color.ORANGE, 0.8f)), Integer.MAX_VALUE);
+            Location loc = entity.getEyeLocation();
             loc.add(loc.getDirection().multiply(2));
             for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
-                if (e != player && !e.getType().equals(EntityType.ARMOR_STAND)) {
+                if (e != entity && !e.getType().equals(EntityType.ARMOR_STAND)) {
                     // Do more damage if entity is already on fire
                     double multiplier = 1;
                     if (e.getFireTicks() > 0) {
@@ -30,9 +30,9 @@ public class FlashfireFist extends Move {
                         e.getWorld().spawnParticle(Particle.SMOKE, e.getEyeLocation(), 100, 0.3, 0.2, 0.3, 0.1);
                     }
 
-                    e.damage(6 * multiplier, player);
+                    e.damage(6 * multiplier, entity);
                     e.setFireTicks((int) (40 * multiplier));
-                    e.setVelocity(e.getVelocity().add(player.getLocation().getDirection().multiply(multiplier)));
+                    e.setVelocity(e.getVelocity().add(entity.getLocation().getDirection().multiply(multiplier)));
                 }
             }
         }, null, 0, 5 * 20, Material.MAGMA_BLOCK, Component.text("Flashfire Fist").color(TextColor.color(0xff6200)).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));

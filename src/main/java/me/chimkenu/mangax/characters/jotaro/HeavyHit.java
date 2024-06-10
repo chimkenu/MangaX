@@ -14,6 +14,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,10 +26,10 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class HeavyHit extends Move {
     public HeavyHit() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setLeftLegPose(newEulerAngle(0, 0, 351));
             stand.setRightLegPose(newEulerAngle(0, 0, 12));
@@ -43,8 +44,8 @@ public class HeavyHit extends Move {
             stand.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
             stand.getEquipment().setBoots(new ItemStack(Material.GOLDEN_BOOTS));
 
-            ArmorStand leftHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
-            ArmorStand rightHand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand leftHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
+            ArmorStand rightHand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             leftHand.setSmall(true);
             rightHand.setSmall(true);
             setUpArmorStand(leftHand);
@@ -57,7 +58,13 @@ public class HeavyHit extends Move {
                 int t = 15;
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        clear();
+                        cancel();
+                        return;
+                    }
+
+                    if (entity.isDead()) {
                         clear();
                         cancel();
                         return;
@@ -82,7 +89,7 @@ public class HeavyHit extends Move {
 
                     // "Charge" up attack
                     rightHand.getWorld().spawnParticle(Particle.CRIT, rightHand.getEyeLocation(), 1, 0.1, 0.1, 0.1, 0.1);
-                    runCommand("execute anchored eyes at " + player.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^0.5 ^2 ~ ~");
+                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^0.5 ^2 ~ ~");
                     runCommand("execute at " + stand.getUniqueId() + " run tp " + rightHand.getUniqueId() + " ^-0.5 ^0.4 ^0.1 ~ ~");
                     runCommand("execute at " + stand.getUniqueId() + " run tp " + leftHand.getUniqueId() + " ^0.5 ^0.4 ^0.1 ~ ~");
                     t--;
@@ -95,18 +102,18 @@ public class HeavyHit extends Move {
                 }
 
                 private void damage(LivingEntity livingEntity) {
-                    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != player) {
-                        Vector direction = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector());
+                    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != entity) {
+                        Vector direction = livingEntity.getLocation().toVector().subtract(entity.getLocation().toVector());
                         direction = direction.normalize();
                         Vector v = livingEntity.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0));
 
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_HEAVY_HIT, player, livingEntity, 0, v);
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_HEAVY_HIT, entity, livingEntity, 0, v);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
                         }
 
-                        livingEntity.damage(event.getDamage(), player);
+                        livingEntity.damage(event.getDamage(), entity);
                         livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
 
                         livingEntity.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, livingEntity.getEyeLocation(), 3, 0.2, 0.2, 0.2, 0.4);

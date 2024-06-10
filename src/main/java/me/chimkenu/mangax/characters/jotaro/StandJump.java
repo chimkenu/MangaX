@@ -11,9 +11,7 @@ import java.util.ArrayList;
 
 public class StandJump extends Move {
     public StandJump() {
-        super((plugin, player) -> {
-            player.setVelocity(player.getVelocity().add(new Vector(0, 2, 0)).add(player.getLocation().getDirection().multiply(0.2)));
-        }, null, 0, 20 * 20, Material.MAGENTA_GLAZED_TERRACOTTA, Component.text("Stand Jump").color(NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super((plugin, entity) -> entity.setVelocity(entity.getVelocity().add(new Vector(0, 2, 0)).add(entity.getLocation().getDirection().multiply(0.2))), null, 0, 20 * 20, Material.MAGENTA_GLAZED_TERRACOTTA, Component.text("Stand Jump").color(NamedTextColor.DARK_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override

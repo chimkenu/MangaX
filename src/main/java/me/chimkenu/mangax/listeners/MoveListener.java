@@ -3,6 +3,8 @@ package me.chimkenu.mangax.listeners;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTriggerEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,12 +29,20 @@ public class MoveListener extends GameListener {
 
         Move m = move.move;
         if (player.getCooldown(m.getMaterial()) > m.getCooldown()) {
+            MoveTriggerEvent event = new MoveTriggerEvent(player, move, true);
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+
             m.getFollowUp().activate(plugin, player);
             player.setCooldown(m.getMaterial(), m.getCooldown());
             return;
         }
 
-        if (player.getCooldown(m.getMaterial()) > 0) {
+        MoveTriggerEvent event = new MoveTriggerEvent(player, move, false);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
             return;
         }
 
@@ -45,15 +55,30 @@ public class MoveListener extends GameListener {
                 @Override
                 public void run() {
                     if (player.isDead() || !player.isOnline()) {
-                        this.cancel();
                         return;
                     }
 
                     if (player.getCooldown(m.getMaterial()) == m.getCooldown()) {
+                        MoveTriggerEvent followUp = new MoveTriggerEvent(player, move, true);
+                        Bukkit.getPluginManager().callEvent(followUp);
+                        if (followUp.isCancelled()) {
+                            return;
+                        }
+
                         m.getFollowUp().activate(plugin, player);
                     }
                 }
             }.runTaskLater(plugin, m.getFollowUpTime() + 1);
+        }
+    }
+
+    @EventHandler
+    public void onMoveTrigger(MoveTriggerEvent e) {
+        if (e.getEntity() instanceof Player player) {
+            int cooldown = player.getCooldown(e.getMove().move.getMaterial());
+            if (cooldown > 0 && cooldown <= e.getMove().move.getCooldown()) {
+                e.cancel(MoveTriggerEvent.CancelReason.IN_COOLDOWN);
+            }
         }
     }
 

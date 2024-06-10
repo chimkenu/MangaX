@@ -11,6 +11,8 @@ import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
@@ -26,10 +28,10 @@ public class StrikingTide extends Move {
     public StrikingTide() {
         super(null, null, 0, 5 * 20, Material.BLUE_DYE, Component.text("Striking Tide").color(NamedTextColor.DARK_BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        this.activate = (plugin, player) -> {
+        this.activate = (plugin, entity) -> {
 
             // Create stand
-            ArmorStand stand = player.getWorld().spawn(player.getLocation(), ArmorStand.class);
+            ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
             stand.setInvisible(false);
             stand.setArms(true);
@@ -51,47 +53,57 @@ public class StrikingTide extends Move {
             stand.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
             stand.getEquipment().setItemInMainHand(new ItemStack(Material.NETHERITE_SWORD));
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 0, false, false, false));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 0, false, false, false));
 
             // Animation and damage
             new BukkitRunnable() {
                 int t = 55;
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
                         cancel();
                         return;
                     }
 
-                    Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
+                    if (entity.isDead()) {
+                        cancel();
+                        return;
+                    }
+
+                    EntityEquipment equipment = entity.getEquipment();
+                    Moves move = null;
+                    if (equipment != null) {
+                        move = Moves.getMoveFromItem(equipment.getItemInMainHand());
+                    }
+
                     if (t <= 0 || move != Moves.TANJIRO_STRIKING_TIDE) {
-                        player.removePotionEffect(PotionEffectType.INVISIBILITY);
+                        entity.removePotionEffect(PotionEffectType.INVISIBILITY);
                         cancel();
                         return;
                     }
 
-                    runCommand("execute anchored eyes at " + player.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^-.4 ~ ~");
+                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^-.4 ~ ~");
                     if (t % 5 == 0) {
                         runCommand("execute as " + stand.getUniqueId() + " run data merge entity @s {ShowArms:1b,NoBasePlate:1b,Pose:{Body:[0f,-30f,0f],LeftArm:[-88f,39f,-16f],RightArm:[-66f,-15f,-57f],LeftLeg:[-1f,-120f,-31f],RightLeg:[30f,30f,30f],Head:[3.0673966f,3.3364124f,0f]}}");
                     } else if ((t + 1) % 5 == 0) {
                         runCommand("execute as " + stand.getUniqueId() + " run data merge entity @s {ShowArms:1b,NoBasePlate:1b,Pose:{Body:[0f,-27f,0f],LeftArm:[-70f,36f,17f],RightArm:[-102f,-30f,51f],LeftLeg:[29f,-60f,-31f],RightLeg:[-30f,-30f,30f],Head:[3.0673966f,3.3364124f,0f]}}");
 
-                        Location loc = player.getEyeLocation();
+                        Location loc = entity.getEyeLocation();
                         loc = loc.add(loc.getDirection().multiply(2));
                         loc.getWorld().spawnParticle(Particle.SWEEP_ATTACK, loc, 10, 0.5, 0.5, 0.5, 0);
                         for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
-                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                Vector direction = e.getLocation().toVector().subtract(player.getLocation().toVector());
+                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                                Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
                                 direction = direction.normalize();
                                 Vector v = e.getVelocity().add(direction.multiply(0.1)).add(new Vector(0, 0.1, 0));
 
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_STRIKING_TIDE, player, e, 2.5, v);
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_STRIKING_TIDE, entity, e, 2.5, v);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;
                                 }
 
-                                e.damage(event.getDamage(), player);
+                                e.damage(event.getDamage(), entity);
                                 e.setVelocity(e.getVelocity().add(event.getKnockback()));
                             }
                         }

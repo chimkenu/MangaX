@@ -27,7 +27,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class MultiShadowCloneJutsu extends Move {
     public MultiShadowCloneJutsu() {
-        super((plugin, player) -> {
+        super((plugin, entity) -> {
 
             // Summon clones
             HashSet<ArmorStand> clones = new HashSet<>();
@@ -36,7 +36,7 @@ public class MultiShadowCloneJutsu extends Move {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        ArmorStand clone = player.getWorld().spawn(getRelativeLocation(player.getLocation(), -1 * (finalI + 1), 0, 0, 0, 0), ArmorStand.class);
+                        ArmorStand clone = entity.getWorld().spawn(getRelativeLocation(entity.getLocation(), -1 * (finalI + 1), 0, 0, 0, 0), ArmorStand.class);
                         setUpArmorStand(clone);
                         clone.setInvisible(false);
                         clone.setArms(true);
@@ -90,13 +90,13 @@ public class MultiShadowCloneJutsu extends Move {
 
                     clones.forEach(clone -> {
                         for (LivingEntity e : clone.getLocation().getNearbyLivingEntities(3)) {
-                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != player) {
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_MULTI_SHADOW_CLONE_JUTSU, player, e, 8, new Vector());
+                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_MULTI_SHADOW_CLONE_JUTSU, entity, e, 8, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;
                                 }
-                                e.damage(event.getDamage(), player);
+                                e.damage(event.getDamage(), entity);
                                 e.setVelocity(e.getVelocity().add(event.getKnockback()));
                             }
                         }

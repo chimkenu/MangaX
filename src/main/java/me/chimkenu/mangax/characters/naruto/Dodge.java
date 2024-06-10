@@ -20,12 +20,12 @@ public class Dodge extends Move implements Listener {
     final JavaPlugin plugin;
 
     public Dodge(JavaPlugin javaPlugin) {
-        super((plugin, player) -> {
-            player.addScoreboardTag("naruto-dodge");
+        super((plugin, entity) -> {
+            entity.addScoreboardTag("naruto-dodge");
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.removeScoreboardTag("naruto-dodge");
+                    entity.removeScoreboardTag("naruto-dodge");
                 }
             }.runTaskLater(plugin, 20 * 5);
         }, null, 0, 30 * 20, Material.FEATHER, Component.text("Dodge").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));

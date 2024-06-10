@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -19,28 +20,46 @@ public class Kamehameha extends Move {
     public Kamehameha() {
         super(null, null, 40, 30 * 20, Material.HEART_OF_THE_SEA, Component.text("KAMEHAMEHA!").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        this.activate = (plugin, player) -> {
+        this.activate = (plugin, entity) -> {
+
             // Charge
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (player.isDead() || !player.isOnline() || player.getCooldown(getMaterial()) < getCooldown()) {
+                    if (entity instanceof Player player) {
+                        if (!player.isOnline() || player.getCooldown(getMaterial()) < getCooldown()) {
+                            cancel();
+                            return;
+                        }
+                    }
+
+                    if (entity.isDead()) {
                         cancel();
                         return;
                     }
-                    player.getWorld().spawnParticle(Particle.FLASH, player.getLocation(), 1, 0, 0, 0, 0);
+                    entity.getWorld().spawnParticle(Particle.FLASH, entity.getLocation(), 1, 0, 0, 0, 0);
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
 
-        this.followUp = (plugin, player) -> {
-            int chargeTime = getFollowUpTime() - (player.getCooldown(getMaterial()) - getCooldown());
+        this.followUp = (plugin, entity) -> {
+            int chargeTime = 40;
+            if (entity instanceof Player player) {
+                chargeTime = getFollowUpTime() - (player.getCooldown(getMaterial()) - getCooldown());
+            }
+
+            int finalChargeTime = chargeTime;
             new BukkitRunnable() {
                 int t = 20;
-                final Location loc = player.getEyeLocation();
+                final Location loc = entity.getEyeLocation();
                 @Override
                 public void run() {
-                    if (t <= 0 || player.isDead() || !player.isOnline()) {
+                    if (entity instanceof Player player && !player.isOnline()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (t <= 0 || entity.isDead()) {
                         cancel();
                         return;
                     }
@@ -50,7 +69,7 @@ public class Kamehameha extends Move {
                         Location newLoc = loc.clone();
                         newLoc.setYaw(newLoc.getYaw() + (float) (3 * Math.cos(rotate)));
                         newLoc.setPitch(newLoc.getPitch() + (float) (3 * Math.sin(rotate)));
-                        ParticleEffects.create(plugin, player.getWorld(), newLoc.toVector(), newLoc.getDirection(), 30, 0, new ParticleEffects.Effect() {
+                        ParticleEffects.create(plugin, entity.getWorld(), newLoc.toVector(), newLoc.getDirection(), 30, 0, new ParticleEffects.Effect() {
                             @Override
                             public void playParticle(World world, Location location, int index) {
                                 world.spawnParticle(Particle.SOUL_FIRE_FLAME, location, 1, 0, 0, 0, 0.01);
@@ -58,16 +77,16 @@ public class Kamehameha extends Move {
 
                             @Override
                             public void intersect(LivingEntity livingEntity) {
-                                if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != player) {
-                                    double damage = chargeTime / 4f;
+                                if (!livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity != entity) {
+                                    double damage = finalChargeTime / 4f;
 
-                                    MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_KAMEHAMEHA, player, livingEntity, damage, new Vector());
+                                    MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_KAMEHAMEHA, entity, livingEntity, damage, new Vector());
                                     Bukkit.getPluginManager().callEvent(event);
                                     if (event.isCancelled()) {
                                         return;
                                     }
 
-                                    livingEntity.damage(event.getDamage(), player);
+                                    livingEntity.damage(event.getDamage(), entity);
                                     livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
                                 }
                             }

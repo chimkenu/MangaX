@@ -17,20 +17,20 @@ import java.util.ArrayList;
 
 public class TimeSkip extends Move {
     public TimeSkip() {
-        super((plugin, player) -> {
-            RayTrace ray = new RayTrace(player.getEyeLocation().toVector(), player.getEyeLocation().getDirection());
-            Location last = player.getLocation();
+        super((plugin, entity) -> {
+            RayTrace ray = new RayTrace(entity.getEyeLocation().toVector(), entity.getEyeLocation().getDirection());
+            Location last = entity.getLocation();
             for (Vector v : ray.traverse(20, 0.2)) {
-                Block block = v.toLocation(player.getWorld()).getBlock();
+                Block block = v.toLocation(entity.getWorld()).getBlock();
                 if (!block.isPassable()) {
-                    player.teleport(last);
+                    entity.teleport(last);
                     return;
                 }
                 last = block.getLocation();
-                last.setDirection(player.getLocation().getDirection());
+                last.setDirection(entity.getLocation().getDirection());
                 last.add(new Vector(0.5, 0.5, 0.5));
             }
-            player.teleport(last);
+            entity.teleport(last);
         }, null, 0, 25 * 20, Material.TIPPED_ARROW, Component.text("Time Skip").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
