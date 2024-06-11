@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
@@ -11,15 +12,12 @@ import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
 public class Dodge extends Move implements Listener {
-    final JavaPlugin plugin;
-
-    public Dodge(JavaPlugin javaPlugin) {
+    public Dodge() {
         super((plugin, entity) -> {
             entity.addScoreboardTag("naruto-dodge");
             new BukkitRunnable() {
@@ -29,7 +27,6 @@ public class Dodge extends Move implements Listener {
                 }
             }.runTaskLater(plugin, 20 * 5);
         }, null, 0, 30 * 20, Material.FEATHER, Component.text("Dodge").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
-        this.plugin = javaPlugin;
     }
 
     @Override
@@ -49,16 +46,12 @@ public class Dodge extends Move implements Listener {
             target.getWorld().spawnParticle(Particle.POOF, target.getEyeLocation(), 50, 0.1, 0.2, 0.1, 0.2);
             e.setCancelled(true);
 
-            if (plugin != null) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        target.removeScoreboardTag("naruto-dodge");
-                    }
-                }.runTaskLater(plugin, 2 * 20);
-            } else {
-                target.removeScoreboardTag("naruto-dodge");
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    target.removeScoreboardTag("naruto-dodge");
+                }
+            }.runTaskLater(MangaX.getPlugin(MangaX.class), 2 * 20);
         }
     }
 }

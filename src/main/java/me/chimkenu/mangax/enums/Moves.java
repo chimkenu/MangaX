@@ -25,7 +25,7 @@ public enum Moves {
     GOKU_KAMEHAMEHA (new Kamehameha()),
     NARUTO_RASENSHURIKEN (new Rasenshuriken()),
     NARUTO_MULTI_SHADOW_CLONE_JUTSU (new MultiShadowCloneJutsu()),
-    NARUTO_DODGE (new Dodge(null)),
+    NARUTO_DODGE (new Dodge()),
     NARUTO_RASENGAN (new Rasengan()),
     DEKU_DETROIT_SMASH (new DetroitSmash()),
     DEKU_DELAWARE_SMASH (new DelawareSmash()),
