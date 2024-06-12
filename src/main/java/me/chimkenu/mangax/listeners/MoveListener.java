@@ -11,10 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class MoveListener extends GameListener {
-    public MoveListener(JavaPlugin plugin) {
-        super(plugin);
+public class MoveListener implements Listener {
+    private final JavaPlugin plugin;
 
+    public MoveListener(JavaPlugin plugin) {
+        this.plugin = plugin;
         for (Moves move : Moves.values()) {
             if (move.move instanceof Listener listener)
                 plugin.getServer().getPluginManager().registerEvents(listener, plugin);
