@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.characters.goku;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -45,5 +46,10 @@ public class KaioKen extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.BUFF, MoveInfo.Difficulty.TRIVIAL, 10, 1, 1, false);
     }
 }

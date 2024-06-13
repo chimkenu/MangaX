@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
@@ -101,6 +102,11 @@ public class Rasenshuriken extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.HIGH, MoveInfo.Range.MID, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.AREA, MoveInfo.Difficulty.TYPICAL, 10, 20, 10, false);
     }
 
     private void createHelicopter(JavaPlugin plugin, ArmorStand stand) {

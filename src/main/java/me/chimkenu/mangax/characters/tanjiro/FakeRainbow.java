@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
@@ -101,5 +102,10 @@ public class FakeRainbow extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return null;
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.BUFF, MoveInfo.Difficulty.TRIVIAL, 10, 1, 60, false);
     }
 }

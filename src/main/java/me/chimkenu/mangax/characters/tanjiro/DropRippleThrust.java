@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
@@ -107,5 +108,10 @@ public class DropRippleThrust extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.MID, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL,7, 1, 10, false);
     }
 }

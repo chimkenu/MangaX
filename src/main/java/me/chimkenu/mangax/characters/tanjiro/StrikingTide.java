@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.SkullUtil;
 import me.chimkenu.mangax.characters.Move;
@@ -124,5 +125,10 @@ public class StrikingTide extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.HIGH, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 3, 1, 55, true);
     }
 }

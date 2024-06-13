@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.diavolo;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.events.MoveTargetEvent;
@@ -38,6 +39,11 @@ public class Epitaph extends Move implements Listener {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.MANOEUVRE, MoveInfo.Difficulty.TYPICAL, 10, 1, 1, false);
     }
 
     @EventHandler

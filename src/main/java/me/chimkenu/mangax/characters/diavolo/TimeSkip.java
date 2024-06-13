@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.diavolo;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.RayTrace;
 import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
@@ -42,6 +43,11 @@ public class TimeSkip extends Move {
         meta.displayName(getName());
         item.setItemMeta(meta);
         return item;
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.LONG, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.MANOEUVRE, MoveInfo.Difficulty.TRIVIAL, 15, 1, 1, false);
     }
 
     @Override

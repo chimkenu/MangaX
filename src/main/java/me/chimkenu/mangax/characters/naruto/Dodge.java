@@ -2,6 +2,7 @@ package me.chimkenu.mangax.characters.naruto;
 
 import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import net.kyori.adventure.text.Component;
@@ -32,6 +33,11 @@ public class Dodge extends Move implements Listener {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.BUFF, MoveInfo.Difficulty.TRIVIAL, 7, 1, 1, false);
     }
 
     @EventHandler

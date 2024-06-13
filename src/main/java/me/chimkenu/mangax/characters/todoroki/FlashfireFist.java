@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.characters.todoroki;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -41,5 +42,10 @@ public class FlashfireFist extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.HIGH, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL,3, 1, 1, false);
     }
 }

@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.goku;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
@@ -102,5 +103,10 @@ public class Kamehameha extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.HIGH, MoveInfo.Range.LONG, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.AREA, MoveInfo.Difficulty.TRICKY, 20, 40, 20, true);
     }
 }

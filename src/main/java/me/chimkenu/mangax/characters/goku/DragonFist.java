@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.goku;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
@@ -44,5 +45,10 @@ public class DragonFist extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.DEBUFF, MoveInfo.Difficulty.TYPICAL, 3, 1, 1, false);
     }
 }

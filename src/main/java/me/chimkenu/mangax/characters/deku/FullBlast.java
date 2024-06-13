@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.characters.deku;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -43,5 +44,10 @@ public class FullBlast extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.DEBUFF, MoveInfo.Difficulty.TRIVIAL, 5, 1, 5 * 20, false);
     }
 }

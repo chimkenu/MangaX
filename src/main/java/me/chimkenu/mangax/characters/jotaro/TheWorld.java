@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.characters.jotaro;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import net.kyori.adventure.text.Component;
@@ -133,5 +134,10 @@ public class TheWorld extends Move {
     @Override
     public ArrayList<Component> getLore() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.MID, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.DEBUFF, MoveInfo.Difficulty.TYPICAL, 6, 20, 100, false);
     }
 }

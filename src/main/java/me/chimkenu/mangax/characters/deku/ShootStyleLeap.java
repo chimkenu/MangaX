@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters.deku;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
@@ -96,6 +97,11 @@ public class ShootStyleLeap extends Move {
         meta.displayName(getName());
         item.setItemMeta(meta);
         return item;
+    }
+
+    @Override
+    public MoveInfo getMoveInfo() {
+        return new MoveInfo(MoveInfo.Damage.LOW, MoveInfo.Range.LONG, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.AREA, MoveInfo.Difficulty.TRICKY, 15, 12, 10, false);
     }
 
     @Override

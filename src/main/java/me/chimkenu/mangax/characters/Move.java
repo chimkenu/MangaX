@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.characters;
 
+import me.chimkenu.mangax.enums.MoveInfo;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -58,4 +59,6 @@ public abstract class Move {
         item.setItemMeta(meta);
         return item;
     }
+
+    public abstract MoveInfo getMoveInfo();
 }
