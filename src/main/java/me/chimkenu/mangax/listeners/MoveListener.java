@@ -77,7 +77,7 @@ public class MoveListener implements Listener {
     public void onMoveTrigger(MoveTriggerEvent e) {
         if (e.getEntity() instanceof Player player) {
             int cooldown = player.getCooldown(e.getMove().move.getMaterial());
-            if (cooldown > 0 && cooldown <= e.getMove().move.getCooldown()) {
+            if (cooldown > 0 && cooldown < e.getMove().move.getCooldown()) {
                 e.cancel(MoveTriggerEvent.CancelReason.IN_COOLDOWN);
             }
         }
