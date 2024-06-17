@@ -35,9 +35,15 @@ public class ArmorStandUtil {
         Location result = origin.clone();
 
         Vector direction = origin.getDirection();
+
+        float temp = origin.getPitch();
+        origin.setPitch(0);
         origin.setYaw(origin.getYaw() - 90);
         Vector leftDirection = origin.getDirection();
-        Vector upDirection = direction.getCrossProduct(leftDirection).normalize();
+
+        origin.setYaw(origin.getYaw() + 90);
+        origin.setPitch(temp - 90);
+        Vector upDirection = origin.getDirection();
 
         result = result.add(direction.multiply(forward)).add(leftDirection.multiply(left)).add(upDirection.multiply(up));
         result.setYaw(result.getYaw() + yaw);
