@@ -11,16 +11,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
 public class BlockListener implements Listener {
-    private final HashMap<LivingEntity, Data> blocking;
-
-    public BlockListener() {
-        blocking = new HashMap<>();
-    }
+    private static final HashMap<LivingEntity, Data> blocking = new HashMap<>();
 
     @EventHandler
     public void onSneakToggle(PlayerToggleSneakEvent e) {
@@ -48,6 +45,7 @@ public class BlockListener implements Listener {
                 e.setCancelled(true);
             }
             case BREAK -> {
+                toggleBlock(e.getTarget(), false);
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BREAK, SoundCategory.PLAYERS, 1, 1);
                 e.setDamage(e.getDamage() * 1.5);
             }
@@ -55,6 +53,23 @@ public class BlockListener implements Listener {
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1, 0);
                 e.setCancelled(true);
             }
+        }
+    }
+
+    public static void toggleBlock(LivingEntity livingEntity, boolean putUpShield) {
+        EntityEquipment equipment = livingEntity.getEquipment();
+
+        if (blocking.containsKey(livingEntity) || !putUpShield) {
+            Data data = blocking.remove(livingEntity);
+            if (equipment != null)
+                equipment.setItemInOffHand(data.previousItem);
+        } else {
+            ItemStack itemInOffHand = new ItemStack(Material.AIR);
+            if (equipment != null) {
+                itemInOffHand = equipment.getItemInOffHand();
+                equipment.setItemInOffHand(new ItemStack(Material.SHIELD));
+            }
+            blocking.put(livingEntity, new Data(itemInOffHand, 3, 6));
         }
     }
 
