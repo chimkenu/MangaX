@@ -101,20 +101,18 @@ public class CrimsonBarrage extends Move {
                         }
                     }.runTaskLater(plugin, 1);
 
-                    Location loc = entity.getEyeLocation();
-                    for (int i = 0; i < 3; i++) {
-                        loc.add(loc.getDirection());
-                        for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
-                            if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_CRIMSON_BARRAGE, entity, e, 0.15, new Vector());
-                                Bukkit.getPluginManager().callEvent(event);
-                                if (event.isCancelled()) {
-                                    return;
-                                }
-                                e.damage(event.getDamage(), entity);
-                                e.setVelocity(e.getVelocity().multiply(0.1).add(event.getKnockback()));
-                                e.setNoDamageTicks(0);
+                    Location loc = stand.getEyeLocation();
+                    loc.add(loc.getDirection());
+                    for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
+                        if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_CRIMSON_BARRAGE, entity, e, 0.15, new Vector());
+                            Bukkit.getPluginManager().callEvent(event);
+                            if (event.isCancelled()) {
+                                return;
                             }
+                            e.damage(event.getDamage(), entity);
+                            e.setVelocity(e.getVelocity().multiply(0.3).add(event.getKnockback()));
+                            e.setNoDamageTicks(0);
                         }
                     }
 
