@@ -79,6 +79,7 @@ public class MultiShadowCloneJutsu extends Move {
             }.runTaskLater(plugin, 20);
 
             new BukkitRunnable() {
+                final HashSet<LivingEntity> targets = new HashSet<>();
                 int t = 10;
                 @Override
                 public void run() {
@@ -92,6 +93,11 @@ public class MultiShadowCloneJutsu extends Move {
                     clones.forEach(clone -> {
                         for (LivingEntity e : clone.getLocation().getNearbyLivingEntities(3)) {
                             if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                                if (targets.contains(e)) {
+                                    continue;
+                                }
+                                targets.add(e);
+
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_MULTI_SHADOW_CLONE_JUTSU, entity, e, 8, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {

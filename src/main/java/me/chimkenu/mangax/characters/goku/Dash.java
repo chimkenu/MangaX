@@ -16,12 +16,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Dash extends Move {
     public Dash() {
         super((plugin, entity) -> {
             entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(3)).add(new Vector(0, 0.2, 0)));
             new BukkitRunnable() {
+                final HashSet<LivingEntity> targets = new HashSet<>();
                 int t = 10;
 
                 @Override
@@ -38,6 +40,11 @@ public class Dash extends Move {
 
                     for (LivingEntity e : entity.getEyeLocation().getNearbyLivingEntities(2)) {
                         if (e != entity && !e.getType().equals(EntityType.ARMOR_STAND)) {
+                            if (targets.contains(e)) {
+                                continue;
+                            }
+                            targets.add(e);
+
                             MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DASH, entity, e, 4, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {

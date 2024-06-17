@@ -14,10 +14,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class DelawareSmash extends Move {
     public DelawareSmash() {
         super((plugin, entity) -> {
+            final HashSet<LivingEntity> targets = new HashSet<>();
+
             Location loc = entity.getEyeLocation();
             loc.setY(loc.getY() - 0.3);
             for (int i = 0; i < 7; i++) {
@@ -32,6 +35,11 @@ public class DelawareSmash extends Move {
                         @Override
                         public void intersect(LivingEntity livingEntity) {
                             if (livingEntity != entity && !livingEntity.getType().equals(EntityType.ARMOR_STAND) && livingEntity.getNoDamageTicks() <= 0) {
+                                if (targets.contains(entity)) {
+                                    return;
+                                }
+                                targets.add(entity);
+
                                 Vector v = livingEntity.getLocation().toVector().subtract(entity.getLocation().toVector());
                                 v = v.normalize().multiply(2).add(new Vector(0, 0.2, 0));
 

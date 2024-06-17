@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
@@ -58,6 +59,7 @@ public class DropRippleThrust extends Move {
             entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(2)).add(new Vector(0, 0.5, 0)));
 
             new BukkitRunnable() {
+                final HashSet<LivingEntity> targets = new HashSet<>();
                 int t = 15;
 
                 @Override
@@ -83,6 +85,11 @@ public class DropRippleThrust extends Move {
 
                     for (LivingEntity e : loc.getNearbyLivingEntities(1.5)) {
                         if (e != entity && !e.getType().equals(EntityType.ARMOR_STAND)) {
+                            if (targets.contains(e)) {
+                                continue;
+                            }
+                            targets.add(e);
+
                             MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_DROP_RIPPLE_THRUST, entity, e, 6, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
