@@ -1,10 +1,8 @@
 package me.chimkenu.mangax.listeners;
 
+import me.chimkenu.mangax.events.BlockBreakEvent;
 import me.chimkenu.mangax.events.MoveTargetEvent;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 
@@ -45,11 +45,20 @@ public class BlockListener implements Listener {
                 e.setCancelled(true);
             }
             case BREAK -> {
+                BlockBreakEvent event = new BlockBreakEvent(e.getTarget());
+                Bukkit.getPluginManager().callEvent(event);
+                Bukkit.broadcastMessage("block broke");
+
                 toggleBlock(e.getTarget(), false);
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BREAK, SoundCategory.PLAYERS, 1, 1);
                 e.setDamage(e.getDamage() * 1.5);
             }
             case PERFECT_BLOCK -> {
+                Bukkit.broadcastMessage("perfect block");
+                if (e.getTarget() instanceof Player player)
+                    player.setFoodLevel(20);
+                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1, false, false, true));
+                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 3, false, false, true));
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1, 0);
                 e.setCancelled(true);
             }
@@ -79,13 +88,15 @@ public class BlockListener implements Listener {
 
         data.hitsLeft--;
         data.damageLeft -= damage;
-        if (data.hitsLeft < 0 || data.damageLeft <= 0) {
-            return BlockResult.BREAK;
-        }
 
         long time = System.currentTimeMillis() - data.time;
-        if (time > 200 && time < 400) {
+        if (!data.hasBeenHit && time > 200 && time < 400) {
             return BlockResult.PERFECT_BLOCK;
+        }
+        data.hasBeenHit = true;
+
+        if (data.hitsLeft < 0 || data.damageLeft <= 0) {
+            return BlockResult.BREAK;
         }
 
         return BlockResult.BLOCK;
@@ -94,6 +105,7 @@ public class BlockListener implements Listener {
     private static class Data {
         public final long time;
         public final ItemStack previousItem;
+        public boolean hasBeenHit;
         public int hitsLeft;
         public double damageLeft;
 
