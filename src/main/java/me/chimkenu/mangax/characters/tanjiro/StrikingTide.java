@@ -83,7 +83,7 @@ public class StrikingTide extends Move {
                         return;
                     }
 
-                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^-.4 ~ ~");
+                    stand.teleport(getRelativeLocation(entity.getLocation(), 0, 0, -0.4, 0, 0));
                     if (t % 5 == 0) {
                         runCommand("execute as " + stand.getUniqueId() + " run data merge entity @s {ShowArms:1b,NoBasePlate:1b,Pose:{Body:[0f,-30f,0f],LeftArm:[-88f,39f,-16f],RightArm:[-66f,-15f,-57f],LeftLeg:[-1f,-120f,-31f],RightLeg:[30f,30f,30f],Head:[3.0673966f,3.3364124f,0f]}}");
                     } else if ((t + 1) % 5 == 0) {

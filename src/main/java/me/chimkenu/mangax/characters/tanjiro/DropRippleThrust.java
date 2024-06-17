@@ -8,10 +8,7 @@ import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -74,9 +71,9 @@ public class DropRippleThrust extends Move {
                         return;
                     }
 
-                    runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:splash ^-1.5 ^1.4 ^.2 0.1 0.1 0.1 1 40");
-                    runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:bubble_pop ^-1.5 ^1.4 ^.2 0.1 0.1 0.1 0.1 100");
-                    runCommand("execute anchored eyes at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^ ~-90 ~");
+                    stand.getWorld().spawnParticle(Particle.SPLASH, getRelativeLocation(stand.getLocation(), -1.5, 1.4, 0.2, 0, 0), 40, 0.1, 0.1, 0.1, 1);
+                    stand.getWorld().spawnParticle(Particle.BUBBLE_POP, getRelativeLocation(stand.getLocation(), -1.5, 1.4, 0.2, 0, 0), 40, 0.1, 0.1, 0.1, 1);
+                    stand.teleport(getRelativeLocation(entity.getLocation(), 0, 0, 0, -90, 0));
 
                     Location loc = entity.getLocation();
                     loc.add(0, entity.getEyeHeight(), 0);

@@ -24,6 +24,8 @@ public class IceWall extends Move {
         super(null, null, 0, 15 * 20, Material.BLUE_ICE, Component.text("Ice Wall").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
+            final HashSet<LivingEntity> targets = new HashSet<>();
+
             int[] height = {7, 12, 15, 12, 7};
             for (int i = 0; i < height.length; i++) {
                 Location loc = entity.getEyeLocation();
@@ -48,6 +50,11 @@ public class IceWall extends Move {
                         if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
                             continue;
                         }
+
+                        if (targets.contains(e)) {
+                            continue;
+                        }
+                        targets.add(e);
 
                         Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
                         direction = direction.normalize();

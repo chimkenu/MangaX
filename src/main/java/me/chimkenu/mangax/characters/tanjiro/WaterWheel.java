@@ -8,9 +8,7 @@ import me.chimkenu.mangax.enums.Moves;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -92,11 +90,12 @@ public class WaterWheel extends Move {
                         return;
                     }
 
-                    runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:splash ^.3 ^1.4 ^1 0.1 0.1 0.1 1 40");
-                    runCommand("execute at " + stand.getUniqueId() + " run particle minecraft:bubble_pop ^.3 ^1.4 ^1 0.1 0.1 0.1 0.1 100");
-                    runCommand("execute at " + stand.getUniqueId() + " run tp " + stand.getUniqueId() + " ^ ^ ^ ~30 ~");
-                    runCommand("execute at " + entity.getUniqueId() + " run tp " + stand.getUniqueId() + " ~ ~ ~");
-                    runCommand("execute at "+ stand.getUniqueId() + " run tp " + blade.getUniqueId() + " ^1 ^-.2 ^1 ~-90 ~");
+                    stand.getWorld().spawnParticle(Particle.SPLASH, getRelativeLocation(stand.getLocation(), 0.3, 1.4, 1, 0, 0), 40, 0.1, 0.1, 0.1, 1);
+                    stand.getWorld().spawnParticle(Particle.BUBBLE_POP, getRelativeLocation(stand.getLocation(), 0.3, 1.4, 1, 0, 0), 100, 0.1, 0.1, 0.1, 0.1);
+                    Location loc = entity.getLocation();
+                    loc.setYaw(stand.getYaw() + 30);
+                    stand.teleport(loc);
+                    blade.teleport(getRelativeLocation(stand.getLocation(), 1, -0.2, 1, -90, 0));
 
                     for (LivingEntity e : entity.getLocation().getNearbyLivingEntities(2)) {
                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
