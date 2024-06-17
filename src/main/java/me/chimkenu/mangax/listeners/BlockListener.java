@@ -61,7 +61,7 @@ public class BlockListener implements Listener {
 
         if (blocking.containsKey(livingEntity) || !putUpShield) {
             Data data = blocking.remove(livingEntity);
-            if (equipment != null)
+            if (equipment != null && data != null)
                 equipment.setItemInOffHand(data.previousItem);
         } else {
             ItemStack itemInOffHand = new ItemStack(Material.AIR);
