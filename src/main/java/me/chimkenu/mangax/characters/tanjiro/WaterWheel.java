@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
@@ -65,6 +66,7 @@ public class WaterWheel extends Move {
 
             // Animation and damage
             new BukkitRunnable() {
+                final HashSet<LivingEntity> targets = new HashSet<>();
                 int t = 37;
                 @Override
                 public void run() {
@@ -90,6 +92,10 @@ public class WaterWheel extends Move {
                         return;
                     }
 
+                    if (t % 10 == 0) {
+                        targets.clear();
+                    }
+
                     stand.getWorld().spawnParticle(Particle.SPLASH, getRelativeLocation(stand.getLocation(), 0.3, 1.4, 1, 0, 0), 40, 0.1, 0.1, 0.1, 1);
                     stand.getWorld().spawnParticle(Particle.BUBBLE_POP, getRelativeLocation(stand.getLocation(), 0.3, 1.4, 1, 0, 0), 100, 0.1, 0.1, 0.1, 0.1);
                     Location loc = entity.getLocation();
@@ -99,6 +105,11 @@ public class WaterWheel extends Move {
 
                     for (LivingEntity e : entity.getLocation().getNearbyLivingEntities(2)) {
                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                            if (targets.contains(e)) {
+                                continue;
+                            }
+                            targets.add(e);
+
                             Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
                             direction = direction.normalize();
                             Vector v = e.getVelocity().add(direction.multiply(0.1)).add(new Vector(0, 0.1, 0));
