@@ -35,7 +35,7 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onMoveTarget(MoveTargetEvent e) {
-        if (!blocking.containsKey(e.getTarget())) {
+        if (!blocking.containsKey(e.getTarget()) || e.isCancelled()) {
             return;
         }
 
@@ -90,6 +90,7 @@ public class BlockListener implements Listener {
         data.damageLeft -= damage;
 
         long time = System.currentTimeMillis() - data.time;
+        Bukkit.broadcastMessage(time + "ms");
         if (!data.hasBeenHit && time > 200 && time < 400) {
             return BlockResult.PERFECT_BLOCK;
         }
