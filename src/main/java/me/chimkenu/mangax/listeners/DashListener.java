@@ -80,7 +80,7 @@ public class DashListener implements Listener {
     }
 
     public void regenerate(Player player) {
-        if (foodLevelRegeneration.containsKey(player.getUniqueId()) || player.getFoodLevel() == 20) {
+        if (foodLevelRegeneration.containsKey(player.getUniqueId())) {
             return;
         }
 
