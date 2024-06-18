@@ -65,7 +65,7 @@ public class TheWorld extends Move {
 
                             for (LivingEntity e : loc.getNearbyLivingEntities(10)) {
                                 if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity && !e.hasPotionEffect(PotionEffectType.BLINDNESS)) {
-                                    theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration());
+                                    theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration() + 20);
                                 }
                             }
                         }
