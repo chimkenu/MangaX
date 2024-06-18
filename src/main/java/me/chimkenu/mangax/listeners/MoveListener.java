@@ -35,17 +35,15 @@ public class MoveListener implements Listener {
         }
 
         Move m = move.move;
-        if (player.getCooldown(m.getMaterial()) > m.getCooldown()) {
+        if (player.getCooldown(m.getMaterial()) > m.getCooldown() && m.getFollowUp() != null) {
             MoveTriggerEvent event = new MoveTriggerEvent(player, move, true);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                 return;
             }
 
-            if (m.getFollowUp() != null) {
-                m.getFollowUp().activate(plugin, player);
-                player.setCooldown(m.getMaterial(), m.getCooldown());
-            }
+            m.getFollowUp().activate(plugin, player);
+            player.setCooldown(m.getMaterial(), m.getCooldown());
             return;
         }
 
