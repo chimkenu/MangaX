@@ -6,6 +6,7 @@ import me.chimkenu.mangax.characters.diavolo.*;
 import me.chimkenu.mangax.characters.goku.*;
 import me.chimkenu.mangax.characters.jotaro.*;
 import me.chimkenu.mangax.characters.naruto.*;
+import me.chimkenu.mangax.characters.phoenix.*;
 import me.chimkenu.mangax.characters.tanjiro.*;
 import me.chimkenu.mangax.characters.todoroki.*;
 import org.bukkit.inventory.ItemStack;
@@ -38,7 +39,11 @@ public enum Moves {
     TODOROKI_FLAMETHROWER (new Flamethrower()),
     TODOROKI_FLASHFIRE_FIST (new FlashfireFist()),
     TODOROKI_ICE_WALL (new IceWall()),
-    TODOROKI_ICE_PATH (new IcePath());
+    TODOROKI_ICE_PATH (new IcePath()),
+    PHOENIX_TAKE_THAT (new TakeThat()),
+    PHOENIX_HOLD_IT (new HoldIt()),
+    PHOENIX_OBJECTION (new Objection()),
+    PHOENIX_SPIRIT_DEFENSE (new SpiritDefense());
 
     public final Move move;
 
