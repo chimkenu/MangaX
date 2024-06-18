@@ -35,7 +35,10 @@ public class MoveListener implements Listener {
         }
 
         Move m = move.move;
-        if (player.getCooldown(m.getMaterial()) > m.getCooldown() && m.getFollowUp() != null) {
+        if (player.getCooldown(m.getMaterial()) > m.getCooldown()) {
+            if (m.getFollowUp() == null)
+                return;
+
             MoveTriggerEvent event = new MoveTriggerEvent(player, move, true);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) {
