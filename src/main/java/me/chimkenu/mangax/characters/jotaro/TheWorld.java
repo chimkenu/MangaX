@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class TheWorld extends Move {
     public TheWorld() {
-        super(null, null, 120, 260, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 120, 30 * 20, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             if (entity instanceof Player player)
