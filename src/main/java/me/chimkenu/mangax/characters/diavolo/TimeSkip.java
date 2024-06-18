@@ -32,7 +32,7 @@ public class TimeSkip extends Move {
                 last.add(new Vector(0.5, 0.5, 0.5));
             }
             entity.teleport(last);
-        }, null, 0, 25 * 20, Material.TIPPED_ARROW, Component.text("Time Skip").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 0, 18 * 20, Material.TIPPED_ARROW, Component.text("Time Skip").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override

@@ -18,6 +18,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -28,7 +30,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class SpiritDefense extends Move implements Listener {
     public SpiritDefense() {
-        super(null, null, 100, 10, Material.AMETHYST_SHARD, Component.text("Spirit Defense").color(NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 100, 15 * 20, Material.AMETHYST_SHARD, Component.text("Spirit Defense").color(NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             Location loc = entity.getLocation();
@@ -58,13 +60,16 @@ public class SpiritDefense extends Move implements Listener {
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
             maya.getEquipment().setBoots(boots);
 
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, getFollowUpTime(), 4, false, false, true));
+
             new BukkitRunnable() {
                 final Location loc = getRelativeLocation(maya.getLocation(), 0, 0, -3, 0, 0);
                 int t = getFollowUpTime();
                 @Override
                 public void run() {
-                    if (t <= 0) {
+                    if (t <= 0 || loc.distanceSquared(entity.getLocation()) > 4 * 4) {
                         maya.remove();
+                        entity.removePotionEffect(PotionEffectType.RESISTANCE);
                         cancel();
                         return;
                     }
@@ -73,9 +78,9 @@ public class SpiritDefense extends Move implements Listener {
                         if (e.hasGravity() && e != entity) {
                             Vector direction = e.getLocation().toVector().subtract(loc.toVector());
                             direction = direction.normalize();
+                            Vector v = (direction.multiply(1.5)).add(new Vector(0, 0.5, 0));
 
                             if (e instanceof LivingEntity living && !e.getType().equals(EntityType.ARMOR_STAND)) {
-                                Vector v = e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.5, 0));
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.PHOENIX_SPIRIT_DEFENSE, entity, living, 0, v);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
@@ -83,10 +88,9 @@ public class SpiritDefense extends Move implements Listener {
                                 }
 
                                 living.damage(event.getDamage(), entity);
-                                e.setVelocity(e.getVelocity().add(event.getKnockback()));
+                                e.setVelocity(event.getKnockback());
                                 continue;
                             }
-                            Vector v = (direction.multiply(1.5)).add(new Vector(0, 0.5, 0));
                             e.setVelocity(v);
                         }
                     }

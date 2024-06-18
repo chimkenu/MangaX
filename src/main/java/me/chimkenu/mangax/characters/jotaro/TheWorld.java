@@ -22,14 +22,14 @@ import java.util.ArrayList;
 
 public class TheWorld extends Move {
     public TheWorld() {
-        super(null, null, 120, 30 * 20, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 140, 35 * 20, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             if (entity instanceof Player player)
                 player.setCooldown(getMaterial(), getCooldown());
             entity.getWorld().spawnParticle(Particle.DUST, entity.getEyeLocation(), 1500, 1, 1, 1, 0, new Particle.DustOptions(Color.YELLOW, 0.8f));
 
-            final int CHARGE_TIME = 20;
+            final int CHARGE_TIME = 40;
             new BukkitRunnable() {
                 @Override
                 public void run() {

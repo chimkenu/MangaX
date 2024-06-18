@@ -24,7 +24,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class HoldIt extends Move {
     public HoldIt() {
-        super(null, null, 10, 10, Material.BEEHIVE, Component.text("Hold It!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 10, 20 * 10, Material.BEEHIVE, Component.text("Hold It!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             Location loc = entity.getLocation();
@@ -70,7 +70,7 @@ public class HoldIt extends Move {
 
                     for (LivingEntity e : table.getLocation().getNearbyLivingEntities(5)) {
                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
-                            MoveTargetEvent event = new MoveTargetEvent(Moves.PHOENIX_HOLD_IT, entity, e, 10, new Vector());
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.PHOENIX_HOLD_IT, entity, e, 6, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
                                 continue;

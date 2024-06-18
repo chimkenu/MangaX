@@ -21,6 +21,8 @@ public class DelawareSmash extends Move {
         super((plugin, entity) -> {
             final HashSet<LivingEntity> targets = new HashSet<>();
 
+            entity.damage(2, entity);
+
             Location loc = entity.getEyeLocation();
             loc.setY(loc.getY() - 0.3);
             for (int i = 0; i < 7; i++) {
@@ -41,7 +43,7 @@ public class DelawareSmash extends Move {
                                 targets.add(entity);
 
                                 Vector v = livingEntity.getLocation().toVector().subtract(entity.getLocation().toVector());
-                                v = v.normalize().multiply(2).add(new Vector(0, 0.2, 0));
+                                v = v.normalize().multiply(3).add(new Vector(0, 1, 0));
 
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, livingEntity, 8, v);
                                 Bukkit.getPluginManager().callEvent(event);

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class DetroitSmash extends Move {
     public DetroitSmash() {
         super((plugin, entity) -> {
+            entity.damage(2, entity);
+
             Location loc = entity.getEyeLocation();
             ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.SPIT, location, 1, 0, 0, 0, 0), 0);
 

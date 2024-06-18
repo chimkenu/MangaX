@@ -23,7 +23,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Rasenshuriken extends Move {
     public Rasenshuriken() {
-        super(null, null, 0, 15 * 20, Material.NETHER_STAR, Component.text("Rasenshuriken").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 0, 10 * 20, Material.NETHER_STAR, Component.text("Rasenshuriken").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         activate = (plugin, entity) -> {
             ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);

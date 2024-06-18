@@ -113,7 +113,7 @@ public class Impale extends Move {
                 }
             }.runTaskTimer(plugin, 0, 1);
 
-        }, null, 15, 15 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 15, 12 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override

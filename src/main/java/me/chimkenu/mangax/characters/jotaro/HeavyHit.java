@@ -74,7 +74,7 @@ public class HeavyHit extends Move {
                     // Actual attack
                     if (t <= 0) {
                         rightHand.getWorld().spawnParticle(Particle.FLASH, rightHand.getEyeLocation(), 1, 0, 0, 0, 0);
-                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 3, 0, 0));
+                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 1.5, 0, 0));
                         new BukkitRunnable() {
                             @Override
                             public void run() {

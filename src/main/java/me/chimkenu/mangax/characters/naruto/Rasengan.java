@@ -24,7 +24,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Rasengan extends Move {
     public Rasengan() {
-        super(null, null, 40, 15 * 20, Material.HEART_OF_THE_SEA, Component.text("Rasengan").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 40, 10 * 20, Material.HEART_OF_THE_SEA, Component.text("Rasengan").color(NamedTextColor.AQUA).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
 
@@ -83,7 +83,7 @@ public class Rasengan extends Move {
 
             LivingEntity nearest = null;
             double minDist = -1;
-            for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
+            for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
                 if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
                     continue;
                 }
@@ -98,7 +98,7 @@ public class Rasengan extends Move {
             }
 
             int chargeTime = entity instanceof Player player ? player.getCooldown(getMaterial()) - getCooldown() : getFollowUpTime();
-            double damage = 12f * chargeTime / getFollowUpTime();
+            double damage = 4 + 8f * (1 - (double) chargeTime / getFollowUpTime());
 
             Vector direction = nearest.getLocation().toVector().subtract(entity.getLocation().toVector());
             direction = direction.normalize();

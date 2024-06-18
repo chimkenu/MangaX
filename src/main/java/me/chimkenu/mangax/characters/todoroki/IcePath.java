@@ -2,6 +2,7 @@ package me.chimkenu.mangax.characters.todoroki;
 
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
+import me.chimkenu.mangax.utils.ArmorStandUtil;
 import me.chimkenu.mangax.utils.BlockEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -32,18 +33,22 @@ public class IcePath extends Move {
                 }
 
                 Location l = entity.getLocation();
+                l.setPitch(0);
                 l.setY(l.getY() - 1);
-                for (Location loc : getBlocksInRadius(l)) {
-                    BlockEffects.create(plugin, loc, Material.PACKED_ICE.createBlockData(), 3 * 20, blockLoc -> {
-                        blockLoc.add(0.5, 0.5, 0.5);
-                        blockLoc.getWorld().spawnParticle(Particle.BLOCK, blockLoc, 5, 0.25, 0.25, 0.25, 0, Material.BLUE_ICE.createBlockData());
-                        blockLoc.getWorld().playSound(blockLoc, Sound.BLOCK_GLASS_BREAK, 0.05f, 2);
-                    });
-                }
-                for (LivingEntity e : l.getNearbyLivingEntities(2, 1, 2)) {
-                    Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
-                    direction = direction.normalize();
-                    e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
+                for (int i = 0; i < 2; i++) {
+                    l = ArmorStandUtil.getRelativeLocation(l, 0, 0, 2, 0, 0);
+                    for (Location loc : getBlocksInRadius(l)) {
+                        BlockEffects.create(plugin, loc, Material.PACKED_ICE.createBlockData(), 3 * 20, blockLoc -> {
+                            blockLoc.add(0.5, 0.5, 0.5);
+                            blockLoc.getWorld().spawnParticle(Particle.BLOCK, blockLoc, 5, 0.25, 0.25, 0.25, 0, Material.BLUE_ICE.createBlockData());
+                            blockLoc.getWorld().playSound(blockLoc, Sound.BLOCK_GLASS_BREAK, 0.05f, 2);
+                        });
+                    }
+                    for (LivingEntity e : l.getNearbyLivingEntities(2, 1, 2)) {
+                        Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
+                        direction = direction.normalize();
+                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
+                    }
                 }
                 entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(0.075)));
 
@@ -52,14 +57,15 @@ public class IcePath extends Move {
 
             private HashSet<Location> getBlocksInRadius(Location origin) {
                 HashSet<Location> locations = new HashSet<>();
+                int radius = 2;
                 int bx = origin.getBlockX();
                 int bz = origin.getBlockZ();
 
-                for (int x = bx - 2; x <= bx + 2; x++) {
-                    for (int z = bz - 2; z <= bz + 2; z++) {
+                for (int x = bx - radius; x <= bx + radius; x++) {
+                    for (int z = bz - radius; z <= bz + radius; z++) {
                         Location location = new Location(origin.getWorld(), x, origin.getY(), z).toBlockLocation();
                         double distance = origin.distanceSquared(location);
-                        if (distance < 2 * 2) {
+                        if (distance < radius * radius) {
                             locations.add(location);
                         }
                     }

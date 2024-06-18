@@ -40,7 +40,7 @@ public class KaioKen extends Move {
                     t--;
                 }
             }.runTaskTimer(plugin, 0, 1);
-        }, null, 0, 25 * 20, Material.RED_DYE, Component.text("KAIO-KEN 10").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 0, 35 * 20, Material.RED_DYE, Component.text("KAIO-KEN 10").color(NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override

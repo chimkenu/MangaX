@@ -69,7 +69,6 @@ public class Objection extends Move {
 
                             e.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 100, false, false, true));
                             e.showTitle(Title.title(Component.text("Objection!").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD), Component.text(""), Title.Times.times(Duration.ofMillis(50 * 5), Duration.ofMillis(50 * 75), Duration.ofMillis(50 * 20))));
-                            e.getWorld().spawnParticle(Particle.WHITE_SMOKE, e.getEyeLocation(), 500, 0.2, 0.2, 0.2, 0.1);
 
                             new BukkitRunnable() {
                                 @Override
@@ -78,6 +77,19 @@ public class Objection extends Move {
                                     copy.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(3, 3, 3), new AxisAngle4f()));
                                 }
                             }.runTaskLater(plugin, 2);
+
+                            new BukkitRunnable() {
+                                int t = 90;
+                                @Override
+                                public void run() {
+                                    if (t <= 0) {
+                                        cancel();
+                                        return;
+                                    }
+                                    e.getWorld().spawnParticle(Particle.WHITE_SMOKE, e.getEyeLocation(), 50, 0.2, 0.2, 0.2, 0.1);
+                                    t--;
+                                }
+                            }.runTaskTimer(plugin, 0, 1);
 
                             new BukkitRunnable() {
                                 @Override

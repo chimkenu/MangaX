@@ -58,14 +58,15 @@ public class IceWall extends Move {
 
                         Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
                         direction = direction.normalize();
-                        Vector v = direction.multiply(2).add(new Vector(0, 0.2, 0));
+                        Vector v = direction.multiply(3).add(new Vector(0, 1, 0));
 
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_ICE_WALL, entity, e, 8, v);
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_ICE_WALL, entity, e, 4, v);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
                         }
 
+                        event.getTarget().setVelocity(event.getTarget().getVelocity().add(event.getKnockback()));
                         event.getTarget().damage(event.getDamage(), event.getSource());
                         event.getTarget().setNoDamageTicks(20);
                     }

@@ -70,6 +70,7 @@ public class ShootStyleLeap extends Move {
                     }
 
                     // Ground pound damage
+                    entity.damage(4, entity);
                     for (LivingEntity e : entity.getLocation().getNearbyLivingEntities(5)) {
                         if (e instanceof LivingEntity l) {
                             if (!l.getType().equals(EntityType.ARMOR_STAND) && l != entity) {

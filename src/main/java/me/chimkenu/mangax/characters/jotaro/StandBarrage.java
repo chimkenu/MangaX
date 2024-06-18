@@ -102,7 +102,7 @@ public class StandBarrage extends Move {
                     loc.add(loc.getDirection());
                     for (LivingEntity e : loc.getNearbyLivingEntities(1)) {
                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
-                            MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_STAND_BARRAGE, entity, e, 0.15, new Vector());
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_STAND_BARRAGE, entity, e, 0.4, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
                                 continue;
