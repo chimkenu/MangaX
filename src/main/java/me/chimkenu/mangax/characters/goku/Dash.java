@@ -48,7 +48,7 @@ public class Dash extends Move {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DASH, entity, e, 4, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
-                                return;
+                                continue;
                             }
                             e.damage(event.getDamage(), entity);
                             e.setVelocity(e.getVelocity().add(event.getKnockback()));

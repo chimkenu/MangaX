@@ -117,7 +117,7 @@ public class WaterWheel extends Move {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_STRIKING_TIDE, entity, e, 2.5, v);
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
-                                return;
+                                continue;
                             }
 
                             e.damage(event.getDamage(), entity);

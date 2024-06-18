@@ -90,7 +90,7 @@ public class DropRippleThrust extends Move {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.TANJIRO_DROP_RIPPLE_THRUST, entity, e, 6, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
-                                return;
+                                continue;
                             }
                             e.damage(event.getDamage(), entity);
                             e.setVelocity(e.getVelocity().add(event.getKnockback()));

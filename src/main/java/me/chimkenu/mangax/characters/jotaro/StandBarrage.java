@@ -105,7 +105,7 @@ public class StandBarrage extends Move {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_STAND_BARRAGE, entity, e, 0.15, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
-                                return;
+                                continue;
                             }
 
                             e.damage(event.getDamage(), entity);

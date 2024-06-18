@@ -101,7 +101,7 @@ public class MultiShadowCloneJutsu extends Move {
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_MULTI_SHADOW_CLONE_JUTSU, entity, e, 8, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
-                                    return;
+                                    continue;
                                 }
                                 e.damage(event.getDamage(), entity);
                                 e.setVelocity(e.getVelocity().add(event.getKnockback()));

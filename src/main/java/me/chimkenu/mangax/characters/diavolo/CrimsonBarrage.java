@@ -108,7 +108,7 @@ public class CrimsonBarrage extends Move {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_CRIMSON_BARRAGE, entity, e, 0.15, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
-                                return;
+                                continue;
                             }
                             e.damage(event.getDamage(), entity);
                             e.setVelocity(e.getVelocity().multiply(0.3).add(event.getKnockback()));

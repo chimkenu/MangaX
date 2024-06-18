@@ -28,7 +28,7 @@ public class DragonFist extends Move {
                     MoveTargetEvent event = new MoveTargetEvent(Moves.GOKU_DRAGON_FIST, entity, e, 6, new Vector());
                     Bukkit.getPluginManager().callEvent(event);
                     if (event.isCancelled()) {
-                        return;
+                        continue;
                     }
 
                     e.damage(event.getDamage(), entity);

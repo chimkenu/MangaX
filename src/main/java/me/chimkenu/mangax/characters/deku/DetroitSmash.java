@@ -27,7 +27,7 @@ public class DetroitSmash extends Move {
                     MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, e, 12, new Vector());
                     Bukkit.getPluginManager().callEvent(event);
                     if (event.isCancelled()) {
-                        return;
+                        continue;
                     }
                     e.setVelocity(e.getVelocity().add(event.getKnockback()));
                     e.damage(event.getDamage(), entity);

@@ -76,7 +76,7 @@ public class ShootStyleLeap extends Move {
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, l, 3, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
-                                    return;
+                                    continue;
                                 }
                                 l.setVelocity(e.getVelocity().add(event.getKnockback()));
                                 l.damage(event.getDamage(), entity);

@@ -59,7 +59,7 @@ public class Rasenshuriken extends Move {
                                             MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, entity, e, 10, new Vector());
                                             Bukkit.getPluginManager().callEvent(event);
                                             if (event.isCancelled()) {
-                                                return;
+                                                continue;
                                             }
                                             e.damage(event.getDamage(), entity);
                                             e.setVelocity(e.getVelocity().add(event.getKnockback()));
