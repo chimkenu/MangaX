@@ -8,11 +8,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class MoveListener implements Listener {
     private final JavaPlugin plugin;
+    private final HashMap<UUID, Long> players;
 
     public MoveListener(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -20,6 +25,7 @@ public class MoveListener implements Listener {
             if (move.move instanceof Listener listener)
                 plugin.getServer().getPluginManager().registerEvents(listener, plugin);
         }
+        this.players = new HashMap<>();
     }
 
     private void activateMove(Player player) {
@@ -85,6 +91,17 @@ public class MoveListener implements Listener {
 
     @EventHandler
     public void onLeftClick(PlayerArmSwingEvent e) {
+        Long data = players.get(e.getPlayer().getUniqueId());
+        if (data != null) {
+            long diff = System.currentTimeMillis() - data;
+            if (diff <= 10) return;
+        }
+
         activateMove(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent e) {
+        players.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 }
