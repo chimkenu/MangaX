@@ -6,3 +6,6 @@ commands:
   getitems:
     description: gets the items
     usage: /<command>
+  sommun:
+    description: summons the entities
+    usage: /<command>
