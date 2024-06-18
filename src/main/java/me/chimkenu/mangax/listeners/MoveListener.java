@@ -35,7 +35,7 @@ public class MoveListener implements Listener {
         }
 
         Move m = move.move;
-        if (player.getCooldown(m.getMaterial()) > m.getCooldown()) {
+        if (player.getCooldown(m.getMaterial()) >= m.getCooldown()) {
             if (m.getFollowUp() == null)
                 return;
 
