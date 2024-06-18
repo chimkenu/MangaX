@@ -52,6 +52,7 @@ public class BlockListener implements Listener {
                 toggleBlock(e.getTarget(), false);
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BREAK, SoundCategory.PLAYERS, 1, 1);
                 e.setDamage(e.getDamage() * 1.5);
+                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40, 4, false, false, true));
             }
             case PERFECT_BLOCK -> {
                 Bukkit.broadcastMessage("perfect block");
