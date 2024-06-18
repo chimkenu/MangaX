@@ -44,7 +44,7 @@ public class Dodge extends Move implements Listener {
     public void onDamage(MoveTargetEvent e) {
         LivingEntity target = e.getTarget();
         if (target.getScoreboardTags().contains("naruto-dodge")) {
-            if (e.getMove() == Moves.JOTARO_ZA_WARUDO) {
+            if (e.getMove().move.getMoveInfo().type() == MoveInfo.Type.CONTROL) {
                 target.removeScoreboardTag("naruto-dodge");
                 return;
             }
