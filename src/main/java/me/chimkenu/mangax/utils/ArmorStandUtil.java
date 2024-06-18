@@ -14,6 +14,7 @@ public class ArmorStandUtil {
         armorStand.setGravity(false);
         armorStand.setSilent(true);
         armorStand.setBasePlate(false);
+        armorStand.setArms(true);
         armorStand.addEquipmentLock(EquipmentSlot.HEAD, ArmorStand.LockType.REMOVING_OR_CHANGING);
         armorStand.addEquipmentLock(EquipmentSlot.CHEST, ArmorStand.LockType.REMOVING_OR_CHANGING);
         armorStand.addEquipmentLock(EquipmentSlot.LEGS, ArmorStand.LockType.REMOVING_OR_CHANGING);
