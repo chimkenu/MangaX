@@ -92,7 +92,9 @@ public class DashListener implements Listener {
                     cancel();
                     return;
                 }
-                player.setFoodLevel(Math.min(20, player.getFoodLevel() + 1));
+
+                if (!player.isSprinting())
+                    player.setFoodLevel(Math.min(20, player.getFoodLevel() + 1));
             }
         }.runTaskTimer(plugin, REGEN_RATE, REGEN_RATE));
     }
