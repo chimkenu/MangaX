@@ -108,7 +108,7 @@ public class HeavyHit extends Move {
                         direction = direction.normalize();
                         Vector v = livingEntity.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0));
 
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_HEAVY_HIT, entity, livingEntity, 0, v);
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_HEAVY_HIT, entity, livingEntity, 6, v);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
