@@ -42,8 +42,10 @@ public class MoveListener implements Listener {
                 return;
             }
 
-            m.getFollowUp().activate(plugin, player);
-            player.setCooldown(m.getMaterial(), m.getCooldown());
+            if (m.getFollowUp() != null) {
+                m.getFollowUp().activate(plugin, player);
+                player.setCooldown(m.getMaterial(), m.getCooldown());
+            }
             return;
         }
 
