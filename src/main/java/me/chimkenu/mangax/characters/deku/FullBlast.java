@@ -32,7 +32,7 @@ public class FullBlast extends Move {
                     }
 
                     if (i % 10 == 0) {
-                        entity.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 2000, 3, 1, 3, 0, null, true);
+                        entity.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 500, 3, 1, 3, 0, null, true);
                     }
 
                     i--;
