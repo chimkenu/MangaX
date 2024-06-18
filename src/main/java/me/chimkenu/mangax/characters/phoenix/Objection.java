@@ -9,6 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TextDisplay;
@@ -62,10 +63,7 @@ public class Objection extends Move {
                             objection.setShadowed(false);
                             objection.setInterpolationDelay(0);
                             objection.setInterpolationDuration(4);
-                            TextDisplay copy = (TextDisplay) objection.copy();
-                            copy.setInterpolationDelay(0);
-                            copy.setInterpolationDuration(4);
-                            copy.spawnAt(getRelativeLocation(objection.getLocation(), 0, 0, 0, 180, 0));
+                            objection.setBillboard(Display.Billboard.CENTER);
 
                             e.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 100, false, false, true));
                             e.showTitle(Title.title(Component.text("Objection!").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD), Component.text(""), Title.Times.times(Duration.ofMillis(50 * 5), Duration.ofMillis(50 * 75), Duration.ofMillis(50 * 20))));
@@ -74,7 +72,6 @@ public class Objection extends Move {
                                 @Override
                                 public void run() {
                                     objection.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(3, 3, 3), new AxisAngle4f()));
-                                    copy.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f(), new Vector3f(3, 3, 3), new AxisAngle4f()));
                                 }
                             }.runTaskLater(plugin, 2);
 
@@ -95,7 +92,6 @@ public class Objection extends Move {
                                 @Override
                                 public void run() {
                                     objection.remove();
-                                    copy.remove();
                                 }
                             }.runTaskLater(plugin, 80);
                         }
