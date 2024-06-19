@@ -60,7 +60,7 @@ public class SpiritDefense extends Move implements Listener {
             ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
             maya.getEquipment().setBoots(boots);
 
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, getFollowUpTime(), 3, false, false, true));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, getFollowUpTime(), 4, false, false, true));
 
             new BukkitRunnable() {
                 final Location loc = getRelativeLocation(maya.getLocation(), 0, 0, -3, 0, 0);
