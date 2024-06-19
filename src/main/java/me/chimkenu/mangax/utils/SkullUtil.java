@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerTextures;
 
 import java.net.URI;
+import java.util.UUID;
 
 public class SkullUtil {
     public static ItemStack getSkull(String skin) {
@@ -28,6 +29,14 @@ public class SkullUtil {
 
         playerProfile.setTextures(textures);
         meta.setPlayerProfile(playerProfile);
+        skull.setItemMeta(meta);
+        return skull;
+    }
+
+    public static ItemStack getSkull(UUID uuid) {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
         skull.setItemMeta(meta);
         return skull;
     }
