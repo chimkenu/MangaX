@@ -84,6 +84,7 @@ public class DashListener implements Listener {
     public void onRegenerate(EntityRegainHealthEvent e) {
         if (e.getEntity() instanceof Player player && e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
             player.setFoodLevel(player.getFoodLevel() - 4);
+            regenerate(player);
         }
     }
 
