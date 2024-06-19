@@ -79,7 +79,9 @@ public abstract class GUI {
 
     public interface Action {
         void click(Player player);
-        boolean isFixed();
+        default boolean isFixed() {
+            return true;
+        }
     }
 
     public ItemStack newGUIItem(Material material, Component displayName, boolean isGlowing, int amount) {
