@@ -77,7 +77,7 @@ public class IcePath extends Move {
 
     @Override
     public String[] getLore() {
-        return null;
+        return new String[] {};
     }
 
     @Override
