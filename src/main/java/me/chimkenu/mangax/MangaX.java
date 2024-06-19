@@ -10,20 +10,29 @@ public final class MangaX extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-        getConfig().options().copyDefaults();
-        saveDefaultConfig();
+        reloadConfig();
+
         getServer().getPluginManager().registerEvents(new MoveListener(this), this);
         getServer().getPluginManager().registerEvents(new DashListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new GUIListener(), this);
+        getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+
         getCommand("getitems").setExecutor(new GetItem());
         getCommand("sommun").setExecutor(new Summon());
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        saveConfig();
         BlockEffects.revertAllChanges();
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+        saveConfig();
     }
 }
