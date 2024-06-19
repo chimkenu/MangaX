@@ -1,12 +1,11 @@
 package me.chimkenu.mangax.characters;
 
 import me.chimkenu.mangax.enums.MoveInfo;
+import me.chimkenu.mangax.gui.GUI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
 
 public abstract class Move {
     protected Activate activate;
@@ -49,13 +48,12 @@ public abstract class Move {
         return name;
     }
 
-    public abstract ArrayList<Component> getLore();
+    public abstract String[] getLore();
 
     public ItemStack getItem() {
         ItemStack item = new ItemStack(getMaterial());
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = GUI.metaWithLore(item, getLore());
         meta.displayName(getName());
-        meta.lore(getLore());
         item.setItemMeta(meta);
         return item;
     }

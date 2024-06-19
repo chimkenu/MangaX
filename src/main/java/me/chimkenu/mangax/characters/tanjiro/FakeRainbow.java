@@ -19,8 +19,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class FakeRainbow extends Move {
@@ -100,7 +98,7 @@ public class FakeRainbow extends Move {
     }
 
     @Override
-    public ArrayList<Component> getLore() {
+    public String[] getLore() {
         return null;
     }
 

@@ -106,7 +106,7 @@ public class ShootStyleLeap extends Move {
     }
 
     @Override
-    public ArrayList<Component> getLore() {
-        return new ArrayList<>();
+    public String[] getLore() {
+        return new String[] {};
     }
 }

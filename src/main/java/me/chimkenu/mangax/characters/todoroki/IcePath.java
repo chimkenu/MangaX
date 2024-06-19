@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class IcePath extends Move {
@@ -77,7 +76,7 @@ public class IcePath extends Move {
     }
 
     @Override
-    public ArrayList<Component> getLore() {
+    public String[] getLore() {
         return null;
     }
 
