@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -88,6 +89,8 @@ public class MoveListener implements Listener {
             int cooldown = player.getCooldown(e.getMove().move.getMaterial());
             if (cooldown > 0 && cooldown < e.getMove().move.getCooldown()) {
                 e.cancel(MoveTriggerEvent.CancelReason.IN_COOLDOWN);
+            } else if (player.hasPotionEffect(PotionEffectType.HUNGER)) {
+                e.cancel(MoveTriggerEvent.CancelReason.STUNNED);
             }
         }
     }
