@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -47,7 +48,6 @@ public class BlockListener implements Listener {
             case BREAK -> {
                 BlockBreakEvent event = new BlockBreakEvent(e.getTarget());
                 Bukkit.getPluginManager().callEvent(event);
-                Bukkit.broadcastMessage("block broke");
 
                 toggleBlock(e.getTarget(), false);
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BREAK, SoundCategory.PLAYERS, 1, 1);
@@ -55,9 +55,13 @@ public class BlockListener implements Listener {
                 e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 40, 4, false, false, true));
             }
             case PERFECT_BLOCK -> {
-                Bukkit.broadcastMessage("perfect block");
-                if (e.getTarget() instanceof Player player)
-                    player.setFoodLevel(20);
+                if (e.getTarget() instanceof Player target)
+                    target.setFoodLevel(20);
+                if (e.getSource() instanceof Player source) {
+                    source.setFoodLevel(0);
+                    Bukkit.getPluginManager().callEvent(new FoodLevelChangeEvent(source, 0));
+                }
+                e.getSource().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 100, false, false, true));
                 e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1, false, false, true));
                 e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 3, false, false, true));
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1, 0);
@@ -91,7 +95,6 @@ public class BlockListener implements Listener {
         data.damageLeft -= damage;
 
         long time = System.currentTimeMillis() - data.time;
-        Bukkit.broadcastMessage(time + "ms");
         if (!data.hasBeenHit && time > 200 && time < 400) {
             return BlockResult.PERFECT_BLOCK;
         }
