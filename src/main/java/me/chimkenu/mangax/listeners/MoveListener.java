@@ -3,8 +3,10 @@ package me.chimkenu.mangax.listeners;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.Moves;
+import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -109,5 +111,12 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         players.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler
+    public void onMoveTarget(MoveTargetEvent e) {
+        if (e.getTarget() instanceof Player player && player.getGameMode() != GameMode.ADVENTURE) {
+            e.setCancelled(true);
+        }
     }
 }
