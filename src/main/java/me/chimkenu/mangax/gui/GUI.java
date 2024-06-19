@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +38,8 @@ public abstract class GUI {
         inventory.setItem(slot, item);
         if (action != null) {
             actions.put(slot, action);
+        } else {
+            actions.remove(slot);
         }
     }
 
@@ -62,6 +65,8 @@ public abstract class GUI {
         openInventories.put(player.getUniqueId(), getUuid());
     }
 
+    public abstract void onClose(Player player);
+
     public void delete() {
         openInventories.forEach((player, inventory) -> {
             if (getUuid() == inventory) {
@@ -79,7 +84,7 @@ public abstract class GUI {
 
     public interface Action {
         void click(Player player);
-        default boolean isFixed() {
+        default boolean isFixed(InventoryAction action) {
             return true;
         }
     }
