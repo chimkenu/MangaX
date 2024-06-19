@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.gui;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,24 +12,20 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class GUI {
     private final Inventory inventory;
     private final Map<Integer, Action> actions;
     private final UUID uuid;
-    private final boolean isFixed;
 
     public static final Map<UUID, GUI> inventoriesByUUID = new HashMap<>();
     public static final Map<UUID, UUID> openInventories = new HashMap<>();
 
-    public GUI(int size, Component name, boolean isFixed) {
+    public GUI(int size, Component name) {
         uuid = UUID.randomUUID();
         inventory = Bukkit.createInventory(null, size, name);
         actions = new HashMap<>();
-        this.isFixed = isFixed;
         inventoriesByUUID.put(getUuid(), this);
     }
 
@@ -66,29 +63,23 @@ public abstract class GUI {
     }
 
     public void delete() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            UUID uuid = openInventories.get(player.getUniqueId());
-            if (uuid.equals(getUuid())) {
-                player.closeInventory();
+        openInventories.forEach((player, inventory) -> {
+            if (getUuid() == inventory) {
+                Player p = Bukkit.getPlayer(player);
+                if (p != null)
+                    p.closeInventory();
             }
-        }
+        });
         inventoriesByUUID.remove(getUuid());
-    }
-
-    public static Map<UUID, GUI> getInventoriesByUUID() {
-        return inventoriesByUUID;
     }
 
     public Map<Integer, Action> getActions() {
         return actions;
     }
 
-    public boolean isFixed() {
-        return isFixed;
-    }
-
     public interface Action {
         void click(Player player);
+        boolean isFixed();
     }
 
     public ItemStack newGUIItem(Material material, Component displayName, boolean isGlowing, int amount) {
@@ -127,5 +118,15 @@ public abstract class GUI {
             item.setItemMeta(meta);
         }
         return item;
+    }
+
+    public static ItemMeta metaWithLore(ItemStack item, String... strings) {
+        ItemMeta meta = item.getItemMeta();
+        List<Component> lore = new ArrayList<>();
+        for (String s : strings) {
+            lore.add(Component.text(s).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        }
+        meta.lore(lore);
+        return meta;
     }
 }

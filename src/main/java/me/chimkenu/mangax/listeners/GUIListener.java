@@ -1,6 +1,8 @@
 package me.chimkenu.mangax.listeners;
 
+import me.chimkenu.mangax.events.GUICloseEvent;
 import me.chimkenu.mangax.gui.GUI;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,15 +29,15 @@ public class GUIListener implements Listener {
             return;
         }
 
-        GUI gui = GUI.getInventoriesByUUID().get(inventory_uuid);
+        GUI gui = GUI.inventoriesByUUID.get(inventory_uuid);
         GUI.Action action = gui.getActions().get(e.getSlot());
-
-        if (gui.isFixed()) {
-            e.setCancelled(true);
-        }
 
         if (action == null) {
             return;
+        }
+
+        if (action.isFixed()) {
+            e.setCancelled(true);
         }
 
         if (e.getClickedInventory() != null && e.getClickedInventory().getType() == InventoryType.PLAYER) {
@@ -48,6 +50,24 @@ public class GUIListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         UUID uuid = e.getPlayer().getUniqueId();
+        UUID guiUuid = GUI.openInventories.get(uuid);
+        if (guiUuid == null) {
+            return;
+        }
+
+        GUI gui = GUI.inventoriesByUUID.get(guiUuid);
+        if (gui == null) {
+            GUI.openInventories.remove(uuid);
+            return;
+        }
+
+        GUICloseEvent event = new GUICloseEvent((Player) e.getPlayer(), gui);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            e.getPlayer().openInventory(gui.getInventory());
+            return;
+        }
+
         GUI.openInventories.remove(uuid);
     }
 
