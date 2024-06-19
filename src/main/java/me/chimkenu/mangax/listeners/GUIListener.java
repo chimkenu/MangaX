@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.listeners;
 
 import me.chimkenu.mangax.gui.GUI;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,6 +59,7 @@ public class GUIListener implements Listener {
 
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent e) {
-        e.setCancelled(true);
+        if (e.getPlayer().getGameMode().equals(GameMode.ADVENTURE))
+            e.setCancelled(true);
     }
 }
