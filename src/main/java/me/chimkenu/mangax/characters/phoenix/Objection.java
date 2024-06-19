@@ -28,7 +28,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class Objection extends Move {
     public Objection() {
-        super(null, null, 10, 10, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, Component.text("Objection!").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 10, 100, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, Component.text("Objection!").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
 
