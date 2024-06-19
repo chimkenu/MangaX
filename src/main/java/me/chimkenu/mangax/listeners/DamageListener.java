@@ -36,7 +36,7 @@ public class DamageListener implements Listener {
                             cancel();
                             return;
                         }
-                        player.spawnParticle(Particle.DRIPPING_DRIPSTONE_LAVA, player.getLocation(), 3, 0.1, 0.3, 0.1, 0);
+                        player.getWorld().spawnParticle(Particle.DRIPPING_DRIPSTONE_LAVA, player.getLocation(), 2, 0.1, 0.3, 0.1, 0);
                     }
                 }.runTaskTimer(plugin, 0, 4);
             }
