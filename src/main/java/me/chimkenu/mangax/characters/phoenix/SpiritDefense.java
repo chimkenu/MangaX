@@ -118,10 +118,6 @@ public class SpiritDefense extends Move implements Listener {
 
     @Override
     public MoveInfo getMoveInfo() {
-        return null;
-    }
-
-    @EventHandler
-    public void onMoveTarget(MoveTargetEvent e) {
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.HIGH, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.BUFF, MoveInfo.Difficulty.TRIVIAL, 2, 1, getFollowUpTime(), false);
     }
 }

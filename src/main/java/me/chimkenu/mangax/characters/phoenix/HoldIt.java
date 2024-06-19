@@ -103,6 +103,6 @@ public class HoldIt extends Move {
 
     @Override
     public MoveInfo getMoveInfo() {
-        return null;
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.MID, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.AREA, MoveInfo.Difficulty.TRIVIAL, 7, getFollowUpTime(), 1, false);
     }
 }

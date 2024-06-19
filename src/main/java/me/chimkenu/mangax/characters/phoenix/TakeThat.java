@@ -56,7 +56,7 @@ public class TakeThat extends Move implements Listener {
 
     @Override
     public MoveInfo getMoveInfo() {
-        return null;
+        return new MoveInfo(MoveInfo.Damage.LOW, MoveInfo.Range.LONG, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 8, 1, 1, false);
     }
 
     @EventHandler

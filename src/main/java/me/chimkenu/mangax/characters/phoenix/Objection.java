@@ -108,6 +108,6 @@ public class Objection extends Move {
 
     @Override
     public MoveInfo getMoveInfo() {
-        return null;
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.CLOSE, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.CONTROL, MoveInfo.Difficulty.TRICKY, 3, getFollowUpTime(), 100, false);
     }
 }
