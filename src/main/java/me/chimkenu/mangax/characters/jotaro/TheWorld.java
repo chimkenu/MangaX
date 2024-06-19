@@ -114,6 +114,7 @@ public class TheWorld extends Move {
                     return;
                 }
 
+                target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 2, 0, false, false, false));
                 target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 2, 0, false, false, false));
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 4, false, false, false));
                 target.teleport(loc);
