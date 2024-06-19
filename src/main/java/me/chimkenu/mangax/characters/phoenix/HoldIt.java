@@ -24,7 +24,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class HoldIt extends Move {
     public HoldIt() {
-        super(null, null, 10, 20 * 10, Material.BEEHIVE, Component.text("Hold It!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 15, 20 * 10, Material.BEEHIVE, Component.text("Hold It!").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             Location loc = entity.getLocation();
@@ -38,7 +38,7 @@ public class HoldIt extends Move {
 
             BlockDisplay table = entity.getWorld().spawn(loc, BlockDisplay.class);
             table.setBlock(getMaterial().createBlockData());
-            table.setTransformation(new Transformation(new Vector3f(-1.5f, 9, -0.5f), new AxisAngle4f(), new Vector3f(3, 1, 1), new AxisAngle4f()));
+            table.setTransformation(new Transformation(new Vector3f(-1.5f, 14, -0.5f), new AxisAngle4f(), new Vector3f(3, 1, 1), new AxisAngle4f()));
             table.setInterpolationDelay(0);
             table.setInterpolationDuration(getFollowUpTime());
 
