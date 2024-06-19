@@ -1,6 +1,7 @@
 package me.chimkenu.mangax.enums;
 
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.characters.NullMove;
 import me.chimkenu.mangax.characters.deku.*;
 import me.chimkenu.mangax.characters.diavolo.*;
 import me.chimkenu.mangax.characters.goku.*;
@@ -12,6 +13,7 @@ import me.chimkenu.mangax.characters.todoroki.*;
 import org.bukkit.inventory.ItemStack;
 
 public enum Moves {
+    NULL (new NullMove()), // This is for empty slots in load out customization
     JOTARO_STAND_BARRAGE (new StandBarrage()),
     JOTARO_HEAVY_HIT (new HeavyHit()),
     JOTARO_STAND_JUMP (new StandJump()),
@@ -53,6 +55,7 @@ public enum Moves {
 
     public static Moves getMoveFromItem(ItemStack item) {
         for (Moves move : Moves.values()) {
+            if (move == Moves.NULL) continue;
             ItemStack moveItem = move.move.getItem();
             if (moveItem.getType().equals(item.getType()) && moveItem.displayName().equals(item.displayName())) {
                 return move;
