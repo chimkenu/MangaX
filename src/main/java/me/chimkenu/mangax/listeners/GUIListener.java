@@ -4,12 +4,14 @@ import me.chimkenu.mangax.events.GUICloseEvent;
 import me.chimkenu.mangax.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
@@ -32,16 +34,54 @@ public class GUIListener implements Listener {
         GUI gui = GUI.inventoriesByUUID.get(inventory_uuid);
         GUI.Action action = gui.getActions().get(e.getSlot());
 
+        if (e.getClickedInventory() == null || e.getClickedInventory() != gui.getInventory() || e.getAction().toString().contains("DROP") || e.getAction().toString().contains("HOTBAR") || e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            e.setCancelled(true);
+            return;
+        }
+
         if (action == null) {
             return;
         }
 
-        if (action.isFixed()) {
+        if (action.isFixed(e.getAction())) {
             e.setCancelled(true);
         }
 
-        if (e.getClickedInventory() != null && e.getClickedInventory().getType() == InventoryType.PLAYER) {
+        action.click(player);
+    }
+
+    @EventHandler
+    public void onDrag(InventoryDragEvent e) {
+        if (!(e.getWhoClicked() instanceof Player player)) {
             return;
+        }
+
+        UUID player_uuid = player.getUniqueId();
+
+        UUID inventory_uuid = GUI.openInventories.get(player_uuid);
+        if (inventory_uuid == null) {
+            return;
+        }
+
+        if (e.getInventorySlots().size() > 1) {
+            e.setCancelled(true);
+            return;
+        }
+
+        GUI gui = GUI.inventoriesByUUID.get(inventory_uuid);
+        GUI.Action action = gui.getActions().get(e.getInventorySlots().iterator().next());
+
+        if (e.getInventory() != gui.getInventory()) {
+            e.setCancelled(true);
+            return;
+        }
+
+        if (action == null) {
+            return;
+        }
+
+        if (action.isFixed(InventoryAction.PLACE_ALL)) {
+            e.setCancelled(true);
         }
 
         action.click(player);
@@ -69,6 +109,7 @@ public class GUIListener implements Listener {
         }
 
         GUI.openInventories.remove(uuid);
+        gui.onClose(event.getPlayer());
     }
 
     @EventHandler
