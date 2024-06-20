@@ -11,8 +11,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-
 public class FullBlast extends Move {
     public FullBlast() {
         super((plugin, entity) -> {

@@ -1,8 +1,8 @@
 package me.chimkenu.mangax.characters.diavolo;
 
+import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.RayTrace;
-import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -13,8 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
 
 public class TimeSkip extends Move {
     public TimeSkip() {

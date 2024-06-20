@@ -1,9 +1,9 @@
 package me.chimkenu.mangax.characters.diavolo;
 
-import me.chimkenu.mangax.enums.MoveInfo;
-import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.events.MoveTargetEvent;
+import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -14,8 +14,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import java.util.ArrayList;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 

@@ -1,10 +1,10 @@
 package me.chimkenu.mangax.characters.naruto;
 
+import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
-import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,9 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-
-import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.setUpArmorStand;
 
 public class Rasenshuriken extends Move {
     public Rasenshuriken() {

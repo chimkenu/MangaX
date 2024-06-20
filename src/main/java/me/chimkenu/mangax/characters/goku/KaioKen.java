@@ -13,8 +13,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-
 public class KaioKen extends Move {
     public KaioKen() {
         super((plugin, entity) -> {

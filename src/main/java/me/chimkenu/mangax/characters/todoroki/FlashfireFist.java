@@ -12,8 +12,6 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 
-import java.util.ArrayList;
-
 public class FlashfireFist extends Move {
     public FlashfireFist() {
         super((plugin, entity) -> {

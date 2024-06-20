@@ -1,9 +1,9 @@
 package me.chimkenu.mangax.characters.tanjiro;
 
+import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import me.chimkenu.mangax.utils.SkullUtil;
-import me.chimkenu.mangax.characters.Move;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -19,7 +19,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.newEulerAngle;
+import static me.chimkenu.mangax.utils.ArmorStandUtil.setUpArmorStand;
 
 public class FakeRainbow extends Move {
     public FakeRainbow() {

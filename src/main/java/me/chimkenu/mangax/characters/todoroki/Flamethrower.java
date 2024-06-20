@@ -16,8 +16,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-
 import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class Flamethrower extends Move {

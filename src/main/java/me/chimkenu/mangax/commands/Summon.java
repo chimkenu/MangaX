@@ -1,21 +1,19 @@
 package me.chimkenu.mangax.commands;
 
-import com.destroystokyo.paper.entity.ai.GoalType;
 import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.ai.goals.ReactiveTargetGoal;
-import me.chimkenu.mangax.characters.jotaro.StandBarrage;
+import me.chimkenu.mangax.enums.Characters;
 import me.chimkenu.mangax.enums.Moves;
-import me.chimkenu.mangax.utils.ArmorStandUtil;
+import me.chimkenu.mangax.gui.duels.MatchUp;
+import me.chimkenu.mangax.gui.personal.CharacterSelection;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 
 public class Summon implements CommandExecutor {
@@ -24,16 +22,13 @@ public class Summon implements CommandExecutor {
 
 
         if (sender instanceof Player player) {
-            if (args.length > 5) {
-                new BukkitRunnable() {
-                    int t = 200;
-                    @Override
-                    public void run() {
-                        if (t <= 0) cancel();
-                        player.getWorld().spawnParticle(Particle.DUST, ArmorStandUtil.getRelativeLocation(player.getLocation(), 1, 0, 0, 0, 0), 1, 0, 0, 0, 0, new Particle.DustOptions(Color.RED, 0.5f));
-                        t--;
-                    }
-                }.runTaskTimer(MangaX.getPlugin(MangaX.class), 1, 1);
+            if (args.length == 2) {
+                CharacterSelection characterSelection = new CharacterSelection(player, 0);
+                characterSelection.open(player);
+                return true;
+            } else if (args.length == 3) {
+                MatchUp matchUp = new MatchUp(MangaX.getPlugin(MangaX.class), List.of(player), List.of(player), 1);
+                matchUp.open(player);
                 return true;
             }
 
