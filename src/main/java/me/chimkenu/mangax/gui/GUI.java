@@ -65,7 +65,7 @@ public abstract class GUI {
         openInventories.put(player.getUniqueId(), getUuid());
     }
 
-    public abstract void onClose(Player player);
+    public abstract boolean onClose(Player player);
 
     public void delete() {
         openInventories.forEach((player, inventory) -> {
@@ -89,6 +89,17 @@ public abstract class GUI {
         }
     }
 
+    public ItemStack modifyItem(ItemStack item, Component displayName, boolean isGlowing) {
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(displayName);
+        if (isGlowing) {
+            meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
+
     public ItemStack newGUIItem(Material material, Component displayName, boolean isGlowing, int amount) {
         ItemStack item = new ItemStack(material);
         item.setAmount(amount);
@@ -99,8 +110,8 @@ public abstract class GUI {
                 meta.addEnchant(Enchantment.UNBREAKING, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            item.setItemMeta(meta);
         }
+        item.setItemMeta(meta);
         return item;
     }
 
@@ -110,21 +121,6 @@ public abstract class GUI {
 
     public ItemStack newGUIItem(Material material, Component displayName) {
         return newGUIItem(material, displayName, false);
-    }
-
-    public static ItemStack newItem(Material material, Component displayName, boolean isGlowing, int amount) {
-        ItemStack item = new ItemStack(material);
-        item.setAmount(amount);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.displayName(displayName);
-            if (isGlowing) {
-                meta.addEnchant(Enchantment.UNBREAKING, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            item.setItemMeta(meta);
-        }
-        return item;
     }
 
     public static ItemMeta metaWithLore(ItemStack item, String... strings) {
