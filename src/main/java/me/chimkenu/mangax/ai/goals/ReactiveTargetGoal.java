@@ -42,6 +42,7 @@ public class ReactiveTargetGoal extends TargetGoal {
                     super.start();
                     mob.getEquipment().setItemInMainHand(moves.move.getItem());
                     moves.move.getActivate().activate(plugin, mob);
+                    goal.moveMap.put(moves, moves.move.getCooldown());
                 }
 
                 @Override
