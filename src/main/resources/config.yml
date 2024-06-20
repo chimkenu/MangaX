@@ -1,14 +1,23 @@
 character-skins:
   jotaro: 'https://textures.minecraft.net/texture/d11b1c5625881f69c26a48a46eed714eb165858152e758e69b177993121ba5cb'
+  jotaro-locked: 'https://textures.minecraft.net/texture/b5d5eda33133e63ff7d615430c02db9b582fb373730039934eb89b0a8bc343d4'
   star-platinum: 'https://textures.minecraft.net/texture/4715f9f0ea82c9a12f9d47c668cb09158a95a765fc774d379cf54d2feeb3d50c'
   tanjiro: 'https://textures.minecraft.net/texture/e093232aea49600b5092fc182e0d5ce8999f78045dd7bda23c65cca6fcf5cf60'
+  tanjiro-locked: 'https://textures.minecraft.net/texture/d66f98b67c9d4f20be21065a854929713fbc93eff3cbdf50b38f773fcb73c977'
   goku: 'https://textures.minecraft.net/texture/6f3a7d78ccdbc1bb37bcda512802d24ccc561bdb89945c47f21ef4d5887a7c'
+  goku-locked: 'https://textures.minecraft.net/texture/5b897ffc609d3af4ba79fab46ef03e2002bd890bc5c0b9567808a6adc42d6efe'
   naruto: 'https://textures.minecraft.net/texture/e8f978113d0b515e807c919d347619bd2dffaca32a0c70da65aee053c1e2625d'
+  naruto-locked: 'https://textures.minecraft.net/texture/42bff7571732540eca2d2e0c40a379c5ec60c72da649231607dc3893cbafc6fb'
   deku: 'https://textures.minecraft.net/texture/9e7fb90d7de81b9cf5b0ae11fcf7d26ccee5117dc620d08e14e14879478825'
+  deku-locked: 'https://textures.minecraft.net/texture/a581366fe2cdc68e1deb94ab4baf7021c45a33b85d6a7a624e7d46d719dcb4af'
   diavolo: 'https://textures.minecraft.net/texture/8745baa44252685412ba91ea817a019caea09bb203b555d0be4e2badc61304b2'
+  diavolo-locked: 'https://textures.minecraft.net/texture/5e8ae19c9a5c3db72facce812a24af7cb5b4879d95667f3d9aaf1483a6999d1a'
   king-crimson: 'https://textures.minecraft.net/texture/243e3da6aa43dd4ea6488c9cd1d08e4f42ad656769f801495a8eff2b52de7b92'
   todoroki: 'https://textures.minecraft.net/texture/3fe5e85d0ded8f809fadb0a0863877879206ce88ef341464e11fca1a174fb651'
+  todoroki-locked: 'https://textures.minecraft.net/texture/d2a635dcba8f8e3eea39c08c1e5ab176dd5a6c5c4c5d1a06d2a9b220d5037ed9'
   phoenix: 'https://textures.minecraft.net/texture/7770aaaafa82612b651675099b34c46a91751f24ab0a9a33c61914c8bb268b11'
+  phoenix-locked: 'https://textures.minecraft.net/texture/43e233f69fccba7483dd0eb4ce32763b0b1cadb6fe246e79438a78d0484df4ea'
   maya: 'https://textures.minecraft.net/texture/ea016b3a526b6b42bee3ff22f44f088f906092eb90811fa70846f854336ba3fa'
+  question-mark: 'https://textures.minecraft.net/texture/2705fd94a0c431927fb4e639b0fcfb49717e412285a02b439e0112da22b2e2ec'
 
 player-data:
