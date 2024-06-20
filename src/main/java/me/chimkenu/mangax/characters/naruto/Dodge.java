@@ -26,7 +26,7 @@ public class Dodge extends Move implements Listener {
                     entity.removeScoreboardTag("naruto-dodge");
                 }
             }.runTaskLater(plugin, 20 * 5);
-        }, null, 0, 30 * 20, Material.FEATHER, Component.text("Dodge").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 0, 25 * 20, Material.FEATHER, Component.text("Dodge").color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override

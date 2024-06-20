@@ -23,7 +23,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Rasenshuriken extends Move {
     public Rasenshuriken() {
-        super(null, null, 0, 10 * 20, Material.NETHER_STAR, Component.text("Rasenshuriken").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 0, 12 * 20, Material.NETHER_STAR, Component.text("Rasenshuriken").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         activate = (plugin, entity) -> {
             ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
@@ -56,7 +56,7 @@ public class Rasenshuriken extends Move {
                                     stand.getWorld().spawnParticle(Particle.DUST, stand.getLocation(), 400, 3, 0.2, 3, 1, new Particle.DustOptions(Color.WHITE, 1.5f));
                                     for (LivingEntity e : stand.getLocation().getNearbyLivingEntities(5)) {
                                         if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
-                                            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, entity, e, 10, new Vector());
+                                            MoveTargetEvent event = new MoveTargetEvent(Moves.NARUTO_RASENSHURIKEN, entity, e, 11, new Vector());
                                             Bukkit.getPluginManager().callEvent(event);
                                             if (event.isCancelled()) {
                                                 continue;
