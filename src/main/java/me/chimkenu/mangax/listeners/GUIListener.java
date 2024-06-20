@@ -4,7 +4,6 @@ import me.chimkenu.mangax.events.GUICloseEvent;
 import me.chimkenu.mangax.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -108,8 +107,8 @@ public class GUIListener implements Listener {
             return;
         }
 
-        GUI.openInventories.remove(uuid);
-        gui.onClose(event.getPlayer());
+        if (gui.onClose(event.getPlayer()))
+            GUI.openInventories.remove(uuid);
     }
 
     @EventHandler
