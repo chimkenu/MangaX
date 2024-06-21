@@ -9,12 +9,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
 
 public class DamageListener implements Listener {
     private final JavaPlugin plugin;
+    private final HashMap<Player, BukkitTask> tasks;
 
     public DamageListener(JavaPlugin plugin) {
         this.plugin = plugin;
+        tasks = new HashMap<>();
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -29,16 +34,19 @@ public class DamageListener implements Listener {
         if (e.getEntity() instanceof Player player) {
             int threshold = 10;
             if (player.getHealth() < threshold) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (player.isDead() || player.getHealth() > threshold) {
-                            cancel();
-                            return;
+                if (!tasks.containsKey(player)) {
+                    tasks.put(player, new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!player.isOnline() || player.isDead() || player.getHealth() > threshold) {
+                                tasks.remove(player);
+                                cancel();
+                                return;
+                            }
+                            player.getWorld().spawnParticle(Particle.DRIPPING_DRIPSTONE_LAVA, player.getLocation(), (int) Math.round(threshold - player.getHealth()), 0.1, 0.3, 0.1, 0);
                         }
-                        player.getWorld().spawnParticle(Particle.DRIPPING_DRIPSTONE_LAVA, player.getLocation(), 1, 0.1, 0.3, 0.1, 0);
-                    }
-                }.runTaskTimer(plugin, 0, 5);
+                    }.runTaskTimer(plugin, 0, 5));
+                }
             }
         }
     }
