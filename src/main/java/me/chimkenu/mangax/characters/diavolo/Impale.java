@@ -21,7 +21,9 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Impale extends Move {
     public Impale() {
-        super((plugin, entity) -> {
+        super(null, null, 8, 10 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+
+        this.activate = (plugin, entity) -> {
 
             // Create stand
             ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
@@ -54,7 +56,7 @@ public class Impale extends Move {
 
             // Charge up
             new BukkitRunnable() {
-                int t = 15;
+                int t = getFollowUpTime();
                 @Override
                 public void run() {
                     if (entity.isDead()) {
@@ -70,7 +72,7 @@ public class Impale extends Move {
                             @Override
                             public void run() {
                                 clear();
-                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1)) {
+                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1.5)) {
                                     damage(e);
                                     return;
                                 }
@@ -110,8 +112,7 @@ public class Impale extends Move {
                     }
                 }
             }.runTaskTimer(plugin, 0, 1);
-
-        }, null, 15, 12 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        };
     }
 
     @Override

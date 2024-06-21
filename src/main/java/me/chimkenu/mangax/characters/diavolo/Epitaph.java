@@ -31,7 +31,7 @@ public class Epitaph extends Move implements Listener {
                     world.spawnParticle(Particle.DUST, getRelativeLocation(location, Math.log(index), 0, 0, 0, 0), 1, 0.05, 0.05, 0.05, 0.1, new Particle.DustOptions(Color.RED, 0.8f));
                 }, 0);
             }
-        }, null, 0, 25 * 20, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        }, null, 0, 15 * 20, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
     }
 
     @Override
