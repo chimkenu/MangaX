@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.listeners;
 
+import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.events.GUICloseEvent;
 import me.chimkenu.mangax.gui.GUI;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -107,8 +109,16 @@ public class GUIListener implements Listener {
             return;
         }
 
-        if (gui.onClose(event.getPlayer()))
+        if (gui.onClose(event.getPlayer())) {
             GUI.openInventories.remove(uuid);
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getPlayer().openInventory(gui.getInventory());
+                }
+            }.runTaskLater(MangaX.getPlugin(MangaX.class), 1);
+        }
     }
 
     @EventHandler
