@@ -52,7 +52,9 @@ public class DropRippleThrust extends Move {
             stand.getEquipment().setItemInMainHand(new ItemStack(Material.NETHERITE_SWORD));
 
             entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 15, 0, false, false, false));
-            entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(2)).add(new Vector(0, 0.5, 0)));
+            Location loc = entity.getLocation();
+            loc.setPitch(0);
+            entity.setVelocity(entity.getVelocity().add(loc.getDirection().multiply(2)).add(new Vector(0, 0.5, 0)));
 
             new BukkitRunnable() {
                 final HashSet<LivingEntity> targets = new HashSet<>();
