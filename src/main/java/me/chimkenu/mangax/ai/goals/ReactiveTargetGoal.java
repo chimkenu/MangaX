@@ -36,7 +36,7 @@ public class ReactiveTargetGoal extends TargetGoal {
         ArrayList<Action> actions = new ArrayList<>();
         moveMap.forEach((moves, cooldown) -> {
             MoveInfo info = moves.move.getMoveInfo();
-            if (cooldown <= 0) actions.add(new Action(this, info.chargeTime() + info.duration(), new RushStrafe(20, 1), null) {
+            if (cooldown <= 0) actions.add(new Action(this, info.chargeTime() + (info.type() == MoveInfo.Type.CONTROL ? 0 : info.duration()), new RushStrafe(20, 1), null) {
                 @Override
                 public void start() {
                     super.start();
