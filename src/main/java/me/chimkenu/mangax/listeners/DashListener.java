@@ -63,6 +63,12 @@ public class DashListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    // control direction when sneaking
+                    if (player.isSneaking()) {
+                        dash(new Vector(), player);
+                        return;
+                    }
+
                     Vector result = player.getLocation().toVector().subtract(origin);
                     result.setY(0);
                     result.add(result.clone().normalize());
