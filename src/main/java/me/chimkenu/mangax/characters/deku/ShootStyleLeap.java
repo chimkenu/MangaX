@@ -13,14 +13,13 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class ShootStyleLeap extends Move implements Listener {
     private final String tag = "deku.shoot_style_leap";
@@ -69,7 +68,7 @@ public class ShootStyleLeap extends Move implements Listener {
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         ItemStack item = new ItemStack(getMaterial());
         LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
         meta.setColor(Color.fromRGB(0x106761));
@@ -79,7 +78,7 @@ public class ShootStyleLeap extends Move implements Listener {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.LOW, MoveInfo.Range.LONG, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.AREA, MoveInfo.Difficulty.TRICKY, 15, 12, 10, false);
     }
 
