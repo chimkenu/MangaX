@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class FlashfireFist extends Move {
     public FlashfireFist() {
@@ -59,7 +60,7 @@ public class FlashfireFist extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.HIGH, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL,3, 1, 1, false);
     }
 }

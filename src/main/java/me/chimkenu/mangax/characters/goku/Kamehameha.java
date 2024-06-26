@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class Kamehameha extends Move {
     public Kamehameha() {
@@ -104,7 +105,7 @@ public class Kamehameha extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.HIGH, MoveInfo.Range.LONG, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.AREA, MoveInfo.Difficulty.TRICKY, 20, 40, 20, true);
     }
 }

@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class TakeThat extends Move implements Listener {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.LOW, MoveInfo.Range.LONG, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 8, 1, 1, false);
     }
 

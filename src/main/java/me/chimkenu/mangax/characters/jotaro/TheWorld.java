@@ -17,6 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class TheWorld extends Move {
     public TheWorld() {
@@ -136,7 +137,7 @@ public class TheWorld extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.MID, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.DEBUFF, MoveInfo.Difficulty.TYPICAL, 6, 20, 100, false);
     }
 }

@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
@@ -116,7 +117,7 @@ public class DropRippleThrust extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.MID, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL,7, 1, 10, false);
     }
 }

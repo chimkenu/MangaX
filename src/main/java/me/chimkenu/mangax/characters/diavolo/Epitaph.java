@@ -14,6 +14,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
@@ -40,7 +41,7 @@ public class Epitaph extends Move implements Listener {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.MANOEUVRE, MoveInfo.Difficulty.TYPICAL, 10, 1, 1, false);
     }
 

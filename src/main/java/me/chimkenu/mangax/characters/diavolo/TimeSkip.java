@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class TimeSkip extends Move {
     public TimeSkip() {
@@ -34,7 +35,7 @@ public class TimeSkip extends Move {
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         ItemStack item = new ItemStack(getMaterial());
         PotionMeta meta = (PotionMeta) item.getItemMeta();
         meta.setBasePotionType(PotionType.HEALING);
@@ -44,7 +45,7 @@ public class TimeSkip extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.LONG, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.FORWARD, MoveInfo.Type.MANOEUVRE, MoveInfo.Difficulty.TRIVIAL, 15, 1, 1, false);
     }
 

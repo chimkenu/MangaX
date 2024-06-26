@@ -4,6 +4,7 @@ import me.chimkenu.mangax.enums.MoveInfo;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class NullMove extends Move {
     public NullMove() {
@@ -16,12 +17,12 @@ public class NullMove extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return null;
     }
 
     @Override
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return new ItemStack(Material.AIR);
     }
 }

@@ -15,6 +15,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class DetroitSmash extends Move {
     public DetroitSmash() {
@@ -45,7 +46,7 @@ public class DetroitSmash extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.HIGH, MoveInfo.Range.CLOSE, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 2, 1, 1, false);
     }
 }

@@ -6,6 +6,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class Move {
     protected Activate activate;
@@ -15,7 +17,16 @@ public abstract class Move {
     private final Material material;
     private final Component name;
 
-    public Move(Activate activate, Activate followUp, int followUpTime, int cooldown, Material material, Component name) {
+    /**
+     * Creates a move that is used in game
+     * @param activate what will run on the first click
+     * @param followUp what will run after {@code getFollowUpTime()} number of ticks
+     * @param followUpTime time in ticks between activation and follow up
+     * @param cooldown time in ticks between follow up and next activate
+     * @param material the material (item) for the corresponding move
+     * @param name display name of item
+     */
+    public Move(@Nullable Activate activate, @Nullable Activate followUp, int followUpTime, int cooldown, @NotNull Material material, @NotNull Component name) {
         this.activate = activate;
         this.followUp = followUp;
         this.followUpTime = followUpTime;
@@ -24,11 +35,11 @@ public abstract class Move {
         this.name = name;
     }
 
-    public Activate getActivate() {
+    public @NotNull Activate getActivate() {
         return activate;
     }
 
-    public Activate getFollowUp() {
+    public @Nullable Activate getFollowUp() {
         return followUp;
     }
 
@@ -40,17 +51,25 @@ public abstract class Move {
         return cooldown;
     }
 
-    public Material getMaterial() {
+    public @NotNull Material getMaterial() {
         return material;
     }
 
-    public Component getName() {
+    public @NotNull Component getName() {
         return name;
     }
 
-    public abstract String[] getLore();
+    /**
+     * Returns the lore of a move
+     * @return a string array with the move's lore
+     */
+    public abstract @NotNull String[] getLore();
 
-    public ItemStack getItem() {
+    /**
+     * Generates a copy of the move
+     * @return an ItemStack
+     */
+    public @NotNull ItemStack getItem() {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta meta = GUI.metaWithLore(item, getLore());
         meta.displayName(getName());
@@ -58,5 +77,9 @@ public abstract class Move {
         return item;
     }
 
-    public abstract MoveInfo getMoveInfo();
+    /**
+     * Returns the MoveInfo of a move - this is used to let the AI know how to use the move
+     * @return the move's MoveInfo
+     */
+    public abstract @NotNull MoveInfo getMoveInfo();
 }

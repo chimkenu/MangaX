@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 public class FullBlast extends Move {
     public FullBlast() {
@@ -45,7 +46,7 @@ public class FullBlast extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.DEBUFF, MoveInfo.Difficulty.TRIVIAL, 5, 1, 5 * 20, false);
     }
 }

@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.newEulerAngle;
 import static me.chimkenu.mangax.utils.ArmorStandUtil.setUpArmorStand;
@@ -104,7 +105,7 @@ public class FakeRainbow extends Move {
     }
 
     @Override
-    public MoveInfo getMoveInfo() {
+    public @NotNull MoveInfo getMoveInfo() {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.BUFF, MoveInfo.Difficulty.TRIVIAL, 10, 1, 60, false);
     }
 }
