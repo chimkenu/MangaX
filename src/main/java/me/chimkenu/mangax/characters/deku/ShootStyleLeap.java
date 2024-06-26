@@ -1,5 +1,7 @@
 package me.chimkenu.mangax.characters.deku;
 
+import io.papermc.paper.event.entity.EntityMoveEvent;
+import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
@@ -12,14 +14,21 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class ShootStyleLeap extends Move {
+public class ShootStyleLeap extends Move implements Listener {
+    private final String tag = "deku.shoot_style_leap";
+
     public ShootStyleLeap() {
-        super((plugin, entity) -> {
+        super(null, null, 20, 15 * 20, Material.LEATHER_HELMET, Component.text("Shoot Style Leap").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+
+        this.activate = (plugin, entity) -> {
             // Silly jump effects
             Location loc = entity.getLocation();
             loc.setY(loc.getY() + 0.1);
@@ -40,52 +49,23 @@ public class ShootStyleLeap extends Move {
                     Location loc = entity.getLocation();
                     loc.setPitch(0);
                     entity.setVelocity(entity.getVelocity().add(loc.getDirection().multiply(3)));
+
+                    // Give entity tag after launch
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            entity.addScoreboardTag(tag);
+                        }
+                    }.runTaskLater(plugin, 1);
                 }
             }.runTaskLater(plugin, 1);
+        };
 
-        }, (plugin, entity) -> {
-            entity.setVelocity(entity.getVelocity().add(new Vector(0, -2, 0)));
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (entity instanceof Player player && !player.isOnline()) {
-                        cancel();
-                        return;
-                    }
-
-                    if (entity.isDead()) {
-                        cancel();
-                        return;
-                    }
-
-                    // Silly ground pound effect
-                    Location loc = entity.getLocation();
-                    loc.setPitch(0);
-                    loc.add(0, 0.2, 0);
-                    for (int i = 0; i < 20; i++) {
-                        loc.setYaw(i * 18);
-                        ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 6, 5, (world, location, index) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
-                    }
-
-                    // Ground pound damage
-                    entity.damage(2, entity);
-                    for (LivingEntity e : entity.getLocation().getNearbyLivingEntities(5)) {
-                        if (e instanceof LivingEntity l) {
-                            if (!l.getType().equals(EntityType.ARMOR_STAND) && l != entity) {
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, l, 3, new Vector());
-                                Bukkit.getPluginManager().callEvent(event);
-                                if (event.isCancelled()) {
-                                    continue;
-                                }
-                                l.setVelocity(e.getVelocity().add(event.getKnockback()));
-                                l.damage(event.getDamage(), entity);
-                            }
-                        }
-                    }
-                }
-            }.runTaskLater(plugin, 15);
-
-        }, 12, 15 * 20, Material.LEATHER_HELMET, Component.text("Shoot Style Leap").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        this.followUp = (plugin, entity) -> {
+            if (entity.getScoreboardTags().contains(tag)) {
+                entity.setVelocity(entity.getVelocity().add(new Vector(0, -2, 0)));
+            }
+        };
     }
 
     @Override
@@ -106,5 +86,35 @@ public class ShootStyleLeap extends Move {
     @Override
     public String[] getLore() {
         return new String[] {};
+    }
+
+    @EventHandler
+    public void onLand(EntityMoveEvent e) {
+        LivingEntity entity = e.getEntity();
+        if (entity.getScoreboardTags().contains("deku.shoot_style_leap") && entity.getLocation().subtract(0, 0.01, 0).getBlock().isPassable()) {
+
+            // Silly ground pound effect
+            Location loc = entity.getLocation();
+            loc.setPitch(0);
+            loc.add(0, 0.2, 0);
+            for (int i = 0; i < 20; i++) {
+                loc.setYaw(i * 18);
+                ParticleEffects.create(MangaX.getPlugin(MangaX.class), loc.getWorld(), loc.toVector(), loc.getDirection(), 6, 5, (world, location, index) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
+            }
+
+            // Ground pound damage
+            entity.damage(2, entity);
+            for (LivingEntity l : entity.getLocation().getNearbyLivingEntities(5)) {
+                if (!l.getType().equals(EntityType.ARMOR_STAND) && l != entity) {
+                    MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, l, 8, new Vector());
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        continue;
+                    }
+                    l.setVelocity(l.getVelocity().add(event.getKnockback()));
+                    l.damage(event.getDamage(), entity);
+                }
+            }
+        }
     }
 }
