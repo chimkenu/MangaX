@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -51,7 +52,7 @@ public class DashListener implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
-        if (!player.getGameMode().equals(GameMode.ADVENTURE)) {
+        if (!player.getGameMode().equals(GameMode.ADVENTURE) || player.hasPotionEffect(PotionEffectType.HUNGER)) {
             return;
         }
 
