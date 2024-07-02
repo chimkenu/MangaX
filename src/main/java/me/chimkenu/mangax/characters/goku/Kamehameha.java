@@ -4,6 +4,7 @@ import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
+import me.chimkenu.mangax.utils.ArmorStandUtil;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -37,7 +38,7 @@ public class Kamehameha extends Move {
                         cancel();
                         return;
                     }
-                    entity.getWorld().spawnParticle(Particle.FLASH, entity.getLocation(), 1, 0, 0, 0, 0);
+                    entity.getWorld().spawnParticle(Particle.FLASH, ArmorStandUtil.getRelativeLocation(entity.getLocation(), 0, 1, -1, 0, 0), 1, 0, 0, 0, 0);
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
