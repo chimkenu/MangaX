@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -126,8 +127,14 @@ public class MoveListener implements Listener {
         if (!(m instanceof Punch punch))
             return;
 
+        Long time = players.get(player.getUniqueId());
+        if (time != null && System.currentTimeMillis() - time < 10)
+            return;
+        players.put(player.getUniqueId(), System.currentTimeMillis());
+
         e.setCancelled(true);
         punch.punch(plugin, player, target, player.getCooldown(m.getMaterial()) >= m.getCooldown());
+        activateMove(player);
     }
 
     @EventHandler
@@ -139,6 +146,16 @@ public class MoveListener implements Listener {
     public void onMoveTarget(MoveTargetEvent e) {
         if (e.getTarget() instanceof Player player && player.getGameMode() != GameMode.ADVENTURE) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent e) {
+        for (int i = 0; i < 9; i++) {
+            ItemStack item = e.getPlayer().getInventory().getItem(i);
+            if (item != null) {
+                e.getPlayer().setCooldown(item.getType(), 0);
+            }
         }
     }
 }
