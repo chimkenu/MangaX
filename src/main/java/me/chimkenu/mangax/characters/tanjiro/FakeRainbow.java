@@ -69,21 +69,8 @@ public class FakeRainbow extends Move {
 
                     if (t <= 0) {
                         entity.getWorld().spawnParticle(Particle.FLAME, entity.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
-                        entity.getWorld().spawnParticle(Particle.FLAME, stand.getEyeLocation(), 20, 0.5, 0.3, 0.5, 0.1);
                         cancel();
                         return;
-                    }
-
-                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.1, 0, 0.1, 0.05);
-
-                    if (t % 10 == 0) {
-                        Location loc = stand.getLocation();
-                        loc.setPitch(0);
-                        loc.add(0, 0.1, 0);
-                        for (int i = 0; i < 20; i++) {
-                            loc.setYaw(i * 18);
-                            ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 5, 10, (world, location, index) -> world.spawnParticle(Particle.FLAME, location, 0, 0, 1, 0, 0.1), 0);
-                        }
                     }
 
                     t--;
