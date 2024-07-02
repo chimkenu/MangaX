@@ -3,9 +3,12 @@ version: '${version}'
 main: me.chimkenu.mangax.MangaX
 api-version: '1.20'
 commands:
-  getitems:
-    description: gets the items
+  kit:
+    description: kit selector and hotbar load out
     usage: /<command>
   sommun:
     description: summons the entities
+    usage: /<command>
+  truce:
+    description: Truce with other players
     usage: /<command>

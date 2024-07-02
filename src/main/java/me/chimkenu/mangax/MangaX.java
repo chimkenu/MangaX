@@ -1,6 +1,5 @@
 package me.chimkenu.mangax;
 
-import me.chimkenu.mangax.commands.GetItem;
 import me.chimkenu.mangax.commands.KitCommand;
 import me.chimkenu.mangax.commands.Summon;
 import me.chimkenu.mangax.commands.TruceCommand;
