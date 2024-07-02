@@ -61,9 +61,8 @@ public class BlockListener implements Listener {
                     source.setFoodLevel(0);
                     Bukkit.getPluginManager().callEvent(new FoodLevelChangeEvent(source, 0));
                 }
-                e.getSource().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 100, 100, false, false, true));
-                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1, false, false, true));
-                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 3, false, false, true));
+                e.getSource().addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 100, false, false, true));
+                e.getTarget().addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 4, false, false, true));
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1, 0);
                 e.setCancelled(true);
             }
