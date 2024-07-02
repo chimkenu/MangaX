@@ -2,15 +2,19 @@ package me.chimkenu.mangax.listeners;
 
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import me.chimkenu.mangax.characters.Move;
+import me.chimkenu.mangax.characters.Punch;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -106,6 +110,24 @@ public class MoveListener implements Listener {
         }
 
         activateMove(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player player) || !(e.getEntity() instanceof LivingEntity target)) {
+            return;
+        }
+
+        // check if player is using a move and if it implements the Punch interface
+        Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
+        if (move == null)
+            return;
+        Move m = move.move;
+        if (!(m instanceof Punch punch))
+            return;
+
+        e.setCancelled(true);
+        punch.punch(plugin, player, target, player.getCooldown(m.getMaterial()) >= m.getCooldown());
     }
 
     @EventHandler
