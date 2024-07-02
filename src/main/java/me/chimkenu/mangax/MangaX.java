@@ -1,7 +1,9 @@
 package me.chimkenu.mangax;
 
 import me.chimkenu.mangax.commands.GetItem;
+import me.chimkenu.mangax.commands.KitCommand;
 import me.chimkenu.mangax.commands.Summon;
+import me.chimkenu.mangax.commands.TruceCommand;
 import me.chimkenu.mangax.listeners.*;
 import me.chimkenu.mangax.utils.BlockEffects;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,9 +19,12 @@ public final class MangaX extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new GUIListener(), this);
         getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+        TruceListener truceListener = new TruceListener();
+        getServer().getPluginManager().registerEvents(truceListener, this);
 
-        getCommand("getitems").setExecutor(new GetItem());
         getCommand("sommun").setExecutor(new Summon());
+        getCommand("kit").setExecutor(new KitCommand());
+        getCommand("truce").setExecutor(new TruceCommand(truceListener));
     }
 
     @Override
