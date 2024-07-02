@@ -2,10 +2,10 @@ package me.chimkenu.mangax.commands;
 
 import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.ai.goals.ReactiveTargetGoal;
-import me.chimkenu.mangax.enums.Characters;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.gui.duels.MatchUp;
 import me.chimkenu.mangax.gui.personal.CharacterSelection;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,8 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Summon implements CommandExecutor {
     @Override
@@ -22,19 +23,16 @@ public class Summon implements CommandExecutor {
 
 
         if (sender instanceof Player player) {
-            if (args.length == 2) {
-                CharacterSelection characterSelection = new CharacterSelection(player, 0);
-                characterSelection.open(player);
-                return true;
-            } else if (args.length == 3) {
-                MatchUp matchUp = new MatchUp(MangaX.getPlugin(MangaX.class), List.of(player), List.of(player), 1);
-                matchUp.open(player);
+            if (args.length == 0) {
+                player.sendMessage(Component.text("put the name of a character like /sommun JOTARO"));
                 return true;
             }
 
+            Set<Moves> moveSet = Arrays.stream(Moves.values()).filter(m -> m.toString().contains(args[0])).collect(Collectors.toSet());
+
             Husk mob = player.getWorld().spawn(player.getLocation(), Husk.class);
             Bukkit.getMobGoals().removeAllGoals(mob);
-            Bukkit.getMobGoals().addGoal(mob, 0, new ReactiveTargetGoal(MangaX.getPlugin(MangaX.class), mob, Set.of(Moves.JOTARO_STAND_BARRAGE, Moves.JOTARO_HEAVY_HIT, Moves.JOTARO_STAND_JUMP, Moves.JOTARO_ZA_WARUDO)));
+            Bukkit.getMobGoals().addGoal(mob, 0, new ReactiveTargetGoal(MangaX.getPlugin(MangaX.class), mob, moveSet));
             mob.setTarget(player);
         }
         return true;
