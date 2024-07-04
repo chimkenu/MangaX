@@ -13,7 +13,8 @@ public enum Characters {
     DEKU,
     DIAVOLO,
     TODOROKI,
-    PHOENIX;
+    PHOENIX,
+    GOJO;
 
     public static Characters getCharacterFromItem(ItemStack item) {
         ItemMeta meta = item.getItemMeta();

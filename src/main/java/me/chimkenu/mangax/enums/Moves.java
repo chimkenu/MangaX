@@ -4,6 +4,7 @@ import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.characters.NullMove;
 import me.chimkenu.mangax.characters.deku.*;
 import me.chimkenu.mangax.characters.diavolo.*;
+import me.chimkenu.mangax.characters.gojo.*;
 import me.chimkenu.mangax.characters.goku.*;
 import me.chimkenu.mangax.characters.jotaro.*;
 import me.chimkenu.mangax.characters.naruto.*;
@@ -45,7 +46,11 @@ public enum Moves {
     PHOENIX_TAKE_THAT (new TakeThat()),
     PHOENIX_HOLD_IT (new HoldIt()),
     PHOENIX_OBJECTION (new Objection()),
-    PHOENIX_SPIRIT_DEFENSE (new SpiritDefense());
+    PHOENIX_SPIRIT_DEFENSE (new SpiritDefense()),
+    GOJO_BACKHAND (new Backhand()),
+    GOJO_RED_REVERSAL (new RedReversal()),
+    GOJO_COLLAPSING_BLUE (new CollapsingBlue()),
+    GOJO_REVERSE_CURSED_TECHNIQUE (new ReverseCursedTechnique());
 
     public final Move move;
 
