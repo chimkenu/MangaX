@@ -68,12 +68,12 @@ public class Impale extends Move {
 
                     // Actual attack
                     if (t <= 0) {
-                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 2, 0, 0));
+                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 1, 0, 0));
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 clear();
-                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1.5)) {
+                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1.75)) {
                                     damage(e);
                                     return;
                                 }
@@ -99,7 +99,7 @@ public class Impale extends Move {
 
                 private void damage(LivingEntity e) {
                     if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, entity, e, 12, new Vector());
+                        MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, entity, e, 9, new Vector());
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
                             return;
