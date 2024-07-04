@@ -18,6 +18,8 @@ character-skins:
   phoenix: 'https://textures.minecraft.net/texture/7770aaaafa82612b651675099b34c46a91751f24ab0a9a33c61914c8bb268b11'
   phoenix-locked: 'https://textures.minecraft.net/texture/43e233f69fccba7483dd0eb4ce32763b0b1cadb6fe246e79438a78d0484df4ea'
   maya: 'https://textures.minecraft.net/texture/ea016b3a526b6b42bee3ff22f44f088f906092eb90811fa70846f854336ba3fa'
+  gojo: 'https://textures.minecraft.net/texture/43bfdb624d601d0bfa46b442d036934f843744fbfdf8563a717165f74875cbe2'
+  gojo-locked: 'https://textures.minecraft.net/texture/21c9a4144f5ca1899ca59e3ef19e1206c0cf4b5acdc4f9c3e44186042f56e577'
   question-mark: 'https://textures.minecraft.net/texture/2705fd94a0c431927fb4e639b0fcfb49717e412285a02b439e0112da22b2e2ec'
 
 player-data:
