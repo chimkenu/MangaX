@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -156,6 +157,13 @@ public class MoveListener implements Listener {
             if (item != null) {
                 e.getPlayer().setCooldown(item.getType(), 0);
             }
+        }
+    }
+
+    @EventHandler
+    public void onRightClick(PlayerInteractAtEntityEvent e) {
+        if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+            e.setCancelled(true);
         }
     }
 }
