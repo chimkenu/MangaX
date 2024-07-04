@@ -22,4 +22,9 @@ character-skins:
   gojo-locked: 'https://textures.minecraft.net/texture/21c9a4144f5ca1899ca59e3ef19e1206c0cf4b5acdc4f9c3e44186042f56e577'
   question-mark: 'https://textures.minecraft.net/texture/2705fd94a0c431927fb4e639b0fcfb49717e412285a02b439e0112da22b2e2ec'
 
+map-data:
+  map-prefix: 'mangax'
+  active-world-prefix: 'game'
+  worlds-per-map: 1
+
 player-data:
