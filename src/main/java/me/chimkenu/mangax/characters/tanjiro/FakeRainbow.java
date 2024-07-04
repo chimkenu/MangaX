@@ -73,6 +73,7 @@ public class FakeRainbow extends Move {
                         return;
                     }
 
+                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.3, 0.1, 0.3, 0.1);
                     t--;
                 }
 
