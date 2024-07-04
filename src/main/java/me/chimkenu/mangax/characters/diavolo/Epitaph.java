@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,14 +46,14 @@ public class Epitaph extends Move implements Listener {
         return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.SELF, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.OTHER, MoveInfo.Type.MANOEUVRE, MoveInfo.Difficulty.TYPICAL, 10, 1, 1, false);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(MoveTargetEvent e) {
         LivingEntity target = e.getTarget();
         if (!target.getScoreboardTags().contains("diavolo-epitaph")) {
             return;
         }
 
-        if (e.getDamage() <= 0 && e.getMove().move.getMoveInfo().type() != MoveInfo.Type.CONTROL) {
+        if (e.isCancelled() || (e.getDamage() <= 0 && e.getMove().move.getMoveInfo().type() != MoveInfo.Type.CONTROL)) {
             return;
         }
 
