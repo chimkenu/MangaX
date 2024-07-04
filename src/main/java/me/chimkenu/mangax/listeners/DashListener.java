@@ -52,11 +52,15 @@ public class DashListener implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
-        if (!player.getGameMode().equals(GameMode.ADVENTURE) || player.hasPotionEffect(PotionEffectType.HUNGER)) {
+        if (!player.getGameMode().equals(GameMode.ADVENTURE)) {
             return;
         }
 
         e.setCancelled(true);
+        if (player.hasPotionEffect(PotionEffectType.HUNGER)) {
+            return;
+        }
+
         if (player.getFoodLevel() >= DASH_COST) {
             player.setFoodLevel(player.getFoodLevel() - DASH_COST);
 
