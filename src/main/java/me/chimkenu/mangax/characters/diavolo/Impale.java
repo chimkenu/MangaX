@@ -68,17 +68,23 @@ public class Impale extends Move {
 
                     // Actual attack
                     if (t <= 0) {
-                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 1, 0, 0));
+                        rightHand.teleport(getRelativeLocation(stand.getLocation(), -0.5, 0.4, 1.5, 0, 0));
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                clear();
-                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1.75)) {
-                                    damage(e);
-                                    return;
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        clear();
+                                    }
+                                }.runTaskLater(plugin, 4);
+
+                                for (LivingEntity e : rightHand.getLocation().getNearbyLivingEntities(1)) {
+                                    if (damage(e))
+                                        return;
                                 }
                             }
-                        }.runTaskLater(plugin, 2);
+                        }.runTaskLater(plugin, 4);
                         cancel();
                         return;
                     }
@@ -97,12 +103,12 @@ public class Impale extends Move {
                     rightHand.remove();
                 }
 
-                private void damage(LivingEntity e) {
+                private boolean damage(LivingEntity e) {
                     if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
                         MoveTargetEvent event = new MoveTargetEvent(Moves.DIAVOLO_IMPALE, entity, e, 9, new Vector());
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
-                            return;
+                            return true;
                         }
                         e.damage(event.getDamage(), entity);
                         e.setVelocity(e.getVelocity().add(event.getKnockback()));
@@ -110,7 +116,9 @@ public class Impale extends Move {
                         e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 0.5f);
                         e.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, e.getEyeLocation(), 6, 0.2, 0.2, 0.2, 0.4);
                         e.getWorld().spawnParticle(Particle.BLOCK, e.getEyeLocation(), 100, 0.2, 0.4, 0.2, 0.5, Material.REDSTONE_BLOCK.createBlockData());
+                        return true;
                     }
+                    return false;
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
