@@ -36,7 +36,7 @@ public class TimeSkip extends Move {
 
     @Override
     public @NotNull ItemStack getItem() {
-        ItemStack item = new ItemStack(getMaterial());
+        ItemStack item = super.getItem();
         PotionMeta meta = (PotionMeta) item.getItemMeta();
         meta.setBasePotionType(PotionType.HEALING);
         meta.displayName(getName());
