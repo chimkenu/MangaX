@@ -1,11 +1,14 @@
 package me.chimkenu.mangax.characters;
 
+import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.gui.GUI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,8 +76,17 @@ public abstract class Move {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta meta = GUI.metaWithLore(item, getLore());
         meta.displayName(getName());
+        meta.getPersistentDataContainer().set(getKey(), PersistentDataType.BOOLEAN, true);
         item.setItemMeta(meta);
         return item;
+    }
+
+    /**
+     * Gets the unique key of the move
+     * @return NamespacedKey of the move
+     */
+    public NamespacedKey getKey() {
+        return new NamespacedKey(MangaX.getPlugin(MangaX.class), getClass().getName());
     }
 
     /**

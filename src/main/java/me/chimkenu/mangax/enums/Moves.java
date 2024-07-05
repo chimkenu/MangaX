@@ -11,6 +11,7 @@ import me.chimkenu.mangax.characters.naruto.*;
 import me.chimkenu.mangax.characters.phoenix.*;
 import me.chimkenu.mangax.characters.tanjiro.*;
 import me.chimkenu.mangax.characters.todoroki.*;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 public enum Moves {
@@ -19,6 +20,7 @@ public enum Moves {
     JOTARO_HEAVY_HIT (new HeavyHit()),
     JOTARO_STAND_JUMP (new StandJump()),
     JOTARO_ZA_WARUDO (new TheWorld()),
+    JOTARO_BALL_BEARING (new BallBearing()),
     TANJIRO_DROP_RIPPLE_THRUST (new DropRippleThrust()),
     TANJIRO_WATER_WHEEL (new WaterWheel()),
     TANJIRO_STRIKING_TIDE (new StrikingTide()),
@@ -61,10 +63,7 @@ public enum Moves {
     public static Moves getMoveFromItem(ItemStack item) {
         for (Moves move : Moves.values()) {
             if (move == Moves.NULL) continue;
-            ItemStack moveItem = move.move.getItem();
-            if (moveItem.getType().equals(item.getType()) && moveItem.displayName().equals(item.displayName())) {
-                return move;
-            }
+            if (item.getItemMeta().getPersistentDataContainer().has(move.move.getKey())) return move;
         }
         return null;
     }
