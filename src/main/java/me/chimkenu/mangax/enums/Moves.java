@@ -13,6 +13,7 @@ import me.chimkenu.mangax.characters.tanjiro.*;
 import me.chimkenu.mangax.characters.todoroki.*;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public enum Moves {
     NULL (new NullMove()), // This is for empty slots in load out customization
@@ -63,7 +64,8 @@ public enum Moves {
     public static Moves getMoveFromItem(ItemStack item) {
         for (Moves move : Moves.values()) {
             if (move == Moves.NULL) continue;
-            if (item.getItemMeta().getPersistentDataContainer().has(move.move.getKey())) return move;
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta.getPersistentDataContainer().has(move.move.getKey())) return move;
         }
         return null;
     }
