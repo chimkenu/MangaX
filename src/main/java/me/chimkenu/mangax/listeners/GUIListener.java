@@ -35,7 +35,13 @@ public class GUIListener implements Listener {
         GUI gui = GUI.inventoriesByUUID.get(inventory_uuid);
         GUI.Action action = gui.getActions().get(e.getSlot());
 
-        if (e.getClickedInventory() == null || e.getClickedInventory() != gui.getInventory() || e.getAction().toString().contains("DROP") || e.getAction().toString().contains("HOTBAR") || e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+        if (e.getClickedInventory() == null ||
+                e.getClickedInventory() != gui.getInventory() ||
+                e.getAction().toString().contains("DROP") ||
+                e.getAction().toString().contains("HOTBAR") ||
+                e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY ||
+                e.getAction() == InventoryAction.PLACE_ONE ||
+                e.getAction() == InventoryAction.PICKUP_HALF) {
             e.setCancelled(true);
             return;
         }
@@ -64,7 +70,7 @@ public class GUIListener implements Listener {
             return;
         }
 
-        if (e.getInventorySlots().size() > 1) {
+        if (e.getInventorySlots().size() > 1 || e.getOldCursor().getAmount() > 1) {
             e.setCancelled(true);
             return;
         }
