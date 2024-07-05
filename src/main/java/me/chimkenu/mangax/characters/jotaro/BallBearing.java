@@ -108,18 +108,32 @@ public class BallBearing extends Move implements Listener {
 
                 source.getWorld().playSound(e.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.25f, 0.5f);
                 source.getWorld().spawnParticle(Particle.SMOKE, e.getEntity().getLocation(), 10, 0.1, 0.1, 0.1, 0.1);
-                for (LivingEntity target : e.getEntity().getLocation().getNearbyLivingEntities(1.6)) {
-                    if (!target.getType().equals(EntityType.ARMOR_STAND) && target != source) {
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_BALL_BEARING, source, target, 2.5, new Vector());
-                        Bukkit.getPluginManager().callEvent(event);
-                        if (event.isCancelled()) {
-                            continue;
-                        }
 
-                        target.damage(event.getDamage(), source);
-                        target.setVelocity(target.getVelocity().add(event.getKnockback()));
-                        target.setNoDamageTicks(0);
+                Entity hit = e.getHitEntity();
+                LivingEntity target = null;
+                if (!(hit instanceof LivingEntity) || hit.getType().equals(EntityType.ARMOR_STAND)) {
+                    for (LivingEntity entity : e.getEntity().getLocation().getNearbyLivingEntities(1)) {
+                        if (entity != source && !entity.getType().equals(EntityType.ARMOR_STAND)) {
+                            target = entity;
+                            break;
+                        }
                     }
+                } else {
+                    target = (LivingEntity) hit;
+                }
+
+                if (target == null) return;
+
+                if (!target.getType().equals(EntityType.ARMOR_STAND) && target != source) {
+                    MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_BALL_BEARING, source, target, 2.5, new Vector());
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        return;
+                    }
+
+                    target.damage(event.getDamage(), source);
+                    target.setVelocity(target.getVelocity().add(event.getKnockback()));
+                    target.setNoDamageTicks(0);
                 }
             }
         }
