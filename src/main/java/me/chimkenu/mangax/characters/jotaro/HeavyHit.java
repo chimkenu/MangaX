@@ -69,6 +69,10 @@ public class HeavyHit extends Move {
             leftHand.getEquipment().setHelmet(new ItemStack(Material.GOLD_BLOCK));
             rightHand.getEquipment().setHelmet(new ItemStack(Material.GOLD_BLOCK));
 
+            stand.addScoreboardTag(TheWorld.timeResistanceKey);
+            leftHand.addScoreboardTag(TheWorld.timeResistanceKey);
+            rightHand.addScoreboardTag(TheWorld.timeResistanceKey);
+
             // Charge up
             new BukkitRunnable() {
                 int t = 15;

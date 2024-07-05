@@ -74,6 +74,10 @@ public class StandBarrage extends Move {
             leftHand.getEquipment().setHelmet(new ItemStack(Material.GOLD_BLOCK));
             rightHand.getEquipment().setHelmet(new ItemStack(Material.GOLD_BLOCK));
 
+            stand.addScoreboardTag(TheWorld.timeResistanceKey);
+            leftHand.addScoreboardTag(TheWorld.timeResistanceKey);
+            rightHand.addScoreboardTag(TheWorld.timeResistanceKey);
+
             // Ora ora ora ora
             new BukkitRunnable() {
                 int t = 30;

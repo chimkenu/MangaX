@@ -8,10 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
-import org.bukkit.entity.AreaEffectCloud;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,7 +16,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class TheWorld extends Move {
+    public static final String timeResistanceKey = "JOTARO_TIME_RESISTANCE";
+
     public TheWorld() {
         super(null, null, 130, 30 * 20, Material.CLOCK, Component.text("ZA WARUDO").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
@@ -48,7 +49,9 @@ public class TheWorld extends Move {
                     areaEffectCloud.setDuration(getFollowUpTime() - CHARGE_TIME);
                     areaEffectCloud.setRadius(RADIUS);
                     areaEffectCloud.addScoreboardTag(entity.getUniqueId() + ".cloud");
+                    areaEffectCloud.addScoreboardTag(timeResistanceKey);
 
+                    HashMap<Entity, Integer> entities = new HashMap<>();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -63,8 +66,12 @@ public class TheWorld extends Move {
                                 return;
                             }
 
-                            for (LivingEntity e : loc.getNearbyLivingEntities(RADIUS)) {
-                                if (e != entity && !e.hasPotionEffect(PotionEffectType.BLINDNESS) && e.getLocation().distanceSquared(areaEffectCloud.getLocation()) < RADIUS * RADIUS) {
+                            for (Entity e : loc.getNearbyEntities(RADIUS, RADIUS, RADIUS)) {
+                                if (e == entity) {
+                                    continue;
+                                }
+
+                                if (isTheWorldable(e, entities) && e.getLocation().distanceSquared(areaEffectCloud.getLocation()) < RADIUS * RADIUS) {
                                     theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration() + 20);
                                 }
                             }
@@ -77,59 +84,107 @@ public class TheWorld extends Move {
         this.followUp = (plugin, entity) -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[tag=" + entity.getUniqueId() + ".cloud" + "]");
     }
 
-    private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, LivingEntity entity, LivingEntity target, int duration) {
-        new BukkitRunnable() {
-            int t = duration;
-            final Location loc = target.getLocation();
-            final double health = target.getHealth();
-            @Override
-            public void run() {
-                if (target.isDead() || (entity instanceof Player player && !player.isOnline())) {
-                    cancel();
-                    return;
-                }
+    private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, LivingEntity source, Entity target, int duration) {
+        if (target instanceof LivingEntity livingEntity) {
+            new BukkitRunnable() {
+                int t = duration;
+                final Location loc = livingEntity.getLocation();
+                final double health = livingEntity.getHealth();
+                final double maxLoss = health - 6;
 
-                // Eject based on damage
-                if (t <= 0 || cloud.isDead() || entity.isDead()) {
-                    double diff = health - target.getHealth();
-                    if (diff > 0) {
-                        Vector direction = target.getLocation().toVector().subtract(entity.getLocation().toVector());
-                        direction = direction.normalize();
-                        Vector v = target.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0));
-
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, entity, target, 0, v);
-                        Bukkit.getPluginManager().callEvent(event);
-                        if (event.isCancelled()) {
-                            return;
-                        }
-
-                        target.setVelocity(target.getVelocity().add(event.getKnockback()));
+                @Override
+                public void run() {
+                    if (livingEntity.isDead() || (source instanceof Player player && !player.isOnline())) {
+                        cancel();
+                        return;
                     }
-                    cancel();
-                    return;
+
+                    // Eject based on damage
+                    if (t <= 0 || cloud.isDead() || source.isDead()) {
+                        double diff = health - livingEntity.getHealth();
+                        if (diff > 0) {
+                            Vector direction = livingEntity.getLocation().toVector().subtract(source.getLocation().toVector());
+                            direction = direction.normalize();
+                            Vector v = livingEntity.getVelocity().add(direction.multiply(diff * 0.5)).add(new Vector(0, 0.5, 0));
+
+                            MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, source, livingEntity, 0, v);
+                            Bukkit.getPluginManager().callEvent(event);
+                            if (event.isCancelled()) {
+                                return;
+                            }
+
+                            livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
+                        }
+                        cancel();
+                        return;
+                    }
+
+                    MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, source, livingEntity, 0, new Vector());
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        cancel();
+                        return;
+                    }
+
+                    if (health - livingEntity.getHealth() >= maxLoss) {
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 2, 5, false, false, false));
+                    }
+
+                    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 2, 0, false, false, false));
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 2, 0, false, false, false));
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 4, false, false, false));
+                    }
+                    livingEntity.teleport(loc);
+
+                    t--;
                 }
 
-                MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, entity, target, 0, new Vector());
-                Bukkit.getPluginManager().callEvent(event);
-                if (event.isCancelled()) {
-                    cancel();
-                    return;
+                @Override
+                public void cancel() {
+                    super.cancel();
+                    livingEntity.removePotionEffect(PotionEffectType.BLINDNESS);
                 }
+            }.runTaskTimer(plugin, 0, 1);
 
-                target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 2, 0, false, false, false));
-                target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 2, 0, false, false, false));
-                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 4, false, false, false));
-                target.teleport(loc);
+        } else {
+            new BukkitRunnable() {
+                int t = duration;
+                final Location loc = target.getLocation();
+                final Vector velocity = target.getVelocity();
+                @Override
+                public void run() {
+                    if (target.isDead() || (source instanceof Player player && !player.isOnline())) {
+                        cancel();
+                        return;
+                    }
 
-                t--;
+                    if (t <= 0 || cloud.isDead() || source.isDead()) {
+                        target.setVelocity(velocity);
+                        cancel();
+                        return;
+                    }
+
+                    target.teleport(loc);
+
+                    t--;
+                }
+            }.runTaskTimer(plugin, 0, 1);
+        }
+    }
+
+    private boolean isTheWorldable(Entity e, HashMap<Entity, Integer> entities) {
+        if (!entities.containsKey(e)) {
+            if (e instanceof Player player) {
+                // look for time resistance
+                if (player.getInventory().contains(Material.CLOCK)) {
+                    entities.put(e, 51);
+                }
             }
-
-            @Override
-            public void cancel() {
-                super.cancel();
-                target.removePotionEffect(PotionEffectType.BLINDNESS);
-            }
-        }.runTaskTimer(plugin, 0, 1);
+            entities.putIfAbsent(e, 1);
+        }
+        entities.put(e, entities.get(e) - 1);
+        return entities.get(e) == 0 && !e.getScoreboardTags().contains(timeResistanceKey);
     }
 
     @Override
