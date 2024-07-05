@@ -26,7 +26,7 @@ public class DamageListener implements Listener {
     public void onDamage(EntityDamageEvent e) {
         if (e.isCancelled()) return;
 
-        int hearts = (int) Math.floor(e.getFinalDamage() / 2);
+        int hearts = (int) Math.floor(Math.round(e.getFinalDamage()) / 2d);
         if (hearts > 0) {
             Location loc = e.getEntity().getLocation();
             loc.add(0, 1.6, 0);
