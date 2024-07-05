@@ -11,7 +11,6 @@ import me.chimkenu.mangax.characters.naruto.*;
 import me.chimkenu.mangax.characters.phoenix.*;
 import me.chimkenu.mangax.characters.tanjiro.*;
 import me.chimkenu.mangax.characters.todoroki.*;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

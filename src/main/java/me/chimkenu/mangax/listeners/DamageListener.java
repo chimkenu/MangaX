@@ -1,6 +1,5 @@
 package me.chimkenu.mangax.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;

@@ -1,6 +1,5 @@
 package me.chimkenu.mangax.characters.jotaro;
 
-import com.google.common.base.Strings;
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
@@ -24,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
