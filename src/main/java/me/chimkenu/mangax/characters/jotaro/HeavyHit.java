@@ -131,8 +131,6 @@ public class HeavyHit extends Move {
 
                         livingEntity.damage(event.getDamage(), entity);
                         livingEntity.setVelocity(livingEntity.getVelocity().add(event.getKnockback()));
-
-                        livingEntity.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, livingEntity.getEyeLocation(), 3, 0.2, 0.2, 0.2, 0.4);
                     }
                 }
             }.runTaskTimer(plugin, 0, 1);
