@@ -67,8 +67,9 @@ public class HoldIt extends Move {
                         ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 6, 5, (world, location, index) -> world.spawnParticle(Particle.CRIT, location, 10, 0.25, 0.1, 0.25, 0.15), 0);
                     }
 
+                    final int RADIUS = 5;
                     for (LivingEntity e : table.getLocation().getNearbyLivingEntities(5)) {
-                        if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity) {
+                        if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity && e.getLocation().distanceSquared(table.getLocation()) < RADIUS * RADIUS) {
                             MoveTargetEvent event = new MoveTargetEvent(Moves.PHOENIX_HOLD_IT, entity, e, 6, new Vector());
                             Bukkit.getPluginManager().callEvent(event);
                             if (event.isCancelled()) {
