@@ -114,7 +114,6 @@ public class Impale extends Move {
                         e.setVelocity(e.getVelocity().add(event.getKnockback()));
 
                         e.getWorld().playSound(e.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 0.5f);
-                        e.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, e.getEyeLocation(), 6, 0.2, 0.2, 0.2, 0.4);
                         e.getWorld().spawnParticle(Particle.BLOCK, e.getEyeLocation(), 100, 0.2, 0.4, 0.2, 0.5, Material.REDSTONE_BLOCK.createBlockData());
                         return true;
                     }
