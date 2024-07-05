@@ -1,5 +1,6 @@
 package me.chimkenu.mangax.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -24,6 +25,8 @@ public class DamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(EntityDamageEvent e) {
+        if (e.isCancelled()) return;
+
         int hearts = (int) Math.floor(e.getFinalDamage() / 2);
         if (hearts > 0) {
             Location loc = e.getEntity().getLocation();
