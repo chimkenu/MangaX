@@ -30,13 +30,13 @@ public class BallBearing extends Move implements Listener {
     private final String key = "JOTARO_BALL_BEARING";
 
     public BallBearing() {
-        super(null, null, 5, 60, Material.FIREWORK_STAR, Component.text("Ball Bearing", NamedTextColor.GRAY).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 2, 60, Material.FIREWORK_STAR, Component.text("Ball Bearing", NamedTextColor.GRAY).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             if (entity instanceof Player player) {
                 int amount = player.getInventory().getItemInMainHand().getAmount();
                 if (amount > 1) {
-                    player.setCooldown(getMaterial(), 5);
+                    player.setCooldown(getMaterial(), 2);
                     player.getInventory().getItemInMainHand().setAmount(--amount);
                 } else {
                     player.getInventory().getItemInMainHand().setAmount(3);
@@ -107,7 +107,7 @@ public class BallBearing extends Move implements Listener {
                 e.getEntity().remove();
 
                 source.getWorld().playSound(e.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.25f, 0.5f);
-                source.getWorld().spawnParticle(Particle.SMOKE, e.getEntity().getLocation(), 10, 0.1, 0.1, 0.1, 0.1);
+                source.getWorld().spawnParticle(Particle.BLOCK, e.getEntity().getLocation(), 10, 0.1, 0.1, 0.1, 0.1, Material.POLISHED_ANDESITE.createBlockData());
 
                 Entity hit = e.getHitEntity();
                 LivingEntity target = null;
