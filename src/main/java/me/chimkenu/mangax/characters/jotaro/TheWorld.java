@@ -29,6 +29,7 @@ public class TheWorld extends Move {
             entity.getWorld().spawnParticle(Particle.DUST, entity.getEyeLocation(), 1500, 1, 1, 1, 0, new Particle.DustOptions(Color.YELLOW, 0.8f));
 
             final int CHARGE_TIME = 30;
+            final int RADIUS = 10;
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -45,7 +46,7 @@ public class TheWorld extends Move {
                     AreaEffectCloud areaEffectCloud = entity.getWorld().spawn(loc, AreaEffectCloud.class);
                     areaEffectCloud.setColor(Color.BLACK);
                     areaEffectCloud.setDuration(getFollowUpTime() - CHARGE_TIME);
-                    areaEffectCloud.setRadius(10);
+                    areaEffectCloud.setRadius(RADIUS);
                     areaEffectCloud.addScoreboardTag(entity.getUniqueId() + ".cloud");
 
                     new BukkitRunnable() {
@@ -62,8 +63,8 @@ public class TheWorld extends Move {
                                 return;
                             }
 
-                            for (LivingEntity e : loc.getNearbyLivingEntities(10)) {
-                                if (!e.getType().equals(EntityType.ARMOR_STAND) && e != entity && !e.hasPotionEffect(PotionEffectType.BLINDNESS)) {
+                            for (LivingEntity e : loc.getNearbyLivingEntities(RADIUS)) {
+                                if (e != entity && !e.hasPotionEffect(PotionEffectType.BLINDNESS) && e.getLocation().distanceSquared(areaEffectCloud.getLocation()) < RADIUS * RADIUS) {
                                     theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration() + 20);
                                 }
                             }
