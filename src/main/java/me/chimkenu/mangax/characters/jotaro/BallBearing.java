@@ -55,7 +55,7 @@ public class BallBearing extends Move implements Listener {
             BlockDisplay blockDisplay = entity.getWorld().spawn(ball.getLocation(), BlockDisplay.class);
             blockDisplay.setTeleportDuration(1);
             blockDisplay.setBlock(Material.POLISHED_ANDESITE.createBlockData());
-            blockDisplay.setTransformation(new Transformation(new Vector3f(0.125f, 0.125f, 0.125f), new AxisAngle4f(), new Vector3f(0.25f, 0.25f, 0.25f), new AxisAngle4f()));
+            blockDisplay.setTransformation(new Transformation(new Vector3f(-0.125f, -0.125f, -0.125f), new AxisAngle4f(), new Vector3f(0.25f, 0.25f, 0.25f), new AxisAngle4f()));
 
             ball.addScoreboardTag(blockDisplay.getUniqueId().toString());
             ball.setVelocity(entity.getEyeLocation().getDirection().multiply(2));
