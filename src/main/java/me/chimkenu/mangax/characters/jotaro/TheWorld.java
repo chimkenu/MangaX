@@ -33,7 +33,6 @@ public class TheWorld extends Move {
             final int RADIUS = 10;
 
             new BukkitRunnable() {
-                final HashMap<Entity, Integer> entities = new HashMap<>();
                 @Override
                 public void run() {
                     if (entity.isDead()) {
@@ -54,6 +53,7 @@ public class TheWorld extends Move {
                     areaEffectCloud.addScoreboardTag(timeResistanceKey);
 
                     new BukkitRunnable() {
+                        final HashMap<Entity, Integer> entities = new HashMap<>();
                         @Override
                         public void run() {
                             if (entity instanceof Player player && !player.isOnline()) {
@@ -123,12 +123,11 @@ public class TheWorld extends Move {
                     MoveTargetEvent event = new MoveTargetEvent(Moves.JOTARO_ZA_WARUDO, source, livingEntity, 0, new Vector());
                     Bukkit.getPluginManager().callEvent(event);
                     if (event.isCancelled()) {
-                        cancel();
                         return;
                     }
 
                     if (health - livingEntity.getHealth() >= maxLoss) {
-                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 2, 5, false, false, false));
+                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20, 5, false, false, false));
                     }
 
                     if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
