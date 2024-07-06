@@ -120,13 +120,19 @@ public class MoveListener implements Listener {
             return;
         }
 
+        ItemStack item = player.getInventory().getItemInMainHand();
+
         // check if player is using a move and if it implements the Punch interface
-        Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
+        Moves move = Moves.getMoveFromItem(item);
         if (move == null)
             return;
         Move m = move.move;
         if (!(m instanceof Punch punch))
             return;
+
+        if (player.getCooldown(m.getMaterial()) != 0 && player.getCooldown(m.getMaterial()) < m.getCooldown()) {
+            return;
+        }
 
         Long time = players.get(player.getUniqueId());
         if (time != null && System.currentTimeMillis() - time < 10)
