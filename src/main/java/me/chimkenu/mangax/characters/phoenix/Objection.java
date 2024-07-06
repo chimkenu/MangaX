@@ -79,7 +79,7 @@ public class Objection extends Move {
                                 int t = 90;
                                 @Override
                                 public void run() {
-                                    if (t <= 0) {
+                                    if (t <= 0 || e.isDead()) {
                                         cancel();
                                         return;
                                     }
