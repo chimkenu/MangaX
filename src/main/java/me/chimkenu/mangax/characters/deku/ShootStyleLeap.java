@@ -69,7 +69,7 @@ public class ShootStyleLeap extends Move implements Listener {
 
     @Override
     public @NotNull ItemStack getItem() {
-        ItemStack item = new ItemStack(getMaterial());
+        ItemStack item = super.getItem();
         LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
         meta.setColor(Color.fromRGB(0x106761));
         meta.displayName(getName());
