@@ -58,7 +58,7 @@ public class Epitaph extends Move implements Listener {
         }
 
         target.removeScoreboardTag("diavolo-epitaph");
-        Location loc = getRelativeLocation(e.getSource().getLocation(), 0, 1, -1.5, 0, 0);
+        Location loc = getRelativeLocation(e.getSource().getLocation(), 0, 1, -2, 0, 0);
         if (!loc.getBlock().isPassable()) {
             loc = e.getSource().getLocation();
         }
