@@ -31,7 +31,9 @@ public class TheWorld extends Move {
 
             final int CHARGE_TIME = 30;
             final int RADIUS = 10;
+
             new BukkitRunnable() {
+                final HashMap<Entity, Integer> entities = new HashMap<>();
                 @Override
                 public void run() {
                     if (entity.isDead()) {
@@ -51,7 +53,6 @@ public class TheWorld extends Move {
                     areaEffectCloud.addScoreboardTag(entity.getUniqueId() + ".cloud");
                     areaEffectCloud.addScoreboardTag(timeResistanceKey);
 
-                    HashMap<Entity, Integer> entities = new HashMap<>();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
