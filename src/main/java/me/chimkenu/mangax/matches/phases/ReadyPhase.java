@@ -1,3 +1,4 @@
+package me.chimkenu.mangax.matches.phases;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.chimkenu.mangax.enums.WorldData;
