@@ -5,10 +5,9 @@ api-version: '1.20'
 commands:
   kit:
     description: kit selector and hotbar load out
-    usage: /<command>
   sommun:
     description: summons the entities
-    usage: /<command>
   truce:
     description: Truce with other players
-    usage: /<command>
+  worlddata:
+    description: Modify world data
