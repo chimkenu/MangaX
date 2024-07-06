@@ -13,7 +13,7 @@ public class FileUtils {
                 Path destination = Paths.get(destinationDirectory, source.toString()
                         .substring(sourceDirectory.length()));
 
-                if (destination.toString().contains("session.lock")) {
+                if (destination.toString().contains("session.lock") | destination.toString().contains("uid.dat")) {
                     return;
                 }
 
