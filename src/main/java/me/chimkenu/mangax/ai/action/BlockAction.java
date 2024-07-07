@@ -5,6 +5,14 @@ import me.chimkenu.mangax.ai.movement.Distance;
 import me.chimkenu.mangax.listeners.BlockListener;
 
 public class BlockAction extends Action {
+
+    /**
+     * Represents a block action
+     *
+     * @param goal the TargetGoal associated with this action
+     * @param time the duration of the action
+     * @param next the next action once this action is finished
+     */
     public BlockAction(TargetGoal goal, int time, Action next) {
         super(goal, time, new Distance(), next);
     }

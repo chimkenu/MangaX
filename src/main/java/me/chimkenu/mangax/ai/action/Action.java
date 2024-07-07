@@ -11,6 +11,14 @@ public abstract class Action {
     public Movement movement;
     public Action next;
 
+    /**
+     * Represents an action that an entity can do.
+     *
+     * @param goal the TargetGoal associated with this action
+     * @param time duration of action
+     * @param movement movement type of entity while doing this action
+     * @param next the next action once this action is finished
+     */
     public Action(TargetGoal goal, int time, Movement movement, Action next) {
         this.goal = goal;
         hasStarted = false;
