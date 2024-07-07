@@ -8,14 +8,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class TruceCommand implements CommandExecutor {
+public class TruceCommand implements CommandExecutor, TabCompleter {
     private final long REQUEST_DURATION = 1000 * 30;
     private final TruceListener truceListener;
     private final ArrayList<Request> requests;
@@ -167,10 +170,8 @@ public class TruceCommand implements CommandExecutor {
 
             case "list" -> {
                 player.sendMessage(Component.text("You have a truce with the following:", NamedTextColor.YELLOW));
-                truceListener.getTruceList(player).forEach(truce -> {
-                    player.sendMessage(Component.text("  ")
-                            .append(truce.one() == player ? truce.two().name() : truce.one().name()));
-                });
+                truceListener.getTruceList(player).forEach(truce -> player.sendMessage(Component.text("  ")
+                        .append(truce.one() == player ? truce.two().name() : truce.one().name())));
             }
 
             default -> sender.sendMessage(Component.text("Unknown arguments.", NamedTextColor.RED)
@@ -183,6 +184,21 @@ public class TruceCommand implements CommandExecutor {
     private void clearExpiredRequests() {
         requests.removeIf(request -> System.currentTimeMillis() - request.timeRequested > REQUEST_DURATION);
     };
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        switch (args.length) {
+            case 1 -> {
+                return List.of("add", "remove", "list");
+            }
+            case 2 -> {
+                return null;
+            }
+            default -> {
+                return List.of();
+            }
+        }
+    }
 
     private record Request(Truce truce, long timeRequested) {}
 }
