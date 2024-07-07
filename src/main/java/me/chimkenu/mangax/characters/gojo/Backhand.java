@@ -5,7 +5,10 @@ import me.chimkenu.mangax.characters.Punch;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
+import me.chimkenu.mangax.utils.ArmorStandUtil;
+import me.chimkenu.mangax.utils.RandomUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Backhand extends Move implements Punch {
     public Backhand() {
-        super(null, null, 15, 10, Material.PAPER, Component.text("Backhand"));
+        super(null, null, 40, 160, Material.PAPER, Component.text("Backhand").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
 
@@ -37,7 +40,7 @@ public class Backhand extends Move implements Punch {
 
     @Override
     public @NotNull MoveInfo getMoveInfo() {
-        return null;
+        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.VERTICAL, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 2, 1, 40, true);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class Backhand extends Move implements Punch {
             Location loc = source.getLocation();
             loc.setPitch(-70);
             Vector direction = loc.getDirection();
-            direction.multiply(3);
+            direction.multiply(2);
             MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_BACKHAND, source, target, 2, direction);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) {
@@ -65,6 +68,7 @@ public class Backhand extends Move implements Punch {
                     target.setVelocity(new Vector());
                     target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, getFollowUpTime() - delay, 200, false, false, true));
                     source.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, getFollowUpTime() - delay, 200, false, false, true));
+                    source.teleport(ArmorStandUtil.getRelativeLocation(target.getEyeLocation(), 0, 0, -1.5, RandomUtil.randomFrom(-30, 30), RandomUtil.randomFrom(-30, 30)));
                 }
             }.runTaskLater(plugin, delay);
 
