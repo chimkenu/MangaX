@@ -8,6 +8,7 @@ import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -117,6 +118,10 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {
         if (!(e.getDamager() instanceof Player player) || !(e.getEntity() instanceof LivingEntity target)) {
+            return;
+        }
+
+        if (target.getType().equals(EntityType.ARMOR_STAND)) {
             return;
         }
 
