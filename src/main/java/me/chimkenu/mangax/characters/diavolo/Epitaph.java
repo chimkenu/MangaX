@@ -20,9 +20,13 @@ import org.jetbrains.annotations.NotNull;
 import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 
 public class Epitaph extends Move implements Listener {
+    public final String tag = "DIAVOLO_EPITAPH";
+
     public Epitaph() {
-        super((plugin, entity) -> {
-            entity.addScoreboardTag("diavolo-epitaph");
+        super(null, null, 0, 15 * 20, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+
+        this.activate = (plugin, entity) -> {
+            entity.addScoreboardTag(tag);
             Location loc = entity.getLocation();
             loc.setPitch(0);
             for (int i = 0; i < 20; i++) {
@@ -33,7 +37,7 @@ public class Epitaph extends Move implements Listener {
                     world.spawnParticle(Particle.DUST, getRelativeLocation(location, Math.log(index), 0, 0, 0, 0), 1, 0.05, 0.05, 0.05, 0.1, new Particle.DustOptions(Color.RED, 0.8f));
                 }, 0);
             }
-        }, null, 0, 15 * 20, Material.RED_DYE, Component.text("Epitaph").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        };
     }
 
     @Override
@@ -49,7 +53,7 @@ public class Epitaph extends Move implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onDamage(MoveTargetEvent e) {
         LivingEntity target = e.getTarget();
-        if (!target.getScoreboardTags().contains("diavolo-epitaph")) {
+        if (!target.getScoreboardTags().contains(tag)) {
             return;
         }
 
@@ -57,7 +61,7 @@ public class Epitaph extends Move implements Listener {
             return;
         }
 
-        target.removeScoreboardTag("diavolo-epitaph");
+        target.removeScoreboardTag(tag);
         Location loc = getRelativeLocation(e.getSource().getLocation(), 0, 1, -2, 0, 0);
         if (!loc.getBlock().isPassable()) {
             loc = e.getSource().getLocation();
