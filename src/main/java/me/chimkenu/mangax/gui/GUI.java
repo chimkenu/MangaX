@@ -1,8 +1,8 @@
 package me.chimkenu.mangax.gui;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -127,7 +127,7 @@ public abstract class GUI {
         ItemMeta meta = item.getItemMeta();
         List<Component> lore = new ArrayList<>();
         for (String s : strings) {
-            lore.add(Component.text(s).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+            lore.add(MiniMessage.miniMessage().deserialize(s));
         }
         meta.lore(lore);
         return meta;
