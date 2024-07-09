@@ -51,6 +51,11 @@ public class CollapsingBlue extends Move implements Listener {
                     if (t <= 0 || entity.isDead() || stand.isDead()) {
                         stand.remove();
                         cancel();
+
+                        if (entity instanceof Player player) {
+                            player.setCooldown(getMaterial(), getCooldown());
+                        }
+
                         return;
                     }
                     t--;
@@ -68,7 +73,7 @@ public class CollapsingBlue extends Move implements Listener {
                         double damage = 0;
                         double distance = direction.lengthSquared();
                         if (distance < 4) {
-                            damage = 5;
+                            damage = 2;
                             if (distance < 0.05) v = new Vector();
                         }
 

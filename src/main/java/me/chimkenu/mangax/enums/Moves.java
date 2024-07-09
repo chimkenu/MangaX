@@ -53,7 +53,8 @@ public enum Moves {
     GOJO_RED_REVERSAL (new RedReversal()),
     GOJO_COLLAPSING_BLUE (new CollapsingBlue()),
     GOJO_REVERSE_CURSED_TECHNIQUE (new ReverseCursedTechnique()),
-    GOJO_NAH_ID_WIN (new NahIdWin());
+    GOJO_NAH_ID_WIN (new NahIdWin()),
+    GOJO_INFINITY (new Infinity());
 
     public final Move move;
 

@@ -131,7 +131,7 @@ public class HollowPurple {
         for (int x = -2; x < 2; x++) {
             for (int y = -2; y < 2; y++) {
                 for (int z = -2; z < 2; z++) {
-                    if (!loc.getBlock().getRelative(BlockFace.DOWN).isEmpty()) // only remove blocks that have another block below it
+                    if (!loc.getBlock().getRelative(0, -1, 0).isEmpty()) // only remove blocks that have another block below it
                         BlockEffects.create(plugin, block.getRelative(x, y, z).getLocation(), Material.AIR.createBlockData(), 5 * 20, location -> {});
                 }
             }

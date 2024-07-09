@@ -51,6 +51,11 @@ public class RedReversal extends Move implements Listener {
                     if (t <= 0 || entity.isDead() || stand.isDead()) {
                         stand.remove();
                         cancel();
+
+                        if (entity instanceof Player player) {
+                            player.setCooldown(getMaterial(), getCooldown());
+                        }
+
                         return;
                     }
                     t--;
