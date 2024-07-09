@@ -139,6 +139,10 @@ public class MoveListener implements Listener {
             return;
         }
 
+        if (player.getLocation().distanceSquared(target.getLocation()) > 5 * 5) {
+            return;
+        }
+
         Long time = players.get(player.getUniqueId());
         if (time != null && System.currentTimeMillis() - time < 10)
             return;
