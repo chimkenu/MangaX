@@ -5,7 +5,6 @@ import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.utils.BlockEffects;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
