@@ -35,6 +35,9 @@ public class DropRippleThrust extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
+            stand.customName(entity.name());
+            stand.setCustomNameVisible(true);
+
             stand.setBodyPose(newEulerAngle(0, -27, 0));
             stand.setLeftArmPose(newEulerAngle(-10, 0, -40));
             stand.setRightArmPose(newEulerAngle(-15, 90, 30));

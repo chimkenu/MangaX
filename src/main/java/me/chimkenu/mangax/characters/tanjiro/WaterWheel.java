@@ -38,6 +38,9 @@ public class WaterWheel extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
+            stand.customName(entity.name());
+            stand.setCustomNameVisible(true);
+
             stand.setBodyPose(newEulerAngle(0, 2.1612144, 0));
             stand.setLeftArmPose(newEulerAngle(20, 0, -10));
             stand.setRightArmPose(newEulerAngle(-45, 0, 90));

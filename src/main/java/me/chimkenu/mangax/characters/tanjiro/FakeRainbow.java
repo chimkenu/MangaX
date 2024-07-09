@@ -33,6 +33,9 @@ public class FakeRainbow extends Move {
             stand.setInvisible(false);
             stand.setArms(true);
 
+            stand.customName(entity.name());
+            stand.setCustomNameVisible(true);
+
             stand.setBodyPose(newEulerAngle(0, -27, 0));
             stand.setLeftArmPose(newEulerAngle(-70, 36, 17));
             stand.setRightArmPose(newEulerAngle(-102, -30, 51));
