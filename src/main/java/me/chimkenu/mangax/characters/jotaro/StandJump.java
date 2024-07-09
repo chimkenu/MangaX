@@ -16,7 +16,17 @@ public class StandJump extends Move {
 
     @Override
     public String[] getLore() {
-        return new String[] {};
+        return new String[] {
+            "<#c4c4c4>Uses Star Platinum's strength</#c4c4c4>",
+            "<#c4c4c4>to push off the ground, leaping into</#c4c4c4>",
+            "<#c4c4c4>the air to cover extraordinary heights.</#c4c4c4>",
+            "<reset>",
+            "<i:false><#ffffff>Type:</#ffffff> <u>Movement</u>",
+            "<i:false><#ffffff>Distance:</#ffffff> <#e8eb46>Mid</#e8eb46>",
+            "<i:false><#ffffff>Cooldown:</#ffffff> <#e6dd6c><b>12</b> seconds</#e6dd6c>",
+            "<reset>",
+            "<i:false><#f6ff52><b>[<key:key.attack>]</b></#f6ff52> <#ffffff>to use ability</#ffffff>"
+        };
     }
 
     @Override
