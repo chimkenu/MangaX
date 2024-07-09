@@ -78,7 +78,20 @@ public class BallBearing extends Move implements Listener {
 
     @Override
     public String[] getLore() {
-        return new String[] {};
+        return new String[] {
+            "<#c4c4c4>Uses Star Platinum to launch</#c4c4c4>",
+            "<#c4c4c4>three (3) small ball bearings</#c4c4c4>",
+            "<#c4c4c4>at opponents at high velocity,</#c4c4c4>",
+            "<#c4c4c4>allowing the player to attack</#c4c4c4>",
+            "<#c4c4c4>from longer distances.</#c4c4c4>",
+            "<reset>",
+            "<i:false><#ffffff>Type:</#ffffff> <u>Attack</u>",
+            "<i:false><#ffffff>Range:</#ffffff> <#40eb8d>Very Long</#40eb8d>",
+            "<i:false><#ffffff>Damage:</#ffffff> <#f54949><b>1</b> health",
+            "<i:false><#ffffff>Cooldown:</#ffffff> <#e6dd6c><b>3</b> seconds</#e6dd6c>",
+            "<reset>",
+            "<i:false><#f6ff52><b>[<key:key.attack>]</b></#f6ff52> <#ffffff>to use ability</#ffffff>"
+        };
     }
 
     @Override
