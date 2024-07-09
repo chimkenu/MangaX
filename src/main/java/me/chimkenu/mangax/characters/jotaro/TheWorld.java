@@ -189,7 +189,19 @@ public class TheWorld extends Move {
 
     @Override
     public String[] getLore() {
-        return new String[] {};
+        return new String[] {
+            "<#c4c4c4>Uses Star Platinum: The World to stop</#c4c4c4>",
+            "<#c4c4c4>the flow of time for a brief moment,</#c4c4c4>",
+            "<#c4c4c4>affecting all players within a certain</#c4c4c4>",
+            "<#c4c4c4>distance of the user upon activation.</#c4c4c4>",
+            "<reset>",
+            "<i:false><#ffffff>Type:</#ffffff> <u>Special</u>",
+            "<i:false><#ffffff>Range:</#ffffff> <#e8eb46>Mid</#e8eb46>",
+            "<i:false><#ffffff>Duration:</#ffffff> <#e6dd6c><b>5</b> seconds</#e6dd6c>",
+            "<i:false><#ffffff>Cooldown:</#ffffff> <#e6dd6c><b>30</b> seconds</#e6dd6c>",
+            "<reset>",
+            "<i:false><#f6ff52><b>[<key:key.attack>]</b></#f6ff52> <#ffffff>to use ability</#ffffff>"
+        };
     }
 
     @Override
