@@ -21,15 +21,16 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class Backhand extends Move implements Punch {
+    private final String tag = "GOJO_BACKHAND";
+
     public Backhand() {
-        super(null, null, 40, 160, Material.PAPER, Component.text("Backhand").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 40, 100, Material.PAPER, Component.text("Backhand").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
-
         };
 
         this.followUp = (plugin, entity) -> {
-
+            entity.removeScoreboardTag(tag);
         };
     }
 
@@ -40,13 +41,13 @@ public class Backhand extends Move implements Punch {
 
     @Override
     public @NotNull MoveInfo getMoveInfo() {
-        return new MoveInfo(MoveInfo.Damage.MEDIUM, MoveInfo.Range.CLOSE, MoveInfo.Knockback.NORMAL, MoveInfo.Manoeuvre.VERTICAL, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 2, 1, 40, true);
+        return new MoveInfo(MoveInfo.Damage.LOW, MoveInfo.Range.CLOSE, MoveInfo.Knockback.HIGH, MoveInfo.Manoeuvre.VERTICAL, MoveInfo.Type.SINGLE, MoveInfo.Difficulty.TYPICAL, 2, 1, 40, true);
     }
 
     @Override
     public void punch(JavaPlugin plugin, LivingEntity source, LivingEntity target, boolean isFollowUp) {
         if (!isFollowUp) {
-            target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, getFollowUpTime(), 1, false, false, true));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, getFollowUpTime() + 10, 0, false, false, true));
 
             Location loc = source.getLocation();
             loc.setPitch(-70);
@@ -58,10 +59,11 @@ public class Backhand extends Move implements Punch {
                 return;
             }
 
-            target.damage(event.getDamage());
+            target.damage(event.getDamage(), source);
             target.setVelocity(event.getKnockback());
+            source.addScoreboardTag(tag);
 
-            int delay = 20;
+            final int delay = 20;
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -72,14 +74,14 @@ public class Backhand extends Move implements Punch {
                 }
             }.runTaskLater(plugin, delay);
 
-        } else {
-            MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_BACKHAND, source, target, 8, new Vector(0, -2, 0));
+        } else if (source.getScoreboardTags().contains(tag)) {
+            MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_BACKHAND, source, target, 4, new Vector(0, -2, 0));
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) {
                 return;
             }
 
-            target.damage(event.getDamage());
+            target.damage(event.getDamage(), source);
             target.setVelocity(event.getKnockback());
 
             target.removePotionEffect(PotionEffectType.SLOW_FALLING);
