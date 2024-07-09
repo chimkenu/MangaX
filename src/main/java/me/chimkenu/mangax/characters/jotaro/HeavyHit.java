@@ -144,7 +144,18 @@ public class HeavyHit extends Move {
 
     @Override
     public String[] getLore() {
-        return new String[] {};
+        return new String[] {
+            "<#c4c4c4>Summons Star Platinum to throw</#c4c4c4>",
+            "<#c4c4c4>a devastating punch, dealing good damage</#c4c4c4>",
+            "<#c4c4c4>to the opponent and knocking them backwards.</#c4c4c4>",
+            "<reset>",
+            "<i:false><#ffffff>Type:</#ffffff> <u>Attack</u>",
+            "<i:false><#ffffff>Range:</#ffffff> <#ebac46>Close</#ebac46>",
+            "<i:false><#ffffff>Damage:</#ffffff> <#f54949><b>3</b> health",
+            "<i:false><#ffffff>Cooldown:</#ffffff> <#e6dd6c><b>10</b> seconds</#e6dd6c>",
+            "<reset>",
+            "<i:false><#f6ff52><b>[<key:key.attack>]</b></#f6ff52> <#ffffff>to use ability</#ffffff>"
+        };
     }
 
     @Override

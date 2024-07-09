@@ -149,7 +149,19 @@ public class StandBarrage extends Move {
 
     @Override
     public String[] getLore() {
-        return new String[] {};
+        return new String[] {
+            "<#c4c4c4>Summons Star Platinum to throw</#c4c4c4>",
+            "<#c4c4c4>a flurry of punches, dealing damage</#c4c4c4>",
+            "<#c4c4c4>to the opponent upon each successful hit. </#c4c4c4>",
+            "<reset>",
+            "<i:false><#ffffff>Type:</#ffffff> <u>Attack</u>",
+            "<i:false><#ffffff>Range:</#ffffff> <#ebac46>Close</#ebac46>",
+            "<i:false><#ffffff>Damage:</#ffffff> <#f54949><b>5.5</b> health, <b>0.3</b> health per hit</#f54949>",
+            "<i:false><#ffffff>Duration:</#ffffff> <#e6dd6c><b>1.5</b> seconds</#e6dd6c>",
+            "<i:false><#ffffff>Cooldown:</#ffffff> <#e6dd6c><b>5</b> seconds</#e6dd6c>",
+            "<reset>",
+            "<i:false><#f6ff52><b>[<key:key.attack>]</b></#f6ff52> <#ffffff>to use ability</#ffffff>"
+        };
     }
 
     @Override
