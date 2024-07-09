@@ -2,6 +2,7 @@ package me.chimkenu.mangax.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -50,6 +51,17 @@ public class DamageListener implements Listener {
                     }.runTaskTimer(plugin, 0, 5));
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onSuffocationDamage(EntityDamageEvent e) {
+        if (e.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            e.setCancelled(true);
+            Entity entity = e.getEntity();
+            Location loc = entity.getLocation();
+            loc.add(0, 2.5, 0);
+            entity.teleport(loc);
         }
     }
 }
