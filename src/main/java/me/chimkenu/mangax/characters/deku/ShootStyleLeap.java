@@ -15,6 +15,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,7 +23,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class ShootStyleLeap extends Move implements Listener {
-    private final String tag = "deku.shoot_style_leap";
+    private final String tag = "DEKU_SHOOT_STYLE_LEAP";
 
     public ShootStyleLeap() {
         super(null, null, 20, 15 * 20, Material.LEATHER_HELMET, Component.text("Shoot Style Leap").color(TextColor.fromHexString("#106761")).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
@@ -89,8 +90,17 @@ public class ShootStyleLeap extends Move implements Listener {
 
     @EventHandler
     public void onLand(EntityMoveEvent e) {
-        LivingEntity entity = e.getEntity();
-        if (entity.getScoreboardTags().contains("deku.shoot_style_leap") && entity.getLocation().subtract(0, 0.01, 0).getBlock().isPassable()) {
+        onLand(e.getEntity());
+    }
+
+    @EventHandler
+    public void onLand(PlayerMoveEvent e) {
+        onLand(e.getPlayer());
+    }
+
+    private void onLand(LivingEntity entity) {
+        if (entity.getScoreboardTags().contains(tag) && !entity.getLocation().subtract(0, 0.01, 0).getBlock().isEmpty()) {
+            entity.removeScoreboardTag(tag);
 
             // Silly ground pound effect
             Location loc = entity.getLocation();
