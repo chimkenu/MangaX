@@ -20,6 +20,8 @@ character-skins:
   maya: 'https://textures.minecraft.net/texture/ea016b3a526b6b42bee3ff22f44f088f906092eb90811fa70846f854336ba3fa'
   gojo: 'https://textures.minecraft.net/texture/43bfdb624d601d0bfa46b442d036934f843744fbfdf8563a717165f74875cbe2'
   gojo-locked: 'https://textures.minecraft.net/texture/21c9a4144f5ca1899ca59e3ef19e1206c0cf4b5acdc4f9c3e44186042f56e577'
+  gojo-winner: 'https://textures.minecraft.net/texture/4e1c911d40c06b5be7279d22554fcec17a11dda3e51436ac26272894f72dbeee'
+  gojo-no-blindfold: 'https://textures.minecraft.net/texture/547c5802d20c77ccf53b32d91689bb1bf0b00e04232a06e5203ba78649ae940d'
   question-mark: 'https://textures.minecraft.net/texture/2705fd94a0c431927fb4e639b0fcfb49717e412285a02b439e0112da22b2e2ec'
 
 map-data:
