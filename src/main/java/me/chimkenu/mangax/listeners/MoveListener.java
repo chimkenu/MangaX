@@ -121,7 +121,7 @@ public class MoveListener implements Listener {
             return;
         }
 
-        if (target.getType().equals(EntityType.ARMOR_STAND)) {
+        if (target.getType().equals(EntityType.ARMOR_STAND) || player.hasPotionEffect(PotionEffectType.HUNGER)) {
             return;
         }
 
