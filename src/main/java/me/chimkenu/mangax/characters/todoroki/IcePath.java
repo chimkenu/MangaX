@@ -35,19 +35,22 @@ public class IcePath extends Move {
                 Location l = entity.getLocation();
                 l.setPitch(0);
                 l.setY(l.getY() - 1);
-                for (int i = 0; i < 2; i++) {
-                    l = ArmorStandUtil.getRelativeLocation(l, 0, 0, 2, 0, 0);
-                    for (Location loc : getBlocksInRadius(l)) {
-                        BlockEffects.create(plugin, loc, Material.PACKED_ICE.createBlockData(), 3 * 20, blockLoc -> {
-                            blockLoc.add(0.5, 0.5, 0.5);
-                            blockLoc.getWorld().spawnParticle(Particle.BLOCK, blockLoc, 5, 0.25, 0.25, 0.25, 0, Material.BLUE_ICE.createBlockData());
-                            blockLoc.getWorld().playSound(blockLoc, Sound.BLOCK_GLASS_BREAK, 0.05f, 2);
-                        });
-                    }
-                    for (LivingEntity e : l.getNearbyLivingEntities(2, 1, 2)) {
-                        Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
-                        direction = direction.normalize();
-                        e.setVelocity(e.getVelocity().add(direction.multiply(1.5)).add(new Vector(0, 0.2, 0)));
+                for (int i = 0; i < 3; i++) {
+                    l = ArmorStandUtil.getRelativeLocation(l, 0, 0, i * 2, 0, 0);
+                    if (entity.isSneaking() && entity.getLocation().getPitch() > -45) {
+                        for (Location loc : getBlocksInRadius(l)) {
+                            if (loc.getBlock().getType() == Material.PACKED_ICE) {
+                                BlockEffects.create(plugin, loc, Material.AIR.createBlockData(), 3 * 20, blockLoc -> {});
+                            }
+                        }
+                    } else {
+                        for (Location loc : getBlocksInRadius(l)) {
+                            BlockEffects.create(plugin, loc, Material.PACKED_ICE.createBlockData(), 3 * 20, blockLoc -> {
+                                blockLoc.add(0.5, 0.5, 0.5);
+                                blockLoc.getWorld().spawnParticle(Particle.BLOCK, blockLoc, 5, 0.25, 0.25, 0.25, 0, Material.BLUE_ICE.createBlockData());
+                                blockLoc.getWorld().playSound(blockLoc, Sound.BLOCK_GLASS_BREAK, 0.05f, 2);
+                            });
+                        }
                     }
                 }
                 entity.setVelocity(entity.getVelocity().add(entity.getLocation().getDirection().multiply(0.075)));
@@ -57,7 +60,7 @@ public class IcePath extends Move {
 
             private HashSet<Location> getBlocksInRadius(Location origin) {
                 HashSet<Location> locations = new HashSet<>();
-                int radius = 2;
+                int radius = 3;
                 int bx = origin.getBlockX();
                 int bz = origin.getBlockZ();
 

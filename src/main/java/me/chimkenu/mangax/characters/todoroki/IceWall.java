@@ -24,7 +24,42 @@ public class IceWall extends Move {
         super(null, null, 0, 15 * 20, Material.BLUE_ICE, Component.text("Ice Wall").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
+            Location damageLoc = entity.getLocation();
+            damageLoc.setPitch(0);
+
+            Location[] locations = new Location[] {
+                    getRelativeLocation(damageLoc, 0, 1, 5, 0, 0),
+                    getRelativeLocation(damageLoc, 4, 1, 4, 0, 0),
+                    getRelativeLocation(damageLoc, -4, 1, 4, 0, 0)
+            };
+
             final HashSet<LivingEntity> targets = new HashSet<>();
+            for (Location l : locations) {
+                for (LivingEntity e : l.getNearbyLivingEntities(3)) {
+                    if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
+                        continue;
+                    }
+
+                    if (targets.contains(e)) {
+                        continue;
+                    }
+                    targets.add(e);
+
+                    Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
+                    direction = direction.normalize();
+                    Vector v = direction.multiply(3).add(new Vector(0, 1, 0));
+
+                    MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_ICE_WALL, entity, e, 4, v);
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (event.isCancelled()) {
+                        return;
+                    }
+
+                    event.getTarget().setVelocity(event.getTarget().getVelocity().add(event.getKnockback()));
+                    event.getTarget().damage(event.getDamage(), event.getSource());
+                    event.getTarget().setNoDamageTicks(20);
+                }
+            }
 
             int[] height = {7, 12, 15, 12, 7};
             for (int i = 0; i < height.length; i++) {
@@ -42,34 +77,6 @@ public class IceWall extends Move {
                         });
                     }
 
-                    for (LivingEntity e : location.getNearbyLivingEntities(3)) {
-                        if (e.getNoDamageTicks() > 0) {
-                            continue;
-                        }
-
-                        if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
-                            continue;
-                        }
-
-                        if (targets.contains(e)) {
-                            continue;
-                        }
-                        targets.add(e);
-
-                        Vector direction = e.getLocation().toVector().subtract(entity.getLocation().toVector());
-                        direction = direction.normalize();
-                        Vector v = direction.multiply(3).add(new Vector(0, 1, 0));
-
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.TODOROKI_ICE_WALL, entity, e, 4, v);
-                        Bukkit.getPluginManager().callEvent(event);
-                        if (event.isCancelled()) {
-                            return;
-                        }
-
-                        event.getTarget().setVelocity(event.getTarget().getVelocity().add(event.getKnockback()));
-                        event.getTarget().damage(event.getDamage(), event.getSource());
-                        event.getTarget().setNoDamageTicks(20);
-                    }
                 }, Integer.MAX_VALUE);
             }
         };
