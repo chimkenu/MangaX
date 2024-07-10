@@ -25,6 +25,7 @@ character-skins:
   question-mark: 'https://textures.minecraft.net/texture/2705fd94a0c431927fb4e639b0fcfb49717e412285a02b439e0112da22b2e2ec'
 
 map-data:
+  lobby-world-name: 'world'
   map-prefix: 'mangax'
   active-world-prefix: 'game'
   worlds-per-map: 1
