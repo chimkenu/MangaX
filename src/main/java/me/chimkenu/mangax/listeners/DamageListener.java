@@ -60,7 +60,7 @@ public class DamageListener implements Listener {
             e.setCancelled(true);
             Entity entity = e.getEntity();
             Location loc = entity.getLocation();
-            while (!loc.getBlock().isEmpty() && !loc.getBlock().getRelative(0, 1, 0).isEmpty()) {
+            while (!loc.getBlock().isEmpty() || !loc.getBlock().getRelative(0, 1, 0).isEmpty()) {
                 loc.add(0, 2.5, 0);
             }
             entity.teleport(loc);
