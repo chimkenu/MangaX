@@ -11,3 +11,7 @@ commands:
     description: Truce with other players
   worlddata:
     description: Modify world data
+  duel:
+    description: fight people
+  addlore:
+    description: sirsunlight
