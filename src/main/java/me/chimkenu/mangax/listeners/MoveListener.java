@@ -121,7 +121,7 @@ public class MoveListener implements Listener {
             return;
         }
 
-        if (target.getType().equals(EntityType.ARMOR_STAND) || player.hasPotionEffect(PotionEffectType.HUNGER)) {
+        if (target.getType().equals(EntityType.ARMOR_STAND)) {
             return;
         }
 
@@ -135,10 +135,6 @@ public class MoveListener implements Listener {
         if (!(m instanceof Punch punch))
             return;
 
-        if (player.getCooldown(m.getMaterial()) != 0 && player.getCooldown(m.getMaterial()) < m.getCooldown()) {
-            return;
-        }
-
         if (player.getLocation().distanceSquared(target.getLocation()) > 5 * 5) {
             return;
         }
@@ -149,8 +145,25 @@ public class MoveListener implements Listener {
         players.put(player.getUniqueId(), System.currentTimeMillis());
 
         e.setCancelled(true);
+
+        boolean isFollowUp = player.getCooldown(m.getMaterial()) >= m.getCooldown();
+        MoveTriggerEvent event = new MoveTriggerEvent(player, move, isFollowUp);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
         punch.punch(plugin, player, target, player.getCooldown(m.getMaterial()) >= m.getCooldown());
-        activateMove(player);
+        if (isFollowUp) {
+            if (m.getFollowUp() != null) {
+                m.getFollowUp().activate(plugin, player);
+                player.setCooldown(m.getMaterial(), m.getCooldown());
+            }
+        } else {
+            m.getActivate().activate(plugin, player);
+            if (player.getCooldown(m.getMaterial()) == 0)
+                player.setCooldown(m.getMaterial(), m.getCooldown() + m.getFollowUpTime());
+        }
+
     }
 
     @EventHandler
