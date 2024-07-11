@@ -81,8 +81,6 @@ public class TheWorld extends Move {
                 }
             }.runTaskLater(plugin, CHARGE_TIME);
         };
-
-        this.followUp = (plugin, entity) -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[tag=" + entity.getUniqueId() + ".cloud" + "]");
     }
 
     private void theWorld(JavaPlugin plugin, AreaEffectCloud cloud, LivingEntity source, Entity target, int duration) {
