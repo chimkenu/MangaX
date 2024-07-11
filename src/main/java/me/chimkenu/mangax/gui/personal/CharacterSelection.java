@@ -92,15 +92,6 @@ public class CharacterSelection extends GUI {
         character = newCharacter;
         List<Moves> moves = new ArrayList<>(getMoves(player, character));
 
-        // just make sure it's exactly 9 items
-        while (moves.size() != 9) {
-            if (moves.size() > 9) {
-                moves.removeLast();
-            } else {
-                moves.add(Moves.NULL);
-            }
-        }
-
         // show character load out
         for (int i = 0; i < 9; i++) {
             setItem(i + 36, moves.get(i).move.getItem(), new Action() {
