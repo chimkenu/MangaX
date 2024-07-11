@@ -2,6 +2,7 @@ package me.chimkenu.mangax.characters.gojo;
 
 import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
+import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
 import me.chimkenu.mangax.utils.ParticleEffects;
 import net.kyori.adventure.text.Component;
@@ -52,7 +53,7 @@ public class Infinity extends Move implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMoveTrigger(MoveTriggerEvent e) {
-        if (e.getEntity().getScoreboardTags().contains(tag) && e.getMove().name().contains("GOJO") && e.isCancelled() && e.getCancelReason() == MoveTriggerEvent.CancelReason.IN_COOLDOWN) {
+        if (e.getEntity().getScoreboardTags().contains(tag) && (e.getMove() == Moves.GOJO_COLLAPSING_BLUE || e.getMove() == Moves.GOJO_RED_REVERSAL) && e.isCancelled() && e.getCancelReason() == MoveTriggerEvent.CancelReason.IN_COOLDOWN) {
             e.getEntity().removeScoreboardTag(tag);
             e.setCancelled(false);
             if (e.getEntity() instanceof Player player) {
