@@ -57,12 +57,13 @@ public class TheWorld extends Move {
                         @Override
                         public void run() {
                             if (entity instanceof Player player && !player.isOnline()) {
+                                areaEffectCloud.remove();
                                 cancel();
                                 return;
                             }
 
                             if (areaEffectCloud.isDead() || entity.isDead()) {
-                                followUp.activate(plugin, entity);
+                                areaEffectCloud.remove();
                                 cancel();
                                 return;
                             }
