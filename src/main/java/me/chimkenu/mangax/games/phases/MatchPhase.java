@@ -29,7 +29,6 @@ import static net.kyori.adventure.text.Component.text;
 
 public class MatchPhase implements Phase, Listener {
     private final JavaPlugin plugin;
-    private final World world;
     private final TeamPlayers players;
 
     private final Location spawnA;
@@ -47,7 +46,6 @@ public class MatchPhase implements Phase, Listener {
 
     public MatchPhase(@NotNull JavaPlugin plugin, @NotNull World world, @NotNull TeamPlayers players) {
         this.plugin = plugin;
-        this.world = world;
         this.players = players;
 
         // get all the data
