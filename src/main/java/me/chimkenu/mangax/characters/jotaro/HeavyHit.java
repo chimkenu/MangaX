@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -84,7 +85,7 @@ public class HeavyHit extends Move {
                         return;
                     }
 
-                    if (entity.isDead()) {
+                    if (entity.isDead() || entity.hasPotionEffect(PotionEffectType.HUNGER)) {
                         clear();
                         cancel();
                         return;

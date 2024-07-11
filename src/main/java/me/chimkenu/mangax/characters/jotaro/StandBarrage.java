@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -96,7 +97,7 @@ public class StandBarrage extends Move {
                     }
 
 
-                    if (t <= 0 || entity.isDead() || move == null || !move.equals(Moves.JOTARO_STAND_BARRAGE)) {
+                    if (t <= 0 || entity.isDead() || move == null || !move.equals(Moves.JOTARO_STAND_BARRAGE) || entity.hasPotionEffect(PotionEffectType.HUNGER)) {
                         cancel();
                         return;
                     }
