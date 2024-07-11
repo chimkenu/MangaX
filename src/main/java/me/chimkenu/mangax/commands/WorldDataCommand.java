@@ -78,7 +78,8 @@ public class WorldDataCommand implements CommandExecutor, TabCompleter {
                 for (int i = 2; i < args.length; i++) {
                     input.append(args[i]).append(" ");
                 }
-                input.deleteCharAt(input.length() - 1);
+                if (!input.isEmpty())
+                    input.deleteCharAt(input.length() - 1);
 
                 try {
                     data.data.toData(input.toString());
