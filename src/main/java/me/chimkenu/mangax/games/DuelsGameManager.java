@@ -73,6 +73,10 @@ public class DuelsGameManager implements GameManager, Listener {
     @Override
     public void start() {
         addListener(this);
+
+        players.getTeamOne().forEach(p -> lobby.addToTeam(p, true));
+        players.getTeamTwo().forEach(p -> lobby.addToTeam(p, false));
+
         next();
         mainTask = new BukkitRunnable() {
             @Override
@@ -80,8 +84,12 @@ public class DuelsGameManager implements GameManager, Listener {
                 if (errors > 10) {
                     stop(true);
                 }
-                if (currentPhase != null && !currentPhase.tick()) {
-                    next();
+                try {
+                    if (currentPhase != null && !currentPhase.tick()) {
+                        next();
+                    }
+                } catch (Exception ignored) {
+                    errors++;
                 }
             }
         }.runTaskTimer(plugin, 1, 1);
