@@ -94,7 +94,10 @@ public class CharacterBanPhase implements Phase, Listener {
     @Override
     public void start() {
         isAnimationActive = false;
-        players.forEach(p -> p.setGameMode(GameMode.SPECTATOR));
+        players.forEach(p -> {
+            p.setGameMode(GameMode.SPECTATOR);
+            p.teleport(spectatorSpawn);
+        });
 
         // remove all bans
         for (LivingEntity entity : world.getLivingEntities()) {
