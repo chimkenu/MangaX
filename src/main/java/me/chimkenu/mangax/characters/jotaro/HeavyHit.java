@@ -85,7 +85,7 @@ public class HeavyHit extends Move {
                         return;
                     }
 
-                    if (entity.isDead() || entity.hasPotionEffect(PotionEffectType.HUNGER)) {
+                    if (entity.isDead()) {
                         clear();
                         cancel();
                         return;
