@@ -3,8 +3,6 @@ package me.chimkenu.mangax.commands;
 import me.chimkenu.mangax.MangaX;
 import me.chimkenu.mangax.ai.goals.ReactiveTargetGoal;
 import me.chimkenu.mangax.enums.Moves;
-import me.chimkenu.mangax.gui.duels.MatchUp;
-import me.chimkenu.mangax.gui.personal.CharacterSelection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
