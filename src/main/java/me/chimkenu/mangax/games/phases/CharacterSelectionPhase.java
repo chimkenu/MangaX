@@ -35,7 +35,6 @@ import static net.kyori.adventure.text.Component.text;
 
 public class CharacterSelectionPhase implements Phase, Listener {
     private final JavaPlugin plugin;
-    private final World world;
     private final TeamPlayers players;
 
     private final TeamSelection teamOne;
@@ -43,7 +42,6 @@ public class CharacterSelectionPhase implements Phase, Listener {
 
     public CharacterSelectionPhase(@NotNull JavaPlugin plugin, @NotNull World world, @NotNull TeamPlayers players, @Nullable CharacterBanPhase banPhase) {
         this.plugin = plugin;
-        this.world = world;
         this.players = players;
 
         // get all the data
