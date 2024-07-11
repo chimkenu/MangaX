@@ -1,16 +1,17 @@
 package me.chimkenu.mangax;
 
-import me.chimkenu.mangax.commands.KitCommand;
-import me.chimkenu.mangax.commands.Summon;
-import me.chimkenu.mangax.commands.TruceCommand;
-import me.chimkenu.mangax.commands.WorldDataCommand;
+import me.chimkenu.mangax.commands.*;
+import me.chimkenu.mangax.games.Lobby;
 import me.chimkenu.mangax.listeners.*;
-import me.chimkenu.mangax.matches.MatchManager;
 import me.chimkenu.mangax.utils.BlockEffects;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MangaX extends JavaPlugin {
-    private MatchManager matchManager;
+    private static Lobby lobby = null;
+
+    public static Lobby getLobby() {
+        return lobby;
+    }
 
     @Override
     public void onEnable() {
@@ -24,17 +25,19 @@ public final class MangaX extends JavaPlugin {
         TruceListener truceListener = new TruceListener();
         getServer().getPluginManager().registerEvents(truceListener, this);
 
+        lobby = new Lobby(this);
+
         getCommand("sommun").setExecutor(new Summon());
         getCommand("kit").setExecutor(new KitCommand());
         getCommand("truce").setExecutor(new TruceCommand(truceListener));
         getCommand("worlddata").setExecutor(new WorldDataCommand(this));
-
-        matchManager = new MatchManager(this);
+        getCommand("duel").setExecutor(new DuelCommand(lobby));
+        getCommand("addlore").setExecutor(new AddLoreCommand());
     }
 
     @Override
     public void onDisable() {
-        matchManager.stopAll();
+        lobby.stopAllGames();
         saveConfig();
         BlockEffects.revertAllChanges();
     }
