@@ -38,7 +38,7 @@ public final class MangaX extends JavaPlugin {
     @Override
     public void onDisable() {
         lobby.stopAllGames();
-        saveConfig();
+        reloadConfig();
         BlockEffects.revertAllChanges();
     }
 
