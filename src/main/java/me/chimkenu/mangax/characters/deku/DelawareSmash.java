@@ -21,7 +21,7 @@ public class DelawareSmash extends Move {
         super((plugin, entity) -> {
             final HashSet<LivingEntity> targets = new HashSet<>();
 
-            entity.damage(2, entity);
+            entity.damage(1, entity);
 
             Location loc = entity.getEyeLocation();
             loc.setY(loc.getY() - 0.3);

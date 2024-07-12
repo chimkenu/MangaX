@@ -112,7 +112,7 @@ public class ShootStyleLeap extends Move implements Listener {
             }
 
             // Ground pound damage
-            entity.damage(2, entity);
+            entity.damage(1, entity);
             for (LivingEntity l : entity.getLocation().getNearbyLivingEntities(5)) {
                 if (!l.getType().equals(EntityType.ARMOR_STAND) && l != entity) {
                     MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, l, 8, new Vector());
