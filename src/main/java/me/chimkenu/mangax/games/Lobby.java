@@ -106,7 +106,20 @@ public class Lobby {
         red.removeEntity(player);
         blue.removeEntities(player);
         player.setGameMode(GameMode.ADVENTURE);
+        player.setFlying(false);
+        player.setAllowFlight(false);
         player.teleport(getLobbySpawn());
+        Bukkit.getOnlinePlayers().forEach(p -> p.showPlayer(plugin, player));
+    }
+
+    public void setSpectator(Player player) {
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setAllowFlight(true);
+        player.setFlying(true);
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p.getGameMode() == GameMode.ADVENTURE)
+                p.hidePlayer(plugin, player);
+        });
     }
 
     public Location getLobbySpawn() {
