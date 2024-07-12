@@ -23,7 +23,7 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onSneakToggle(PlayerToggleSneakEvent e) {
         Player player = e.getPlayer();
-        if (!e.isSneaking() || !player.getGameMode().equals(GameMode.ADVENTURE)) {
+        if (!e.isSneaking() || !player.getGameMode().equals(GameMode.ADVENTURE) || blocking.containsKey(player) || player.getVehicle() != null) {
             Data data = blocking.remove(player);
             if (data != null)
                 player.getInventory().setItemInOffHand(data.previousItem);
