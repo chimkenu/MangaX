@@ -13,5 +13,7 @@ commands:
     description: Modify world data
   duel:
     description: fight people
+  spectate:
+    description: spectate people
   addlore:
     description: sirsunlight
