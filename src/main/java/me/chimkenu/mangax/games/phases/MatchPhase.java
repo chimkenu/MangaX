@@ -14,7 +14,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,6 +31,7 @@ import static net.kyori.adventure.text.Component.text;
 
 public class MatchPhase implements Phase, Listener {
     private final JavaPlugin plugin;
+    private final World world;
     private final TeamPlayers players;
 
     private final Location spawnA;
@@ -46,6 +49,7 @@ public class MatchPhase implements Phase, Listener {
 
     public MatchPhase(@NotNull JavaPlugin plugin, @NotNull World world, @NotNull TeamPlayers players) {
         this.plugin = plugin;
+        this.world = world;
         this.players = players;
 
         // get all the data
@@ -121,6 +125,12 @@ public class MatchPhase implements Phase, Listener {
         players.forEach(p -> {
             // un-hide all players from each other
             players.forEach(q -> q.showPlayer(plugin, p));
+
+            // remove cooldowns
+            for (int i = 0; i < 9; i++) {
+                ItemStack item = p.getInventory().getItem(i);
+                if (item != null) p.setCooldown(item.getType(), 0);
+            }
 
             p.setAllowFlight(false);
             p.setFlying(false);
@@ -209,6 +219,13 @@ public class MatchPhase implements Phase, Listener {
             if (players.areTeammates(source, target) || target.getGameMode() == GameMode.SURVIVAL) {
                 e.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player player && player.getGameMode() == GameMode.SURVIVAL && world.getPlayers().contains(player)) {
+            e.setCancelled(true);
         }
     }
 
