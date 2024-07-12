@@ -56,7 +56,7 @@ public class ShootStyleLeap extends Move implements Listener {
                         public void run() {
                             entity.addScoreboardTag(tag);
                         }
-                    }.runTaskLater(plugin, 1);
+                    }.runTaskLater(plugin, 10);
                 }
             }.runTaskLater(plugin, 1);
         };
