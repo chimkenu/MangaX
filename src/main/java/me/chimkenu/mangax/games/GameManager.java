@@ -21,7 +21,7 @@ public interface GameManager {
 
     World getWorld();
 
-    Set<Player> getPlayers();
+    TeamPlayers getPlayers();
 
     //PlayerStats getPlayerStat(Player player);
 

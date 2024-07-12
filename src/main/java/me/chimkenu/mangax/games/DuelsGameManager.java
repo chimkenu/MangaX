@@ -138,8 +138,8 @@ public class DuelsGameManager implements GameManager, Listener {
     }
 
     @Override
-    public Set<Player> getPlayers() {
-        return null;
+    public TeamPlayers getPlayers() {
+        return players;
     }
 
     @Override
