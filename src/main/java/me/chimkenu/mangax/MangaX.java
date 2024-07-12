@@ -32,6 +32,7 @@ public final class MangaX extends JavaPlugin {
         getCommand("truce").setExecutor(new TruceCommand(truceListener));
         getCommand("worlddata").setExecutor(new WorldDataCommand(this));
         getCommand("duel").setExecutor(new DuelCommand(lobby));
+        getCommand("spectate").setExecutor(new SpectateCommand(lobby));
         getCommand("addlore").setExecutor(new AddLoreCommand());
     }
 
