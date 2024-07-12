@@ -30,6 +30,7 @@ public class FakeRainbow extends Move {
             // Create stand
             ArmorStand stand = entity.getWorld().spawn(entity.getLocation(), ArmorStand.class);
             setUpArmorStand(stand);
+            stand.setGravity(true);
             stand.setInvisible(false);
             stand.setArms(true);
 
