@@ -135,7 +135,7 @@ public class MoveListener implements Listener {
         if (!(m instanceof Punch punch))
             return;
 
-        if (player.getLocation().distanceSquared(target.getLocation()) > 5 * 5) {
+        if (player.getLocation().distanceSquared(target.getLocation()) > 5 * 5 || player == target) {
             return;
         }
 
