@@ -4,18 +4,21 @@ import me.chimkenu.mangax.characters.Move;
 import me.chimkenu.mangax.enums.MoveInfo;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
+import me.chimkenu.mangax.utils.SkullUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
@@ -23,11 +26,16 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
+
 public class BallBearing extends Move implements Listener {
     private final String key = "JOTARO_BALL_BEARING";
+
+    private HashMap<LivingEntity, Integer> standAliveTime = new HashMap<>();
 
     public BallBearing() {
         super(null, null, 2, 60, Material.FIREWORK_STAR, Component.text("Ball Bearing", NamedTextColor.GRAY).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
@@ -42,6 +50,40 @@ public class BallBearing extends Move implements Listener {
                     player.getInventory().getItemInMainHand().setAmount(3);
                 }
             }
+
+            Location loc = entity.getLocation();
+            loc.setPitch(0);
+            loc = getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0);
+            ArmorStand stand = entity.getWorld().spawn(loc, ArmorStand.class);
+            setUpArmorStand(stand);
+            stand.setInvisible(false);
+            stand.setLeftLegPose(newEulerAngle(-7, 0, -10));
+            stand.setLeftArmPose(newEulerAngle(-64, 48, -19));
+            stand.setRightLegPose(newEulerAngle(9, 0, 13));
+            stand.setRightArmPose(newEulerAngle(-54, -30, 4));
+            stand.setHeadPose(newEulerAngle(9, 27, 0));
+            stand.setBodyPose(newEulerAngle(3, -9, 0));
+
+            stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.star-platinum")));
+            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+            LeatherArmorMeta meta = (LeatherArmorMeta) chestplate.getItemMeta();
+            meta.setColor(Color.fromRGB(11032002));
+            ArmorMeta armorMeta = (ArmorMeta) meta;
+            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
+            chestplate.setItemMeta(armorMeta);
+            stand.getEquipment().setChestplate(chestplate);
+            ItemStack leggings = new ItemStack(Material.IRON_LEGGINGS);
+            armorMeta = (ArmorMeta) leggings.getItemMeta();
+            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
+            leggings.setItemMeta(armorMeta);
+            stand.getEquipment().setLeggings(leggings);
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+            armorMeta = (ArmorMeta) boots.getItemMeta();
+            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.SNOUT));
+            meta = (LeatherArmorMeta) armorMeta;
+            meta.setColor(Color.fromRGB(0x30371f));
+            boots.setItemMeta(meta);
+            stand.getEquipment().setBoots(boots);
 
             Snowball ball = entity.launchProjectile(Snowball.class);
             ball.setItem(new ItemStack(Material.AIR));
@@ -58,16 +100,35 @@ public class BallBearing extends Move implements Listener {
             ball.addScoreboardTag(blockDisplay.getUniqueId().toString());
             ball.setVelocity(entity.getEyeLocation().getDirection().multiply(2));
 
+            standAliveTime.putIfAbsent(entity, 6);
+            standAliveTime.put(entity, standAliveTime.get(entity) + 6);
+
             new BukkitRunnable() {
                 int t = 100;
                 @Override
                 public void run() {
                     if (t < 0 || entity.isDead() || ball.isDead()) {
+                        stand.remove();
                         ball.remove();
                         blockDisplay.remove();
                         cancel();
                         return;
                     }
+
+                    if (!stand.isDead()) {
+                        Location loc = entity.getLocation();
+                        loc.setPitch(0);
+                        stand.teleport(getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0));
+
+                        int time = standAliveTime.get(entity);
+                        if (time <= 0) {
+                            stand.remove();
+                            standAliveTime.remove(entity);
+                        } else {
+                            standAliveTime.put(entity, time - 1);
+                        }
+                    }
+
                     blockDisplay.teleport(ball.getLocation());
                     ball.getWorld().spawnParticle(Particle.WHITE_ASH, ball.getLocation(), 5, 0.1, 0.1, 0.1, 0.05);
                     t--;
