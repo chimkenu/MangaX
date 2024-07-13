@@ -29,6 +29,7 @@ public class DuelCommand implements CommandExecutor {
 
         if (!player.isOp()) {
             sender.sendMessage(text("Sorry! This is currently in development. Please ask an operator to start a duel for you."));
+            return true;
         }
 
         if (args.length < 2) {
