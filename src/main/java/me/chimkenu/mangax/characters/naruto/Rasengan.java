@@ -18,8 +18,10 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
+import static net.kyori.adventure.text.Component.text;
 
 public class Rasengan extends Move {
     public Rasengan() {
@@ -71,6 +73,20 @@ public class Rasengan extends Move {
                     stand.getWorld().spawnParticle(Particle.BLOCK, rel, 10,0.1, 0, 0.1, 0.01, Material.LIGHT_BLUE_GLAZED_TERRACOTTA.createBlockData());
                     stand.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, rel, 10, 0.1, 0, 0.1, 0.01);
 
+                    // show action bar charge up bar
+                    int charge = (getFollowUpTime() - t) / 4;
+                    Component bar = text("[", NamedTextColor.AQUA);
+                    for (int i = 0; i < getFollowUpTime() / 4; i++) {
+                        bar = bar.append(text("|", i < charge ? NamedTextColor.AQUA : NamedTextColor.GRAY));
+                    }
+
+                    loc = entity.getEyeLocation();
+                    loc = loc.add(loc.getDirection());
+                    LivingEntity target = getNearestLivingEntity(entity, loc);
+                    bar = bar.append(text("]", NamedTextColor.AQUA))
+                            .append(text(" Target: " + (target != null ? target.getName() : "none"), NamedTextColor.WHITE));
+                    entity.sendActionBar(bar);
+
                     t--;
                 }
             }.runTaskTimer(plugin, 0, 1);
@@ -80,16 +96,7 @@ public class Rasengan extends Move {
             Location loc = entity.getEyeLocation();
             loc = loc.add(loc.getDirection());
 
-            LivingEntity nearest = null;
-            double minDist = -1;
-            for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
-                if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
-                    continue;
-                }
-                if (nearest == null || entity.getLocation().distanceSquared(e.getLocation()) < minDist) {
-                    nearest = e;
-                }
-            }
+            LivingEntity nearest = getNearestLivingEntity(entity, loc);
 
             if (nearest == null) {
                 loc.getWorld().spawnParticle(Particle.CLOUD, loc, 20, 0.1, 0.1, 0.1, 0.25);
@@ -115,6 +122,20 @@ public class Rasengan extends Move {
             nearest.getWorld().spawnParticle(Particle.FLASH, nearest.getEyeLocation(), 1, 0, 0, 0, 0);
             nearest.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, nearest.getEyeLocation(), 100, 0.2, 0.2, 0.2, 0.2);
         };
+    }
+
+    private @Nullable LivingEntity getNearestLivingEntity(LivingEntity entity, Location loc) {
+        LivingEntity nearest = null;
+        double minDist = -1;
+        for (LivingEntity e : loc.getNearbyLivingEntities(2)) {
+            if (e.getType().equals(EntityType.ARMOR_STAND) || e == entity) {
+                continue;
+            }
+            if (nearest == null || entity.getLocation().distanceSquared(e.getLocation()) < minDist) {
+                nearest = e;
+            }
+        }
+        return nearest;
     }
 
     @Override

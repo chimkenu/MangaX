@@ -17,6 +17,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import static net.kyori.adventure.text.Component.text;
+
 public class Kamehameha extends Move {
     public Kamehameha() {
         super(null, null, 40, 20 * 20, Material.HEART_OF_THE_SEA, Component.text("KAMEHAMEHA!").color(NamedTextColor.YELLOW).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
@@ -25,6 +27,7 @@ public class Kamehameha extends Move {
 
             // Charge
             new BukkitRunnable() {
+                int t = getFollowUpTime();
                 @Override
                 public void run() {
                     if (entity instanceof Player player) {
@@ -38,6 +41,17 @@ public class Kamehameha extends Move {
                         cancel();
                         return;
                     }
+
+                    // show action bar charge up bar
+                    int charge = (getFollowUpTime() - t) / 4;
+                    Component bar = text("[", NamedTextColor.AQUA);
+                    for (int i = 0; i < getFollowUpTime() / 4; i++) {
+                        bar = bar.append(text("|", i < charge ? NamedTextColor.AQUA : NamedTextColor.GRAY));
+                    }
+                    bar = bar.append(text("]", NamedTextColor.AQUA));
+                    entity.sendActionBar(bar);
+                    t--;
+
                     entity.getWorld().spawnParticle(Particle.FLASH, ArmorStandUtil.getRelativeLocation(entity.getLocation(), 0, 1, -1, 0, 0), 1, 0, 0, 0, 0);
                 }
             }.runTaskTimer(plugin, 0, 1);
