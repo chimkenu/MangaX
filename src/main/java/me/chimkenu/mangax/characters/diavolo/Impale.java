@@ -22,7 +22,7 @@ import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
 
 public class Impale extends Move {
     public Impale() {
-        super(null, null, 8, 10 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 4, 10 * 20, Material.REDSTONE, Component.text("Impale").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
 
