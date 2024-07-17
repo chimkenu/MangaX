@@ -46,9 +46,6 @@ public class ShootStyleLeap extends Move implements Listener {
                         cancel();
                         return;
                     }
-                    Location loc = entity.getLocation();
-                    loc.setPitch(0);
-                    entity.setVelocity(entity.getVelocity().add(loc.getDirection().multiply(3)));
 
                     // Give entity tag after launch
                     new BukkitRunnable() {
@@ -56,15 +53,13 @@ public class ShootStyleLeap extends Move implements Listener {
                         public void run() {
                             entity.addScoreboardTag(tag);
                         }
-                    }.runTaskLater(plugin, 10);
+                    }.runTaskLater(plugin, 7);
                 }
             }.runTaskLater(plugin, 1);
         };
 
         this.followUp = (plugin, entity) -> {
-            if (entity.getScoreboardTags().contains(tag)) {
-                entity.setVelocity(entity.getVelocity().add(new Vector(0, -2, 0)));
-            }
+            entity.setVelocity(entity.getLocation().getDirection().multiply(3));
         };
     }
 
