@@ -40,11 +40,8 @@ public class Lobby {
         red = scoreboard.registerNewTeam("red");
         red.color(NamedTextColor.RED);
         red.setCanSeeFriendlyInvisibles(true);
-        red.setAllowFriendlyFire(false);
-        red.setCanSeeFriendlyInvisibles(true);
         blue = scoreboard.registerNewTeam("blue");
         blue.color(NamedTextColor.BLUE);
-        blue.setCanSeeFriendlyInvisibles(true);
         blue.setCanSeeFriendlyInvisibles(true);
     }
 
