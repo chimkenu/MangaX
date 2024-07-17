@@ -6,16 +6,18 @@ import me.chimkenu.mangax.characters.Punch;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -92,7 +94,7 @@ public class MoveListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onMoveTrigger(MoveTriggerEvent e) {
         if (e.getEntity() instanceof Player player) {
             int cooldown = player.getCooldown(e.getMove().move.getMaterial());
@@ -104,15 +106,10 @@ public class MoveListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onLeftClick(PlayerArmSwingEvent e) {
-        Long data = players.get(e.getPlayer().getUniqueId());
-        if (data != null) {
-            long diff = System.currentTimeMillis() - data;
-            if (diff <= 10) return;
-        }
-
-        activateMove(e.getPlayer());
+        if (isValidTime(e.getPlayer()))
+            activateMove(e.getPlayer());
     }
 
     @EventHandler
@@ -125,26 +122,27 @@ public class MoveListener implements Listener {
             return;
         }
 
+        if (!isValidTime(player)) {
+            return;
+        }
+        players.put(player.getUniqueId(), System.currentTimeMillis());
+
+        if (player == target) {
+            return;
+        }
+
+        e.setCancelled(true);
         ItemStack item = player.getInventory().getItemInMainHand();
 
         // check if player is using a move and if it implements the Punch interface
         Moves move = Moves.getMoveFromItem(item);
-        if (move == null)
+        if (move == null) {
+            player.sendActionBar(Component.text("You can only damage opponents using moves!", NamedTextColor.RED));
             return;
+        }
         Move m = move.move;
         if (!(m instanceof Punch punch))
             return;
-
-        if (player.getLocation().distanceSquared(target.getLocation()) > 5 * 5 || player == target) {
-            return;
-        }
-
-        Long time = players.get(player.getUniqueId());
-        if (time != null && System.currentTimeMillis() - time < 10)
-            return;
-        players.put(player.getUniqueId(), System.currentTimeMillis());
-
-        e.setCancelled(true);
 
         boolean isFollowUp = player.getCooldown(m.getMaterial()) >= m.getCooldown();
         MoveTriggerEvent event = new MoveTriggerEvent(player, move, isFollowUp);
@@ -166,14 +164,27 @@ public class MoveListener implements Listener {
 
     }
 
+    private boolean isValidTime(Player player) {
+        Long data = players.get(player.getUniqueId());
+        if (data != null) {
+            long diff = System.currentTimeMillis() - data;
+            return diff > 10;
+        }
+        return true;
+    }
+
     @EventHandler
-    public void onDrop(PlayerDropItemEvent e) {
+    public void onDash(PlayerDropItemEvent e) {
         players.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 
     @EventHandler
     public void onMoveTarget(MoveTargetEvent e) {
-        if (e.getTarget() instanceof Player player && player.getGameMode() != GameMode.ADVENTURE) {
+        if (e.getSource() instanceof Player source) {
+            players.put(source.getUniqueId(), System.currentTimeMillis());
+        }
+
+        if (e.getTarget() instanceof Player target && target.getGameMode() != GameMode.ADVENTURE) {
             e.setCancelled(true);
         }
     }
@@ -185,13 +196,6 @@ public class MoveListener implements Listener {
             if (item != null) {
                 e.getPlayer().setCooldown(item.getType(), 0);
             }
-        }
-    }
-
-    @EventHandler
-    public void onRightClick(PlayerInteractAtEntityEvent e) {
-        if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            e.setCancelled(true);
         }
     }
 }
