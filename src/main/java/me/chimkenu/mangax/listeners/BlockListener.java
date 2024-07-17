@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +33,7 @@ public class BlockListener implements Listener {
 
         blocking.put(player, new Data(player.getInventory().getItemInOffHand(), 3, 6));
         player.getInventory().setItemInOffHand(new ItemStack(Material.SHIELD));
+        player.setShieldBlockingDelay(Integer.MAX_VALUE);
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -66,6 +68,13 @@ public class BlockListener implements Listener {
                 e.getTarget().getWorld().playSound(e.getTarget().getLocation(), Sound.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1, 0);
                 e.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player player && blocking.containsKey(player)) {
+            e.setCancelled(true);
         }
     }
 
