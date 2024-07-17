@@ -2,7 +2,6 @@ package me.chimkenu.mangax.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +35,7 @@ public class DamageListener implements Listener {
 
         if (e.getEntity() instanceof Player player) {
             int threshold = 10;
-            if (player.getHealth() < threshold) {
+            if (player.getHealth() - e.getFinalDamage() < threshold) {
                 if (!tasks.containsKey(player)) {
                     tasks.put(player, new BukkitRunnable() {
                         @Override
