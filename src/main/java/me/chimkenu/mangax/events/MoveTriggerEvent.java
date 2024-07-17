@@ -1,11 +1,14 @@
 package me.chimkenu.mangax.events;
 
 import me.chimkenu.mangax.enums.Moves;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+
+import static net.kyori.adventure.text.Component.text;
 
 public class MoveTriggerEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
@@ -45,6 +48,11 @@ public class MoveTriggerEvent extends Event implements Cancellable {
     }
 
     public void cancel(CancelReason reason) {
+        switch (reason) {
+            case IN_COOLDOWN -> getEntity().sendActionBar(text("This move is in cooldown!", NamedTextColor.RED));
+            case STUNNED -> getEntity().sendActionBar(text("You're currently stunned!", NamedTextColor.RED));
+            case DISABLED -> getEntity().sendActionBar(text("You cannot use this move right now.", NamedTextColor.RED));
+        }
         cancelReason = reason;
         setCancelled(true);
     }
