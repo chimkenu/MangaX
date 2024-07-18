@@ -49,7 +49,7 @@ public class MoveTriggerEvent extends Event implements Cancellable {
 
     public void cancel(CancelReason reason) {
         switch (reason) {
-            case IN_COOLDOWN -> getEntity().sendActionBar(text("This move is in cooldown!", NamedTextColor.RED));
+            case IN_COOLDOWN -> getEntity().sendActionBar(text("This move is on cooldown!", NamedTextColor.RED));
             case STUNNED -> getEntity().sendActionBar(text("You're currently stunned!", NamedTextColor.RED));
             case DISABLED -> getEntity().sendActionBar(text("You cannot use this move right now.", NamedTextColor.RED));
         }
