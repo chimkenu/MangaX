@@ -22,8 +22,8 @@ public class HollowPurple {
     public static void activate(JavaPlugin plugin, LivingEntity entity, ArmorStand one, ArmorStand two) {
         // add 30 sec cooldown if entity is player
         if (entity instanceof Player player) {
-            player.setCooldown(Moves.GOJO_RED_REVERSAL.move.getMaterial(), 30 * 20);
-            player.setCooldown(Moves.GOJO_COLLAPSING_BLUE.move.getMaterial(), 30 * 20);
+            player.setCooldown(Moves.GOJO_RED_REVERSAL.move.getMaterial(), 20 * 20);
+            player.setCooldown(Moves.GOJO_COLLAPSING_BLUE.move.getMaterial(), 20 * 20);
         }
 
 
@@ -84,7 +84,7 @@ public class HollowPurple {
                         makeSphere(purple.getLocation(), Color.fromRGB(0x6417ac), 200, RADIUS);
                         doBlockEffects(plugin, purple.getLocation());
 
-                        for (LivingEntity e : purple.getLocation().getNearbyLivingEntities(RADIUS)) {
+                        for (LivingEntity e : purple.getLocation().getNearbyLivingEntities(RADIUS + 1)) {
                             if (e.hasGravity() && e != entity && e != purple) {
                                 MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_RED_REVERSAL, entity, e, 12, new Vector());
                                 Bukkit.getPluginManager().callEvent(event);

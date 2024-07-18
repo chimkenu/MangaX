@@ -10,7 +10,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,19 +24,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.*;
+import static net.kyori.adventure.text.Component.text;
 
 public class RedReversal extends Move implements Listener {
     public static final String tag = "GOJO_RED_REVERSAL";
     private final HashSet<ArmorStand> stands = new HashSet<>();
 
     public RedReversal() {
-        super(null, null, 20 * 10, 20 * 14, Material.RED_CONCRETE, Component.text("Red Reversal", NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 20 * 8, 20 * 14, Material.RED_CONCRETE, Component.text("Red Reversal", NamedTextColor.RED).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             Location loc = getRelativeLocation(entity.getEyeLocation(), 0, 0, 2, 0, 0);
             ArmorStand stand = loc.getWorld().spawn(loc, ArmorStand.class);
             setUpArmorStand(stand);
-            stand.setSmall(true);
             stand.addScoreboardTag(tag);
             stand.addScoreboardTag(entity.getUniqueId().toString());
             stand.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, getFollowUpTime(), 3, false, false, false));
@@ -48,6 +47,14 @@ public class RedReversal extends Move implements Listener {
                 int t = getFollowUpTime();
                 @Override
                 public void run() {
+                    // show action bar charge up bar
+                    Component bar = text("[", NamedTextColor.RED);
+                    for (int i = 0; i < getFollowUpTime() / 8; i++) {
+                        bar = bar.append(text("|", i < t / 8 ? NamedTextColor.RED: NamedTextColor.GRAY));
+                    }
+                    bar = bar.append(text("]", NamedTextColor.RED));
+                    entity.sendActionBar(bar);
+
                     if (t <= 0 || entity.isDead() || stand.isDead()) {
                         stand.remove();
                         cancel();
@@ -58,49 +65,58 @@ public class RedReversal extends Move implements Listener {
 
                         return;
                     }
+
                     t--;
 
-                    HollowPurple.makeSphere(stand.getLocation(), Color.RED, 50, 0.4);
+                    HollowPurple.makeSphere(stand.getLocation(), getColor(t), 50, 0.4);
                     stand.setVelocity(stand.getVelocity().add(new Vector(0, 0.06, 0)));
 
-                    boolean wasTriggered = false;
-                    boolean hasRed = false;
                     for (LivingEntity e : stand.getLocation().getNearbyLivingEntities(3)) {
-                        if (!e.hasGravity() || e == entity || e == stand) {
-                            continue;
+                        if (e instanceof ArmorStand) {
+                            if (e.getScoreboardTags().contains(CollapsingBlue.tag)) {
+                                Vector direction = e.getLocation().toVector().subtract(stand.getLocation().toVector());
+                                Vector v = e.getVelocity().add(direction.multiply(-0.1));
+                                e.setVelocity(v);
+                            }
+                        } else {
+                            if (t < getFollowUpTime() - 20 && e != entity && e.hasGravity() && stand.getLocation().distanceSquared(e.getLocation()) < 2 * 2) {
+                                t = 0;
+
+                                Vector direction = e.getLocation().toVector().subtract(stand.getLocation().toVector());
+                                Vector v = null;
+
+                                double distance = direction.lengthSquared();
+                                if (distance < 0.0001) {
+                                    v = new Vector();
+                                }
+
+                                direction = direction.normalize();
+                                direction.setY(Math.abs(direction.getY()));
+                                v = v == null ? direction.multiply(2) : v;
+
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_RED_REVERSAL, entity, e, 7, v);
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (event.isCancelled()) {
+                                    return;
+                                }
+
+                                e.damage(event.getDamage(), entity);
+                                if (event.getKnockback().lengthSquared() > 0)
+                                    e.setVelocity(event.getKnockback());
+                            }
                         }
-
-                        Vector direction = e.getLocation().toVector().subtract(stand.getLocation().toVector());
-                        Vector v = null;
-
-                        double distance = direction.lengthSquared();
-                        if (distance < 0.001) {
-                            v = new Vector();
-                        }
-
-                        direction = direction.normalize();
-                        v = v == null ? e.getVelocity().add(direction.multiply(e.getScoreboardTags().contains(CollapsingBlue.tag) ? -0.1 : 0.1)) : v;
-                        if (!e.getType().equals(EntityType.ARMOR_STAND))
-                            v.multiply(20).setY(1);
-
-                        if (e.getScoreboardTags().contains(CollapsingBlue.tag))
-                            hasRed = true;
-
-                        MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_RED_REVERSAL, entity, e, 7, v);
-                        Bukkit.getPluginManager().callEvent(event);
-                        if (event.isCancelled()) {
-                            return;
-                        }
-
-                        if (event.getDamage() > 0)
-                            e.damage(event.getDamage(), entity);
-                        if (event.getKnockback().lengthSquared() > 0)
-                            e.setVelocity(event.getKnockback());
-                        wasTriggered = true;
                     }
+                }
 
-                    if (wasTriggered && !hasRed)
-                        t = 0; // removes the ball if red reversal damage was triggered
+                private Color getColor(int t) {
+                    if (t > getFollowUpTime() - 20) {
+                        double amount = getFollowUpTime() - t;
+                        amount /= 20;
+                        amount = 1 - amount;
+                        return Color.fromRGB(255, (int) (amount * 100), 0);
+                    } else {
+                        return Color.RED;
+                    }
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
@@ -137,13 +153,13 @@ public class RedReversal extends Move implements Listener {
     public void onRightClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
-        if (move == Moves.GOJO_RED_REVERSAL && player.getCooldown(move.move.getMaterial()) > 0) {
+        if (e.getAction().isRightClick() && move == Moves.GOJO_RED_REVERSAL && player.getCooldown(move.move.getMaterial()) > 0) {
             ArmorStand stand = getStand(player.getUniqueId().toString());
             if (stand == null) {
                 return;
             }
 
-            Vector displacement = stand.getLocation().subtract(player.getLocation()).toVector();
+            Vector displacement = stand.getEyeLocation().subtract(player.getLocation()).toVector();
             displacement.normalize();
             Vector v = player.getLocation().getDirection().multiply(0.5).subtract(displacement).normalize();
             stand.setVelocity(v.multiply(0.65));

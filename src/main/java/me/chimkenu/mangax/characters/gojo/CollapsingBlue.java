@@ -10,6 +10,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,13 +26,14 @@ import java.util.HashSet;
 
 import static me.chimkenu.mangax.utils.ArmorStandUtil.getRelativeLocation;
 import static me.chimkenu.mangax.utils.ArmorStandUtil.setUpArmorStand;
+import static net.kyori.adventure.text.Component.text;
 
 public class CollapsingBlue extends Move implements Listener {
     public static final String tag = "GOJO_COLLAPSING_BLUE";
     private final HashSet<ArmorStand> stands = new HashSet<>();
 
     public CollapsingBlue() {
-        super(null, null, 20 * 10, 20 * 18, Material.BLUE_CONCRETE, Component.text("Collapsing Blue", NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
+        super(null, null, 20 * 8, 20 * 18, Material.BLUE_CONCRETE, Component.text("Collapsing Blue", NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
         this.activate = (plugin, entity) -> {
             Location loc = getRelativeLocation(entity.getEyeLocation(), 0, 0, 2, 0, 0);
@@ -48,6 +50,7 @@ public class CollapsingBlue extends Move implements Listener {
                 int t = getFollowUpTime();
                 @Override
                 public void run() {
+                    showBar();
                     if (t <= 0 || entity.isDead() || stand.isDead()) {
                         stand.remove();
                         cancel();
@@ -62,6 +65,7 @@ public class CollapsingBlue extends Move implements Listener {
 
                     HollowPurple.makeSphere(stand.getLocation(), Color.fromRGB(0x2986ff), 50, 0.4);
                     stand.setVelocity(stand.getVelocity().add(new Vector(0, 0.06, 0)));
+
                     for (LivingEntity e : stand.getLocation().getNearbyLivingEntities(5)) {
                         if (!e.hasGravity() || e == entity || e == stand) {
                             continue;
@@ -84,22 +88,38 @@ public class CollapsingBlue extends Move implements Listener {
                         if (e.getScoreboardTags().contains(RedReversal.tag) &&
                                 e.getScoreboardTags().contains(entity.getUniqueId().toString()) &&
                                 e instanceof ArmorStand two &&
-                                distance < 0.1) {
+                                distance < 0.2) {
                             HollowPurple.activate(plugin, entity, stand, two);
+                            cancel();
                             return;
                         }
+
+                        if (e.getType().equals(EntityType.ARMOR_STAND))
+                            continue;
 
                         MoveTargetEvent event = new MoveTargetEvent(Moves.GOJO_RED_REVERSAL, entity, e, damage, v);
                         Bukkit.getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
-                            return;
+                            continue;
                         }
 
                         if (event.getKnockback().lengthSquared() > 0)
                             e.setVelocity(event.getKnockback());
-                        if (event.getDamage() > 0)
+                        if (event.getDamage() > 0 && e.getNoDamageTicks() < 1) {
                             e.damage(event.getDamage(), entity);
+                            t -= 20; // decrease timer when dealing damage
+                        }
                     }
+                }
+
+                private void showBar() {
+                    // show action bar charge up bar
+                    Component bar = text("[", NamedTextColor.BLUE);
+                    for (int i = 0; i < getFollowUpTime() / 8; i++) {
+                        bar = bar.append(text("|", i < t / 8 ? NamedTextColor.BLUE : NamedTextColor.GRAY));
+                    }
+                    bar = bar.append(text("]", NamedTextColor.BLUE));
+                    entity.sendActionBar(bar);
                 }
             }.runTaskTimer(plugin, 0, 1);
         };
@@ -136,7 +156,7 @@ public class CollapsingBlue extends Move implements Listener {
     public void onRightClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Moves move = Moves.getMoveFromItem(player.getInventory().getItemInMainHand());
-        if (move == Moves.GOJO_COLLAPSING_BLUE && player.getCooldown(move.move.getMaterial()) > 0) {
+        if (e.getAction().isRightClick() && move == Moves.GOJO_COLLAPSING_BLUE && player.getCooldown(move.move.getMaterial()) > 0) {
             ArmorStand stand = getStand(player.getUniqueId().toString());
             if (stand == null) {
                 return;
