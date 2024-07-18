@@ -94,7 +94,7 @@ public class ShootStyleLeap extends Move implements Listener {
     }
 
     private void onLand(LivingEntity entity) {
-        if (entity.getScoreboardTags().contains(tag) && !entity.getLocation().subtract(0, 0.01, 0).getBlock().isEmpty()) {
+        if (entity.getScoreboardTags().contains(tag) && !entity.getLocation().subtract(0, 0.51, 0).getBlock().isEmpty()) {
             entity.removeScoreboardTag(tag);
 
             // Silly ground pound effect

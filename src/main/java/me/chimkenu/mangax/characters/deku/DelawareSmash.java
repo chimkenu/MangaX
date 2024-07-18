@@ -28,7 +28,7 @@ public class DelawareSmash extends Move {
             for (int i = 0; i < 7; i++) {
                 loc.setYaw(entity.getYaw() - 50);
                 for (int j = 0; j < 42; j++) {
-                    ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 25, 15, new ParticleEffects.Effect() {
+                    ParticleEffects.create(plugin, loc.getWorld(), loc.toVector(), loc.getDirection(), 15, 15, new ParticleEffects.Effect() {
                         @Override
                         public void playParticle(World world, Location location, int index) {
                             world.spawnParticle(Particle.SPIT, location, 1, 0, 0, 0, 0);
@@ -45,7 +45,7 @@ public class DelawareSmash extends Move {
                                 Vector v = livingEntity.getLocation().toVector().subtract(entity.getLocation().toVector());
                                 v = v.normalize().multiply(3).add(new Vector(0, 1, 0));
 
-                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, livingEntity, 8, v);
+                                MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, entity, livingEntity, 5, v);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (event.isCancelled()) {
                                     return;

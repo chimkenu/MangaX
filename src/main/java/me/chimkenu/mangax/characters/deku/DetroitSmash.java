@@ -39,7 +39,7 @@ public class DetroitSmash extends Move implements Punch {
 
     @Override
     public void punch(JavaPlugin plugin, LivingEntity source, LivingEntity target, boolean isFollowUp) {
-        MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, source, target, 12, new Vector());
+        MoveTargetEvent event = new MoveTargetEvent(Moves.DEKU_DELAWARE_SMASH, source, target, 10, new Vector());
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
