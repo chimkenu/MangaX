@@ -38,6 +38,7 @@ public class DashListener implements Listener {
         entity.getWorld().playSound(entity.getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, SoundCategory.PLAYERS, 0.3f, 1);
         entity.getWorld().spawnParticle(Particle.CLOUD, entity.getLocation(), 10, 0.1, 0.1, 0.1, 0.01);
         ParticleEffects.create(MangaX.getPlugin(MangaX.class), entity.getWorld(), entity.getLocation().toVector(), velocity, 5, 10, (world, location, index) -> world.spawnParticle(Particle.CLOUD, location, 1, 0, 0, 0, 0), 0);
+        entity.setNoDamageTicks(5);
         return true;
     }
 
