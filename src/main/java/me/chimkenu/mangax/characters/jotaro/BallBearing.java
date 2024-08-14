@@ -51,39 +51,42 @@ public class BallBearing extends Move implements Listener {
                 }
             }
 
-            Location loc = entity.getLocation();
-            loc.setPitch(0);
-            loc = getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0);
-            ArmorStand stand = entity.getWorld().spawn(loc, ArmorStand.class);
-            setUpArmorStand(stand);
-            stand.setInvisible(false);
-            stand.setLeftLegPose(newEulerAngle(-7, 0, -10));
-            stand.setLeftArmPose(newEulerAngle(-64, 48, -19));
-            stand.setRightLegPose(newEulerAngle(9, 0, 13));
-            stand.setRightArmPose(newEulerAngle(-54, -30, 4));
-            stand.setHeadPose(newEulerAngle(9, 27, 0));
-            stand.setBodyPose(newEulerAngle(3, -9, 0));
+            ArmorStand stand = null;
+            if (!standAliveTime.containsKey(entity)) {
+                Location loc = entity.getLocation();
+                loc.setPitch(0);
+                loc = getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0);
+                stand = entity.getWorld().spawn(loc, ArmorStand.class);
+                setUpArmorStand(stand);
+                stand.setInvisible(false);
+                stand.setLeftLegPose(newEulerAngle(-7, 0, -10));
+                stand.setLeftArmPose(newEulerAngle(-64, 48, -19));
+                stand.setRightLegPose(newEulerAngle(9, 0, 13));
+                stand.setRightArmPose(newEulerAngle(-54, -30, 4));
+                stand.setHeadPose(newEulerAngle(9, 27, 0));
+                stand.setBodyPose(newEulerAngle(3, -9, 0));
 
-            stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.star-platinum")));
-            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-            LeatherArmorMeta meta = (LeatherArmorMeta) chestplate.getItemMeta();
-            meta.setColor(Color.fromRGB(11032002));
-            ArmorMeta armorMeta = (ArmorMeta) meta;
-            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
-            chestplate.setItemMeta(armorMeta);
-            stand.getEquipment().setChestplate(chestplate);
-            ItemStack leggings = new ItemStack(Material.IRON_LEGGINGS);
-            armorMeta = (ArmorMeta) leggings.getItemMeta();
-            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
-            leggings.setItemMeta(armorMeta);
-            stand.getEquipment().setLeggings(leggings);
-            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-            armorMeta = (ArmorMeta) boots.getItemMeta();
-            armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.SNOUT));
-            meta = (LeatherArmorMeta) armorMeta;
-            meta.setColor(Color.fromRGB(0x30371f));
-            boots.setItemMeta(meta);
-            stand.getEquipment().setBoots(boots);
+                stand.getEquipment().setHelmet(SkullUtil.getSkull(plugin.getConfig().getString("character-skins.star-platinum")));
+                ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+                LeatherArmorMeta meta = (LeatherArmorMeta) chestplate.getItemMeta();
+                meta.setColor(Color.fromRGB(11032002));
+                ArmorMeta armorMeta = (ArmorMeta) meta;
+                armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
+                chestplate.setItemMeta(armorMeta);
+                stand.getEquipment().setChestplate(chestplate);
+                ItemStack leggings = new ItemStack(Material.IRON_LEGGINGS);
+                armorMeta = (ArmorMeta) leggings.getItemMeta();
+                armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.DUNE));
+                leggings.setItemMeta(armorMeta);
+                stand.getEquipment().setLeggings(leggings);
+                ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+                armorMeta = (ArmorMeta) boots.getItemMeta();
+                armorMeta.setTrim(new ArmorTrim(TrimMaterial.GOLD, TrimPattern.SNOUT));
+                meta = (LeatherArmorMeta) armorMeta;
+                meta.setColor(Color.fromRGB(0x30371f));
+                boots.setItemMeta(meta);
+                stand.getEquipment().setBoots(boots);
+            }
 
             Snowball ball = entity.launchProjectile(Snowball.class);
             ball.setItem(new ItemStack(Material.AIR));
@@ -103,26 +106,27 @@ public class BallBearing extends Move implements Listener {
             standAliveTime.putIfAbsent(entity, 6);
             standAliveTime.put(entity, standAliveTime.get(entity) + 6);
 
+            ArmorStand finalStand = stand;
             new BukkitRunnable() {
                 int t = 100;
                 @Override
                 public void run() {
                     if (t < 0 || entity.isDead() || ball.isDead()) {
-                        stand.remove();
+                        if (finalStand != null) finalStand.remove();
                         ball.remove();
                         blockDisplay.remove();
                         cancel();
                         return;
                     }
 
-                    if (!stand.isDead()) {
+                    if (finalStand != null && !finalStand.isDead() && standAliveTime.containsKey(entity)) {
                         Location loc = entity.getLocation();
                         loc.setPitch(0);
-                        stand.teleport(getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0));
+                        finalStand.teleport(getRelativeLocation(loc, -0.8, 0, -0.5, -40, 0));
 
                         int time = standAliveTime.get(entity);
                         if (time <= 0) {
-                            stand.remove();
+                            finalStand.remove();
                             standAliveTime.remove(entity);
                         } else {
                             standAliveTime.put(entity, time - 1);
