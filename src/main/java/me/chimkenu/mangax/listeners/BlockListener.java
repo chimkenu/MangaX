@@ -36,9 +36,13 @@ public class BlockListener implements Listener {
         player.setShieldBlockingDelay(Integer.MAX_VALUE);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onMoveTarget(MoveTargetEvent e) {
         if (!blocking.containsKey(e.getTarget()) || e.isCancelled()) {
+            return;
+        }
+
+        if (e.getDamage() == 0) {
             return;
         }
 
