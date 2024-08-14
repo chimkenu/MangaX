@@ -68,12 +68,13 @@ public class TheWorld extends Move {
                                 return;
                             }
 
+                            final int RADIUS_SQUARED = RADIUS * RADIUS;
                             for (Entity e : loc.getNearbyEntities(RADIUS, RADIUS, RADIUS)) {
-                                if (e == entity) {
+                                if (e == entity || e == areaEffectCloud) {
                                     continue;
                                 }
 
-                                if (isTheWorldable(e, entities) && e.getLocation().distanceSquared(areaEffectCloud.getLocation()) < RADIUS * RADIUS) {
+                                if (e.getLocation().distanceSquared(areaEffectCloud.getLocation()) < RADIUS_SQUARED && isTheWorldable(e, entities)) {
                                     theWorld(plugin, areaEffectCloud, entity, e, areaEffectCloud.getDuration() + 20);
                                 }
                             }
@@ -205,6 +206,6 @@ public class TheWorld extends Move {
 
     @Override
     public @NotNull MoveInfo getMoveInfo() {
-        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.MID, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.CONTROL, MoveInfo.Difficulty.TYPICAL, 6, 20, 100, false);
+        return new MoveInfo(MoveInfo.Damage.NONE, MoveInfo.Range.MID, MoveInfo.Knockback.NONE, MoveInfo.Manoeuvre.NONE, MoveInfo.Type.CONTROL, MoveInfo.Difficulty.TYPICAL, 6, 30, 100, false);
     }
 }
