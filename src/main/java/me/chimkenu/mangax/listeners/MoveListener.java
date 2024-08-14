@@ -6,8 +6,6 @@ import me.chimkenu.mangax.characters.Punch;
 import me.chimkenu.mangax.enums.Moves;
 import me.chimkenu.mangax.events.MoveTargetEvent;
 import me.chimkenu.mangax.events.MoveTriggerEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
@@ -21,8 +19,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -125,25 +125,36 @@ public class MoveListener implements Listener {
         if (!isValidTime(player)) {
             return;
         }
-        players.put(player.getUniqueId(), System.currentTimeMillis());
 
         if (player == target) {
             return;
         }
 
-        e.setCancelled(true);
         ItemStack item = player.getInventory().getItemInMainHand();
 
         // check if player is using a move and if it implements the Punch interface
         Moves move = Moves.getMoveFromItem(item);
         if (move == null) {
-            player.sendActionBar(Component.text("You can only damage opponents using moves!", NamedTextColor.RED));
+            MoveTargetEvent event = new MoveTargetEvent(Moves.NULL, player, target, 1, new Vector());
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                e.setCancelled(true);
+                return;
+            }
+
+            e.setDamage(event.getDamage());
+            target.setNoDamageTicks(0);
+            target.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 4, 0, false, false, false));
+            /* TODO: add default punch attacks
+                player.sendActionBar(Component.text("You can only damage opponents using moves!", NamedTextColor.RED)); */
             return;
         }
+        e.setCancelled(true);
         Move m = move.move;
         if (!(m instanceof Punch punch))
             return;
 
+        players.put(player.getUniqueId(), System.currentTimeMillis());
         boolean isFollowUp = player.getCooldown(m.getMaterial()) >= m.getCooldown();
         MoveTriggerEvent event = new MoveTriggerEvent(player, move, isFollowUp);
         Bukkit.getPluginManager().callEvent(event);
